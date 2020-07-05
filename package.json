@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "rollup": "^2.19.0",
+    "rollup-plugin-closure-compile": "^1.1.0",
     "rollup-plugin-notify": "^1.1.0",
     "rollup-plugin-progress": "^1.1.2",
     "rollup-plugin-size-snapshot": "^0.12.0",

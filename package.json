@@ -1,0 +1,16 @@
+{
+  "name": "js13k-2020",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:trezy-studios/js13k-2020.git",
+  "author": "Trezy <tre@trezy.com>",
+  "license": "MIT",
+  "dependencies": {
+    "rollup": "^2.19.0",
+    "rollup-plugin-notify": "^1.1.0",
+    "rollup-plugin-progress": "^1.1.2",
+    "rollup-plugin-size-snapshot": "^0.12.0",
+    "rollup-plugin-terser": "^6.1.0",
+    "rollup-plugin-visualizer": "^4.0.4"
+  }
+}

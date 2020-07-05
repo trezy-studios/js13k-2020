@@ -5,6 +5,10 @@
   "repository": "git@github.com:trezy-studios/js13k-2020.git",
   "author": "Trezy <tre@trezy.com>",
   "license": "MIT",
+  "scripts": {
+    "build": "rollup -c rollup.config.js",
+    "start": "yarn build -w"
+  },
   "dependencies": {
     "rollup": "^2.19.0",
     "rollup-plugin-notify": "^1.1.0",

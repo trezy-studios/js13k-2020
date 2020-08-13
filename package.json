@@ -10,6 +10,10 @@
     "start": "yarn build -w"
   },
   "dependencies": {
+    "ga": "kittykatattack/ga"
+  },
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^8.1.0",
     "rollup": "^2.19.0",
     "rollup-plugin-closure-compile": "^1.1.0",
     "rollup-plugin-notify": "^1.1.0",

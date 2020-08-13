@@ -1,3 +1,56 @@
 <!doctype html>
 <meta charset="utf-8">
-<script src="0.js"></script>
+<script src="node_modules/ga/ga.js"></script>
+<script src="node_modules/ga/plugins.js"></script>
+<script defer src="0.js"></script>
+<style type="text/css">
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    height: 100vh;
+    margin: 0;
+    width: 100vw;
+  }
+
+  .hotbar {
+    bottom: 20px;
+    display: flex;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .ratio {
+    text-align: right;
+  }
+
+  .stats {
+    align-items: flex-end;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+  }
+</style>
+
+<div class="stats">
+  <span class="health">
+    <meter min="0"></meter>
+    <div class="ratio">
+      <span class="current"></span>/<span class="max"></span>
+    </div>
+  </span>
+  &times;
+  &divide;
+</div>
+
+<menu
+  class="hotbar"
+  type="toolbar">
+  <button type="button">Spell 1</button>
+  <button type="button">Spell 2</button>
+  <button type="button">Spell 3</button>
+</menu>

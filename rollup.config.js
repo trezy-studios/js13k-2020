@@ -1,3 +1,4 @@
+import { nodeResolve } from '@rollup/plugin-node-resolve'
 import { sizeSnapshot } from 'rollup-plugin-size-snapshot'
 import { terser } from 'rollup-plugin-terser'
 import closureCompile from 'rollup-plugin-closure-compile'
@@ -15,59 +16,16 @@ export default [
     output: [
       {
         file: '0.js',
-        format: 'cjs',
-      },
-      {
-        file: 'builds/terser.js',
-        format: 'cjs',
+        format: 'iife',
         plugins: [
-          terser(),
-        ],
-      },
-      {
-        file: 'builds/closure.js',
-        format: 'cjs',
-        plugins: [
-          closureCompile(),
-        ],
-      },
-      {
-        file: 'builds/closure-terser.js',
-        format: 'cjs',
-        plugins: [
-          closureCompile(),
-          terser(),
-        ],
-      },
-      {
-        file: 'builds/terser-closure.js',
-        format: 'cjs',
-        plugins: [
-          terser(),
-          closureCompile(),
-        ],
-      },
-      {
-        file: 'builds/closure-terser-closure.js',
-        format: 'cjs',
-        plugins: [
-          closureCompile(),
-          terser(),
-          closureCompile(),
-        ],
-      },
-      {
-        file: 'builds/terser-closure-terser.js',
-        format: 'cjs',
-        plugins: [
-          terser(),
-          closureCompile(),
-          terser(),
+          // closureCompile(),
+          // terser(),
         ],
       },
     ],
     plugins: [
       progress(),
+      nodeResolve(),
       sizeSnapshot(),
       visualizer(),
       notify(),

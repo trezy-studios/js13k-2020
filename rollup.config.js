@@ -15,54 +15,10 @@ export default [
     output: [
       {
         file: '0.js',
-        format: 'cjs',
-      },
-      {
-        file: 'builds/terser.js',
-        format: 'cjs',
-        plugins: [
-          terser(),
-        ],
-      },
-      {
-        file: 'builds/closure.js',
-        format: 'cjs',
-        plugins: [
-          closureCompile(),
-        ],
-      },
-      {
-        file: 'builds/closure-terser.js',
-        format: 'cjs',
-        plugins: [
-          closureCompile(),
-          terser(),
-        ],
-      },
-      {
-        file: 'builds/terser-closure.js',
-        format: 'cjs',
+        format: 'iife',
         plugins: [
           terser(),
           closureCompile(),
-        ],
-      },
-      {
-        file: 'builds/closure-terser-closure.js',
-        format: 'cjs',
-        plugins: [
-          closureCompile(),
-          terser(),
-          closureCompile(),
-        ],
-      },
-      {
-        file: 'builds/terser-closure-terser.js',
-        format: 'cjs',
-        plugins: [
-          terser(),
-          closureCompile(),
-          terser(),
         ],
       },
     ],

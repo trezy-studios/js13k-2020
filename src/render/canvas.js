@@ -1,5 +1,5 @@
 function ctx2d(el) {
-    return canvas.getContext("2d");
+    return el.getContext("2d");
 }
 
 class Canvas {
@@ -7,24 +7,48 @@ class Canvas {
         this.target = ctx2d(el);
         this.shadow = ctx2d(el.cloneNode());
         this.queue = [[], [], []];
+        this.layer = canvas.BG;
     }
     //queue an image to be drown to the current layer.
     //image(img:HTMLImageElement|HTMLCanvasElement)
-    image(img, x, y, w, h, opts) {
-
+    color(stroke = "black", fill = "black") {
+        this.queue[this.layer].push(["col", stroke, fill]);
+    }
+    image(img, x, y, w, h, opts = []) {
+        this.queue[this.layer].push(["drawImage", img, x, y, w, h, ...opts]);
+    }
+    rect(x, y, w, h, opts = [], mode = "fill") {
+        this.queue[this.layer].push([mode + "Rect", x, y, w, h, ...opts]);
+    }
+    text(x, y, fontSize, text, opts = [], mode = "fill") {
+        this.queue[this.layer].push([mode + "Text", x, y, fontSize, text, ...opts]);
     }
     //no params, push all updates to screen.
     update() {
-        this.shadow.width = this.shadow.width;
-
-
+        //clear the canvas
+        const ctx = this.shadow;
+        ctx.clearRect(0, 0, 0xffff, 0xffff);
+        const toRender = this.queue.flat();
+        for (const task of toRender) {
+            const [call] = task;
+            switch (call) {
+                case "col":
+                    [, ctx.strokeStyle, ctx.fillStyle] = task;
+                    break;
+                default:
+                    const [, ...args] = task;
+                    ctx[call](...args);
+                    break;
+            }
+        }
+        this.target.clearRect(0, 0, 0xffff, 0xffff);
         this.target.drawImage(this.shadow.canvas, 0, 0);
         this.queue = [[], [], []];
     }
-    static BG = 0;
-    static FG = 1;
-    static SPRITES = 2;
 }
+canvas.BG = 0;
+canvas.FG = 1;
+canvas.SPRITES = 2;
 
 export function canvas(el) {
     return new Canvas(el);

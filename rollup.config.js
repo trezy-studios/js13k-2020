@@ -30,7 +30,10 @@ export default [
     plugins: [
       progress(),
       sizeSnapshot(),
-      visualizer(),
+      visualizer({
+        filename: 'dist/stats.html',
+        template: 'sunburst',
+      }),
       notify(),
     ],
   },

@@ -1,6 +1,6 @@
 .size-snapshot.json
 stats.html
-0.js
 
 builds/
+dist/
 node_modules/

@@ -17,6 +17,16 @@ export default [
     input: 'src/index.js',
     output: [
       {
+        file: 'dist/index.js',
+        format: 'iife',
+        plugins: [
+          htmlTemplate({
+            template: 'src/index.html',
+            target: 'index.html',
+          }),
+        ],
+      },
+      {
         file: 'dist/0.js',
         format: 'iife',
         plugins: [
@@ -24,7 +34,7 @@ export default [
           terser(),
           htmlTemplate({
             template: 'src/index.html',
-            target: 'index.html',
+            target: '0.html',
           }),
           gzip(),
         ],

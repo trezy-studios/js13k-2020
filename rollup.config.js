@@ -50,6 +50,7 @@ export default [
       sizeSnapshot(),
       visualizer({
         filename: 'dist/stats.html',
+        gzipSize: true,
         template: 'sunburst',
       }),
       notify(),

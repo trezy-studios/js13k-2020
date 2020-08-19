@@ -9,4 +9,6 @@ const grid = [
   0, 1, 1, 1, 1, 1, 1, 0,
 ]
 
+grid.columns = 8
+
 export { grid }

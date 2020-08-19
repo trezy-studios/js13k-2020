@@ -1,3 +1,5 @@
+import { canvasFillScreen } from "./canvasFillScreen";
+
 function ctx2d(el) {
     return el.getContext("2d");
 }
@@ -6,6 +8,7 @@ class Canvas {
     constructor(el) {
         this.target = ctx2d(el);
         this.shadow = ctx2d(el.cloneNode());
+        canvasFillScreen(el, this);
         this.queue = [[], [], []];
         this.layer = canvas.BG;
     }
@@ -41,9 +44,12 @@ class Canvas {
                     break;
             }
         }
-        this.target.clearRect(0, 0, 0xffff, 0xffff);
-        this.target.drawImage(this.shadow.canvas, 0, 0);
+        this.refresh();
         this.queue = [[], [], []];
+    }
+    refresh() {
+        this.target.clearRect(0, 0, 0xffff, 0xffff);
+        this.target.drawImage(this.shadow.canvas, 0, 0, this.target.canvas.width, this.target.canvas.height);
     }
 }
 canvas.BG = 0;

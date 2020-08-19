@@ -10,15 +10,16 @@
     "start": "yarn build -w"
   },
   "devDependencies": {
+    "fs-extra": "^9.0.1",
     "rollup": "^2.19.0",
     "rollup-plugin-closure-compile": "^1.1.0",
     "rollup-plugin-dev": "^1.1.2",
-    "rollup-plugin-generate-html-template": "^1.7.0",
-    "rollup-plugin-gzip": "^2.5.0",
     "rollup-plugin-notify": "^1.1.0",
+    "rollup-plugin-postcss": "^3.1.5",
     "rollup-plugin-progress": "^1.1.2",
     "rollup-plugin-size-snapshot": "^0.12.0",
     "rollup-plugin-terser": "^6.1.0",
     "rollup-plugin-visualizer": "^4.0.4"
-  }
+  },
+  "dependencies": {}
 }

@@ -1,12 +1,12 @@
+import { generateHTML } from './rollup-plugins/generateHTML'
 import { sizeSnapshot } from 'rollup-plugin-size-snapshot'
 import { terser } from 'rollup-plugin-terser'
 import closureCompile from 'rollup-plugin-closure-compile'
+import postcss from 'rollup-plugin-postcss'
 import dev from 'rollup-plugin-dev'
-import htmlTemplate from 'rollup-plugin-generate-html-template'
 import notify from 'rollup-plugin-notify'
 import progress from 'rollup-plugin-progress'
 import visualizer from 'rollup-plugin-visualizer'
-import gzip from 'rollup-plugin-gzip'
 
 
 
@@ -19,12 +19,7 @@ export default [
       {
         file: 'dist/index.js',
         format: 'iife',
-        plugins: [
-          htmlTemplate({
-            template: 'src/index.html',
-            target: 'index.html',
-          }),
-        ],
+        plugins: [],
       },
       {
         file: 'dist/0.js',
@@ -32,15 +27,19 @@ export default [
         plugins: [
           closureCompile(),
           terser(),
-          htmlTemplate({
-            template: 'src/index.html',
-            target: '0.html',
-          }),
-          gzip(),
         ],
       },
     ],
     plugins: [
+			postcss({
+				extract: true,
+				minimize: true,
+			}),
+			generateHTML({
+				minify: true,
+				target: '{bundle}.html',
+				template: 'src/index.html',
+			}),
       dev({
         dirs: [
           'dist',

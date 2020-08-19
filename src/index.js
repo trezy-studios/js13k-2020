@@ -41,7 +41,7 @@ function gameLoop () {
 
 	grid.forEach((type, index) => {
 		const x = (index % columns) * tileWidth
-		const y = Math.floor(index / rows) * tileHeight
+		const y = Math.floor(index / columns) * tileHeight
 		const tileColor = tileColors[type]
 		render.color(tileColor, tileColor)
 		render.rect(x, y, tileWidth, tileHeight)

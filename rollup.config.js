@@ -30,6 +30,7 @@ export default [
         file: 'dist/0.js',
         format: 'iife',
         plugins: [
+          closureCompile(),
           terser(),
           htmlTemplate({
             template: 'src/index.html',

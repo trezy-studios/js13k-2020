@@ -1,33 +1,41 @@
+// Local imports
 import './index.css'
-import {
-	grid,
-	tileColors,
-} from './state.js'
-// import { updateTile } from './helpers/updateTile.js'
-// updateTile(3, 4, 2)
-// console.log(grid)
+import './patches/addEventListener'
+import { canvas } from './render/canvas'
+import { tileColors } from './helpers/tileColors'
+import * as maps from './maps/index'
 
 
 
-import "./patches/addEventListener"
-import { canvas } from "./render/canvas"
 
 
-
-const canvasElement = document.querySelector("canvas")
+// Local constants
+const canvasElement = document.querySelector('canvas')
 const canvasHeight = canvasElement.height
 const canvasWidth = canvasElement.width
 const render = canvas(canvasElement)
-let box_x = 100
+
+
+
+
+
+// Local variables
+let currentMap = 'test'
 let frame = 0
 
-function gameLoop () {
-	const { columns } = grid
 
-	box_x += Math.sin(frame / 180 * Math.PI)
+
+
+
+function gameLoop () {
+	const {
+		grid,
+		columns,
+		rows,
+	} = maps[currentMap]
+
 	frame++
 
-	const rows = grid.length / columns
 	const tileHeight = canvasHeight / rows
 	const tileWidth = canvasWidth / columns
 

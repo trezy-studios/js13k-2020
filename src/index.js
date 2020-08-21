@@ -2,7 +2,6 @@
 import './index.css'
 import './patches/addEventListener'
 import { canvas } from './render/canvas'
-import { tileColors } from './helpers/tileColors'
 import * as maps from './maps/index'
 
 
@@ -27,30 +26,15 @@ let frame = 0
 
 
 
-function gameLoop () {
-	const {
-		grid,
-		columns,
-		rows,
-	} = maps[currentMap]
 
+const gameLoop = () => {
 	frame++
 
-	const tileHeight = canvasHeight / rows
-	const tileWidth = canvasWidth / columns
-
-	grid.forEach((type, index) => {
-		const x = (index % columns) * tileWidth
-		const y = Math.floor(index / columns) * tileHeight
-		const tileColor = tileColors[type]
-		render.color(tileColor, tileColor)
-		render.rect(x, y, tileWidth, tileHeight)
-		render.rect(x, y, tileWidth, tileHeight, [], 'stroke')
-	})
-
+	render.drawMap()
 	render.update()
 
 	requestAnimationFrame(gameLoop)
 }
+render.map = maps[value]
 
 gameLoop()

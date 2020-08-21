@@ -1,1 +1,5 @@
-export * as test from './test'
+import * as test from './test'
+
+export {
+	test,
+}

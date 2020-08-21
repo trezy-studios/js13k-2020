@@ -79,7 +79,8 @@ class Canvas {
 			grid,
 			columns,
 			rows,
-		} = this.map
+		} = maps[this.map]
+
 
 		this.shadow.canvas.height = rows * TILE_SIZE
 		this.shadow.canvas.width = columns * TILE_SIZE

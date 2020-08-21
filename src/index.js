@@ -1,29 +1,75 @@
+// Local imports
 import './index.css'
-// import { grid } from './state.js'
-// import { updateTile } from './helpers/updateTile.js'
-// updateTile(3, 4, 2)
-// console.log(grid)
+import './patches/addEventListener'
+import { canvas } from './render/canvas'
+import { createStringCanvas } from './render/font'
+import * as maps from './maps/index'
 
 
 
-import "./patches/addEventListener"
-import { canvas } from "./render/canvas"
+
+
+// Local constants
+const canvasElement = document.querySelector('canvas')
+const canvasHeight = canvasElement.height
+const canvasWidth = canvasElement.width
+const mainMenuElement = document.querySelector('#main')
+const mapSelectMenuElement = document.querySelector('#map-select')
+const render = canvas(canvasElement)
 
 
 
-const render = canvas(document.querySelector("canvas"))
-let box_x = 100
+
+
+// Local variables
 let frame = 0
 
-function gameLoop () {
-	box_x += Math.sin(frame / 180 * Math.PI)
+
+
+
+
+const mapSelect = () => {
+	mainMenuElement.style.display = 'none'
+	mapSelectMenuElement.style.display = 'flex'
+}
+
+const gameLoop = () => {
 	frame++
-	render.color("red", "red")
-	render.rect(0, 0, innerWidth, innerHeight)
-	render.color("black", "black")
-	render.rect(box_x - 10, 0, 20, 20)
+
+	render.drawMap()
 	render.update()
+
 	requestAnimationFrame(gameLoop)
 }
 
-gameLoop()
+const handleMapButtonClick = event => {
+	const { target: { value } } = event
+	render.map = value
+	mapSelectMenuElement.style.display = 'none'
+	canvasElement.style.display = 'flex'
+	gameLoop()
+}
+
+const createMapButton = mapName => {
+	const mapButton = document.createElement('button')
+	mapButton.setAttribute('type', 'button')
+	mapButton.setAttribute('value', mapName)
+	mapButton.on('click', handleMapButtonClick)
+	const mapNameCanvas = createStringCanvas(mapName, 2)
+	mapButton.appendChild(mapNameCanvas)
+	mapSelectMenuElement.appendChild(mapButton)
+}
+
+const initialize = () => {
+	mainMenuElement.style.display = 'flex'
+	const startButtonElement = document.querySelector('#start')
+
+	startButtonElement.on('click', mapSelect)
+	const startTextCanvas = createStringCanvas('start', 2)
+	startButtonElement.appendChild(startTextCanvas)
+
+	document.querySelector('#start').on('click', mapSelect)
+	Object.keys(maps).forEach(createMapButton)
+}
+
+initialize()

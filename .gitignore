@@ -1,5 +1,6 @@
 .DS_Store
 .size-snapshot.json
+yarn-error.log
 
 builds/
 dist/

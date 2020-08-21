@@ -6,20 +6,24 @@
   "author": "Trezy <tre@trezy.com>",
   "license": "MIT",
   "scripts": {
-    "build": "rollup -c rollup.config.js",
-    "start": "yarn build -w"
+    "build": "webpack --mode production",
+    "postbuild": "node scripts/postbuild.js",
+    "start": "webpack-dev-server --mode development"
   },
   "devDependencies": {
+    "@babel/core": "^7.11.1",
+    "archiver": "^5.0.0",
+    "babel-loader": "^8.1.0",
+    "css-loader": "^4.2.1",
     "fs-extra": "^9.0.1",
-    "rollup": "^2.19.0",
-    "rollup-plugin-closure-compile": "^1.1.0",
-    "rollup-plugin-dev": "^1.1.2",
-    "rollup-plugin-notify": "^1.1.0",
-    "rollup-plugin-postcss": "^3.1.5",
-    "rollup-plugin-progress": "^1.1.2",
-    "rollup-plugin-size-snapshot": "^0.12.0",
-    "rollup-plugin-terser": "^6.1.0",
-    "rollup-plugin-visualizer": "^4.0.4"
-  },
-  "dependencies": {}
+    "html-webpack-inline-source-plugin": "^1.0.0-beta.2",
+    "html-webpack-plugin": "^4.3.0",
+    "mini-css-extract-plugin": "^0.10.0",
+    "optimize-css-assets-webpack-plugin": "^5.0.3",
+    "terser-webpack-plugin": "^4.1.0",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12",
+    "webpack-closure-compiler": "^2.1.6",
+    "webpack-dev-server": "^3.11.0"
+  }
 }

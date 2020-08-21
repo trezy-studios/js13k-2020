@@ -15,6 +15,7 @@ const isProduction = process.env.npm_lifecycle_event === 'build'
 module.exports = {
 	devServer: {
 		contentBase: './dist',
+		hot: true,
 		overlay: true,
 		stats: 'minimal',
 	},
@@ -41,7 +42,12 @@ module.exports = {
 			{
 				test: /\.css$/,
 				use: [
-					MiniCSSExtractPlugin.loader,
+					{
+						loader: MiniCSSExtractPlugin.loader,
+						options: {
+							hmr: !isProduction,
+						},
+					},
 					{ loader: 'css-loader' },
 				],
 			},

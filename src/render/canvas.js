@@ -46,30 +46,35 @@ class Canvas {
 
 	//no params, push all updates to screen.
 	update() {
-		//clear the canvas
-		const ctx = this.shadow;
-		ctx.clearRect(0, 0, 0xffff, 0xffff);
-		const toRender = this.queue.flat();
-		// ctx.translate(-0.54, -0.54);
+		const {
+			columns,
+			rows,
+		} = maps[this.map]
+		const ctx = this.shadow
+		const toRender = this.queue.flat()
+
+		this.shadow.canvas.height = rows * TILE_SIZE
+		this.shadow.canvas.width = columns * TILE_SIZE
+		this.fitToScreen()
+
 		for (const task of toRender) {
-			const [call] = task;
+			const [call] = task
 			switch (call) {
 				case "col":
-					[, ctx.strokeStyle, ctx.fillStyle] = task;
-					break;
+					[, ctx.strokeStyle, ctx.fillStyle] = task
+					break
 				default:
-					const [, ...args] = task;
-					ctx[call](...args);
-					break;
+					const [, ...args] = task
+					ctx[call](...args)
+					break
 			}
 		}
-		// ctx.setTransform(1, 0, 0, 1, 0, 0);
-		this.refresh();
-		this.queue = [[], [], []];
+
+		this.refresh()
+		this.queue = [[], [], []]
 	}
+
 	refresh() {
-		this.target.canvas.height = this.shadow.canvas.height
-		this.target.canvas.width = this.shadow.canvas.width
 		this.target.clearRect(0, 0, 0xffff, 0xffff);
 		this.target.drawImage(this.shadow.canvas, 0, 0);
 	}
@@ -80,11 +85,6 @@ class Canvas {
 			columns,
 			rows,
 		} = maps[this.map]
-
-
-		this.shadow.canvas.height = rows * TILE_SIZE
-		this.shadow.canvas.width = columns * TILE_SIZE
-		this.fitToScreen()
 
 		grid.forEach((type, index) => {
 			const x = (index % columns) * TILE_SIZE

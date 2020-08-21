@@ -79,12 +79,18 @@ class Canvas {
 		this.target.drawImage(this.shadow.canvas, 0, 0);
 	}
 
+	drawEntities() {
+		this.layer = canvas.SPRITES
+	}
+
 	drawMap() {
 		const {
 			grid,
 			columns,
 			rows,
 		} = maps[this.map]
+
+		this.layer = canvas.FG
 
 		grid.forEach((type, index) => {
 			const x = (index % columns) * TILE_SIZE

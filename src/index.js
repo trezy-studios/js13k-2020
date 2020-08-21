@@ -37,6 +37,7 @@ const gameLoop = () => {
 	frame++
 
 	render.drawMap()
+	render.drawEntities()
 	render.update()
 
 	requestAnimationFrame(gameLoop)

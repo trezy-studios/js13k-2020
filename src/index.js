@@ -51,22 +51,31 @@ const handleMapButtonClick = event => {
 }
 
 const createMapButton = mapName => {
+	const mapListItem = document.createElement('li')
 	const mapButton = document.createElement('button')
+	const mapNameCanvas = createStringCanvas(mapName, 8)
+	const mapSelectMapListElement = mapSelectMenuElement.querySelector('ol')
+
 	mapButton.setAttribute('type', 'button')
 	mapButton.setAttribute('value', mapName)
 	mapButton.on('click', handleMapButtonClick)
-	const mapNameCanvas = createStringCanvas(mapName, 2)
 	mapButton.appendChild(mapNameCanvas)
-	mapSelectMenuElement.appendChild(mapButton)
+	mapListItem.appendChild(mapButton)
+	mapSelectMapListElement.appendChild(mapListItem)
 }
 
 const initialize = () => {
 	mainMenuElement.style.display = 'flex'
-	const startButtonElement = document.querySelector('#start')
 
+	const startButtonElement = document.querySelector('#start')
+	const startTextCanvas = createStringCanvas('start', 8)
 	startButtonElement.on('click', mapSelect)
-	const startTextCanvas = createStringCanvas('start', 2)
 	startButtonElement.appendChild(startTextCanvas)
+
+	const mapSelectTextCanvas = createStringCanvas('Choose a map', 8)
+	const mapSelectMapListElement = document.createElement('ol')
+	mapSelectMenuElement.appendChild(mapSelectTextCanvas)
+	mapSelectMenuElement.appendChild(mapSelectMapListElement)
 
 	document.querySelector('#start').on('click', mapSelect)
 	Object.keys(maps).forEach(createMapButton)

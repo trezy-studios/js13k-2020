@@ -1,5 +1,8 @@
 html, body {
+	background-color: #000;
+	color: #fff;
   height: 100vh;
+	image-rendering: pixelated;
   margin: 0;
   padding: 0;
 	width: 100vw;
@@ -14,20 +17,8 @@ button {
 	font-size: inherit;
 }
 
-canvas {
-	transform: translate(50vw,50vh) translate(-50%,-50%);
-	image-rendering: pixelated;
-}
-
-canvas:last-of-type {
-	position: fixed;
-	right: 0;
-	top: 0;
-	z-index: 1;
-}
-
-canvas, #main, #map-select {
-	display: none;
+canvas:not(#render) {
+	pointer-events: none;
 }
 
 .menu {
@@ -36,4 +27,12 @@ canvas, #main, #map-select {
 	height: 100vh;
 	justify-content: center;
 	width: 100vw;
+}
+
+#main, #map-select, #render {
+	display: none;
+}
+
+#render {
+	transform: translate(50vw,50vh) translate(-50%,-50%);
 }

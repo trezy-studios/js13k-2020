@@ -1,4 +1,5 @@
 const ClosureCompilerPlugin = require('webpack-closure-compiler')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HTMLWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin')
 const HTMLWebpackPlugin = require('html-webpack-plugin')
 const MiniCSSExtractPlugin = require('mini-css-extract-plugin')
@@ -27,6 +28,7 @@ module.exports = {
 	output: {
 		filename: 'index.js',
 		path: path.resolve(__dirname, 'dist'),
+		publicPath: '/',
 	},
 
 	module: {
@@ -74,6 +76,14 @@ module.exports = {
 		new OptimizeCSSAssetsPlugin,
 		new MiniCSSExtractPlugin({
       filename: '[name].css',
-    }),
+		}),
+		new CopyWebpackPlugin({
+			patterns: [
+				{
+					from: 'src/assets',
+					to: 'assets',
+				},
+			],
+		}),
 	],
 }

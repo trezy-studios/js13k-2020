@@ -135,68 +135,85 @@ export const coords = {
 	y: {
 		...baseCharacter,
 		x: 162,
-		y: 6,
+		w: 6,
 	},
 
 	z: {
 		...baseCharacter,
-		x: 169,
+		x: 168,
 	},
 
 	0: {
 		...baseCharacter,
-		x: 176,
+		x: 175,
 	},
 
 	1: {
 		...baseCharacter,
-		x: 183,
+		x: 182,
 		w: 4,
 	},
 
 	2: {
 		...baseCharacter,
-		x: 187,
+		x: 186,
 	},
 
 	3: {
 		...baseCharacter,
-		x: 194,
+		x: 193,
 	},
 
 	4: {
 		...baseCharacter,
-		x: 201,
+		x: 200,
 	},
 
 	5: {
 		...baseCharacter,
-		x: 208,
+		x: 207,
 	},
 
 	6: {
 		...baseCharacter,
-		x: 215,
+		x: 214,
 	},
 
 	7: {
 		...baseCharacter,
-		x: 222,
+		x: 221,
 	},
 
 	8: {
 		...baseCharacter,
-		x: 229,
+		x: 228,
 	},
 
 	9: {
 		...baseCharacter,
-		x: 236,
+		x: 235,
+	},
+
+	':': {
+		...baseCharacter,
+		w: 2,
+		x: 242,
+	},
+
+	'!': {
+		...baseCharacter,
+		w: 2,
+		x: 244,
+	},
+
+	'?': {
+		...baseCharacter,
+		x: 246,
 	},
 
 	' ': {
 		...baseCharacter,
-		x: 243,
+		x: 254,
 	},
 }
 

@@ -1,3 +1,7 @@
+* {
+	box-sizing: border-box;
+}
+
 html, body {
 	background-color: #000;
 	color: #fff;
@@ -15,24 +19,48 @@ button {
 	cursor: pointer;
 	font-family: inherit;
 	font-size: inherit;
+	padding: 0;
 }
 
 canvas:not(#render) {
 	pointer-events: none;
 }
 
+.canvas-wrap,
 .menu {
-	align-items: center;
-	display: flex;
-	height: 100vh;
-	justify-content: center;
-	width: 100vw;
+	border: 7px solid transparent;
+	height: 119px;
+	border-image-outset: 0;
+	border-image-repeat: repeat;
+	border-image-slice: 7;
 }
 
-#main, #map-select, #render {
+.canvas-wrap {
+	border-image-source: url('./assets/images/border.light.png');
+}
+
+.menu {
+	border-image-source: url('./assets/images/border.dark.png');
+}
+
+.menu.stretch {
+	grid-column: span 2;
+}
+
+.screen {
+	display: grid;
+	gap: 4px;
+	grid-template-columns: 54px 116px 54px;
+	height: 119px;
+	padding: 4px;
+	transform: scale(5);
+	transform-origin: 0 0;
+}
+
+#game canvas {
+	margin: -7px;
+}
+
+*[hidden="true"] {
 	display: none;
-}
-
-#render {
-	transform: translate(50vw,50vh) translate(-50%,-50%);
 }

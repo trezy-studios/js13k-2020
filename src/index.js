@@ -3,6 +3,7 @@ import './index.css'
 import './patches/addEventListener'
 import { canvas } from './render/canvas'
 import { createStringCanvas } from './render/font'
+import { Screen } from './structures/Screen'
 import * as maps from './maps/index'
 
 
@@ -13,6 +14,7 @@ import * as maps from './maps/index'
 const canvasElement = document.querySelector('canvas')
 const canvasHeight = canvasElement.height
 const canvasWidth = canvasElement.width
+const gameElement = document.querySelector('#game')
 const mainMenuElement = document.querySelector('#main')
 const mapSelectMenuElement = document.querySelector('#map-select')
 const render = canvas(canvasElement)
@@ -21,55 +23,130 @@ const render = canvas(canvasElement)
 
 
 
-// Local variables
-let frame = 0
+// screens
+const gameScreen = new Screen({
+	onShow () {
+		let frame = 0
+
+		const gameLoop = () => {
+			frame++
+
+			render.drawMap()
+			render.update()
+
+			requestAnimationFrame(gameLoop)
+		}
+
+		gameLoop()
+	},
+
+	selector: '#game',
+})
+
+const mapSelectScreen = new Screen({
+	onInit () {
+		const mapsList = this.node.querySelector('#maps')
+
+		const handleMapButtonClick = event => {
+			const { target: { value } } = event
+			render.map = value
+			gameScreen.show()
+		}
+
+		const createMapButton = mapName => {
+			const mapButton = document.createElement('button')
+			mapButton.setAttribute('type', 'button')
+			mapButton.setAttribute('value', mapName)
+			mapButton.on('click', handleMapButtonClick)
+
+			const mapNameCanvas = createStringCanvas(mapName)
+
+			mapButton.appendChild(mapNameCanvas)
+			mapsList.appendChild(mapButton)
+		}
+
+		this.store.mapNames().forEach(createMapButton)
+	},
+
+	selector: '#map-select',
+
+	store: {
+		mapNames: () => Object.keys(maps),
+	},
+})
+
+const mainMenuScreen = new Screen({
+	onInit () {
+		const startButtonElement = document.querySelector('#start')
+		startButtonElement.on('click', () => this.store.mapSelectScreen.show())
+	},
+
+	selector: '#main-menu',
+
+	store: {
+		mapSelectScreen,
+	},
+})
 
 
 
 
-
-const mapSelect = () => {
-	mainMenuElement.style.display = 'none'
-	mapSelectMenuElement.style.display = 'flex'
-}
-
-const gameLoop = () => {
-	frame++
-
-	render.drawMap()
-	render.update()
-
-	requestAnimationFrame(gameLoop)
-}
-
-const handleMapButtonClick = event => {
-	const { target: { value } } = event
-	render.map = value
-	mapSelectMenuElement.style.display = 'none'
-	canvasElement.style.display = 'flex'
-	gameLoop()
-}
-
-const createMapButton = mapName => {
-	const mapButton = document.createElement('button')
-	mapButton.setAttribute('type', 'button')
-	mapButton.setAttribute('value', mapName)
-	mapButton.on('click', handleMapButtonClick)
-	const mapNameCanvas = createStringCanvas(mapName, 2)
-	mapButton.appendChild(mapNameCanvas)
-	mapSelectMenuElement.appendChild(mapButton)
-}
 
 const initialize = () => {
-	mainMenuElement.style.display = 'flex'
-	const startButtonElement = document.querySelector('#start')
+	function renderStrings (root = document.documentElement) {
+		const treewalker = document.createTreeWalker(
+			root,
+			NodeFilter.SHOW_TEXT,
+			{
+				acceptNode: ({ data }) => {
+					if (Boolean(data.trim())) {
+						return NodeFilter.FILTER_ACCEPT
+					}
+				},
+			},
+			false
+		)
 
-	startButtonElement.on('click', mapSelect)
-	const startTextCanvas = createStringCanvas('start', 2)
-	startButtonElement.appendChild(startTextCanvas)
+		let nextNode = null
 
-	document.querySelector('#start').on('click', mapSelect)
-	Object.keys(maps).forEach(createMapButton)
+		while (nextNode = treewalker.nextNode()) {
+			const container = nextNode.parentNode
+			let fontFamily = 'awkward'
+
+			if ([].includes(container.nodeType)) {
+				fontFamily = 'thaleah'
+			}
+
+			const textCanvas = createStringCanvas(container.innerText, fontFamily)
+
+			container.style.fontSize = 0
+			container.appendChild(textCanvas)
+		}
+	}
+
+	const handleMutation = mutation => {
+		const {
+			addedNodes,
+			type,
+		} = mutation
+
+		if ((type === 'childList') && addedNodes.length) {
+			console.log({mutation})
+		}
+	}
+
+	const mutationObserver = new MutationObserver((mutations, observer) => {
+		mutations.forEach(handleMutation)
+	})
+
+	mutationObserver.observe(document.documentElement, {
+		childList: true,
+		subtree: true,
+	})
+
+	renderStrings()
+
+	mainMenuScreen.show()
 }
 
 initialize()

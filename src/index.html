@@ -1,13 +1,45 @@
 <!doctype html>
 <meta charset="utf-8">
-<canvas
-	id="render"
-	height="64"
-	width="64">
-</canvas>
 
-<div class="menu" id="main">
-	<button id="start"></button>
+<div
+	class="screen"
+	hidden
+	id="main-menu">
+	<div class="menu">
+		<button id="start">Start</button>
+		<button id="settings">Settings</button>
+	</div>
+
+	<div class="menu stretch">
+	</div>
 </div>
 
-<div class="menu" id="map-select"></div>
+<div
+	class="screen"
+	hidden
+	id="map-select">
+	<div class="menu">
+	</div>
+
+	<div class="menu stretch">
+		<ol id="maps"></ol>
+	</div>
+</div>
+
+<div
+	class="screen"
+	hidden
+	id="game">
+	<div class="menu"></div>
+
+	<div class="canvas-wrap">
+		<canvas
+			height="119"
+			width="116">
+		</canvas>
+	</div>
+
+	<div
+		class="menu"
+		id="play-info"></div>
+</div>

@@ -131,7 +131,7 @@ const initialize = () => {
 		} = mutation
 
 		if ((type === 'childList') && addedNodes.length) {
-			console.log({mutation})
+			addedNodes.forEach(node => renderStrings(node))
 		}
 	}
 

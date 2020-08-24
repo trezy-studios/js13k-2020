@@ -58,7 +58,7 @@ canvas:not(#render) {
 }
 
 #game canvas {
-	margin: -7px;
+	margin: 9px 3px;
 }
 
 *[hidden="true"] {

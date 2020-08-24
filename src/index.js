@@ -31,6 +31,7 @@ const gameScreen = new Screen({
 		const gameLoop = () => {
 			frame++
 
+			render.drawGrid()
 			render.drawMap()
 			render.update()
 

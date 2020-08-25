@@ -1,13 +1,166 @@
 <!doctype html>
 <meta charset="utf-8">
-<canvas
-	id="render"
-	height="64"
-	width="64">
-</canvas>
 
-<div class="menu" id="main">
-	<button id="start"></button>
+<div
+	class="screen"
+	hidden
+	id="main-menu">
+	<div class="frame dark">
+		<h2>Menu</h2>
+
+		<div class="bottom">
+			<button id="settings">Settings</button>
+			<button id="credits">Credits</button>
+			<button id="exit">Exit</button>
+		</div>
+	</div>
+
+	<div class="center frame dark stretch">
+		<div id="brand"></div>
+
+		<button
+			class="center go"
+			id="start">
+			New Game
+		</button>
+	</div>
 </div>
 
-<div class="menu" id="map-select"></div>
+<div
+	class="screen"
+	hidden
+	id="map-select">
+	<div class="frame dark">
+		<h2>Menu</h2>
+
+		<div class="bottom">
+			<button class="back">Back</button>
+		</div>
+	</div>
+
+	<div class="frame dark stretch">
+		<h1>Choose a Map</h1>
+
+		<ol id="maps"></ol>
+	</div>
+</div>
+
+<div
+	class="screen"
+	hidden
+	id="game">
+	<div class="frame dark">
+		<h1>
+			<div data-font="Thaleah">Level</div>
+			<div
+				class="pull-right"
+				data-font="Thaleah">
+				00
+			</div>
+		</h1>
+
+		<dl>
+			<dt>Score</dt>
+			<dd class="pull-right">123,456</dd>
+		</dl>
+
+		<div class="bottom">
+			<button
+				data-action="open:menu"
+				type="button">
+				Menu
+			</button>
+		</div>
+	</div>
+
+	<div
+		class="frame light"
+		id="canvas-wrap">
+		<canvas
+			height="97"
+			width="97">
+		</canvas>
+	</div>
+
+	<div
+		class="frame dark"
+		id="play-info">
+		<time data-font="Thaleah">
+			00:00
+		</time>
+	</div>
+</div>
+
+<div
+	class="screen"
+	hidden
+	id="settings-menu">
+	<div class="frame dark">
+		<h2>Menu</h2>
+
+		<button class="option">
+			Video
+		</button>
+
+		<button class="option">
+			Audio
+		</button>
+
+		<button class="option">
+			Controls
+		</button>
+
+		<button class="option">
+			Gameplay
+		</button>
+
+		<button class="option">
+			Credits
+		</button>
+
+		<div class="bottom">
+			<button
+				data-action="open:game"
+				class="resume">
+				Resume
+			</button>
+		</div>
+	</div>
+
+	<div class="frame dark stretch">
+		<h2>Video Settings</h2>
+
+		<input
+			id="autoscale"
+			hidden
+			type="checkbox">
+		<label
+			class="setting"
+			for="autoscale">
+			<div class="name">Autoscale</div>
+			<div class="value">Off</div>
+		</label>
+
+		<input
+			id="pixel-scale"
+			hidden
+			type="number">
+		<label
+			class="setting"
+			for="pixel-scale">
+			<div class="name">Pixel Scale</div>
+			<div class="value">5x</div>
+		</label>
+
+		<input
+			id="resolution"
+			hidden
+			type="text">
+		<label
+			class="setting"
+			for="resolution">
+			<div class="name">Resolution</div>
+			<div class="value">3840x2160</div>
+		</label>
+	</div>
+</div>

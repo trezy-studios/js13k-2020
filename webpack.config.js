@@ -42,7 +42,7 @@ module.exports = {
 			},
 
 			{
-				test: /\.css$/,
+				test: /\.s?css$/,
 				use: [
 					{
 						loader: MiniCSSExtractPlugin.loader,
@@ -51,6 +51,19 @@ module.exports = {
 						},
 					},
 					{ loader: 'css-loader' },
+					{ loader: 'sass-loader' },
+				],
+			},
+			{
+				test: /\.(gif|png|jpe?g|svg)$/i,
+				use: [
+					'file-loader',
+					{
+						loader: 'image-webpack-loader',
+						options: {
+							disable: true,
+						},
+					},
 				],
 			},
 		],

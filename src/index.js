@@ -35,6 +35,14 @@ const gameScreen = new Screen({
 			render.drawMap()
 			render.update()
 
+			const timerElement = this.node.querySelector('#play-info time')
+			const now = new Date
+			const timestamp = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`
+
+			if (timerElement.innerText.trim() !== timestamp) {
+				timerElement.innerHTML = timestamp
+			}
+
 			requestAnimationFrame(gameLoop)
 		}
 

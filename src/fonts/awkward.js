@@ -223,9 +223,16 @@ const coords = {
 		x: 144,
 	},
 
+	',': {
+		...baseCharacter,
+		h: 6,
+		w: 1,
+		x: 147,
+	},
+
 	' ': {
 		...baseCharacter,
-		x: 147,
+		x: 148,
 	},
 }
 

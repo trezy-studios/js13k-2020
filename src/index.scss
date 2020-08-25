@@ -57,7 +57,59 @@ canvas:not(#render) {
 	pointer-events: none;
 }
 
+dl {
+	margin: 0 2px 0;
+}
+
+dd {
+	margin: 2px 0 0;
+}
+
+dt {
+	margin-top: 4px;
+}
+
+h1, h2 {
+	margin: 2px;
+	padding: 4px 1px;
+	position: relative;
+
+	&::after,
+	&::before {
+		background-image: url('./assets/images/header-border.png');
+		background-repeat: no-repeat;
+		content: '';
+		display: block;
+		height: 2px;
+		left: 0;
+		pointer-events: none;
+		position: absolute;
+		right: 0;
+	}
+
+	&::after {
+		bottom: 0;
+		transform: rotate(180deg);
+	}
+
+	&::before {
+		top: 0;
+	}
+
+	div + div {
+		margin-top: 1px;
+	}
+}
+
+ol {
+	margin: 0;
+	padding : 0;
+}
+
 .frame {
+	display: flex;
+	flex-direction: column;
+	height: 119px;
 	padding: 4px;
 	position: relative;
 
@@ -65,7 +117,6 @@ canvas:not(#render) {
 		border: 7px solid transparent;
 		content: '';
 		display: block;
-		height: 105px;
 		border-image-repeat: repeat;
 		border-image-slice: 7;
 		bottom: 0;
@@ -84,6 +135,10 @@ canvas:not(#render) {
 		border-image-source: url('./assets/images/border.light.png');
 	}
 
+	.bottom {
+		margin-top: auto;
+	}
+
 	&.center {
 		align-items: center;
 		display: flex;
@@ -91,6 +146,10 @@ canvas:not(#render) {
 		justify-content: center;
 		text-align: center;
 	}
+}
+
+.pull-right {
+	text-align: right;
 }
 
 .stretch {
@@ -134,10 +193,10 @@ canvas:not(#render) {
 		100% 100%,
 		0 100%
 	);
-}
 
-#game canvas {
-	margin: 12px 6px 2px;
+	canvas {
+		margin: 12px 6px 2px;
+	}
 }
 
 *[hidden="true"] {

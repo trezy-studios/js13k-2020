@@ -112,7 +112,7 @@ const initialize = () => {
 
 		while (nextNode = treewalker.nextNode()) {
 			const container = nextNode.parentNode
-			let fontFamily = 'awkward'
+			let fontFamily = (container.getAttribute('data-font') || 'awkward').toLowerCase()
 
 			if (/^h\d$/iu.test(container.nodeName)) {
 				fontFamily = 'thaleah'

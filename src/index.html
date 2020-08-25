@@ -8,9 +8,11 @@
 	<div class="frame dark">
 		<h2>Menu</h2>
 
-		<button id="settings">Settings</button>
-		<button id="credits">Credits</button>
-		<button id="exit">Exit</button>
+		<div class="bottom">
+			<button id="settings">Settings</button>
+			<button id="credits">Credits</button>
+			<button id="exit">Exit</button>
+		</div>
 	</div>
 
 	<div class="center frame dark stretch">
@@ -20,7 +22,7 @@
 		<button
 			class="center go"
 			id="start">
-			Start
+			New Game
 		</button>
 	</div>
 </div>
@@ -30,9 +32,16 @@
 	hidden
 	id="map-select">
 	<div class="frame dark">
+		<h2>Menu</h2>
+
+		<div class="bottom">
+			<button id="exit">Back</button>
+		</div>
 	</div>
 
 	<div class="frame dark stretch">
+		<h1>Choose a Map</h1>
+
 		<ol id="maps"></ol>
 	</div>
 </div>
@@ -41,7 +50,27 @@
 	class="screen"
 	hidden
 	id="game">
-	<div class="frame dark"></div>
+	<div class="frame dark">
+		<h1>
+			<div data-font="Thaleah">Level</div>
+			<div
+				class="pull-right"
+				data-font="Thaleah">
+				00
+			</div>
+		</h1>
+
+		<dl>
+			<dt>Score</dt>
+			<dd class="pull-right">123,456</dd>
+		</dl>
+
+		<div class="bottom">
+			<button type="button">
+				Menu
+			</button>
+		</div>
+	</div>
 
 	<div
 		class="frame light"

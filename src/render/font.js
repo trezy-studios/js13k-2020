@@ -61,7 +61,7 @@ export const createStringCanvas = (string, fontFamily = 'awkward') => {
 	if (!state.loaded) {
 		fontImage.on('load', () => drawStringToCanvas(stringCoords, fontImage, context))
 	} else {
-		drawStringToCanvas(stringCoords, context)
+		drawStringToCanvas(stringCoords, fontImage, context)
 	}
 
 	return canvas

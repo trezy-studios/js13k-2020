@@ -114,7 +114,7 @@ const initialize = () => {
 			const container = nextNode.parentNode
 			let fontFamily = 'awkward'
 
-			if ([].includes(container.nodeType)) {
+			if (/^h\d$/iu.test(container.nodeName)) {
 				fontFamily = 'thaleah'
 			}
 

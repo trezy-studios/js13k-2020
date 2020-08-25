@@ -89,11 +89,15 @@ const mainMenuScreen = new Screen({
 
 const initialize = () => {
 	function renderStrings (root = document.documentElement) {
+		if (root.nodeType === 3) {
+			root = root.parentNode
+		}
+
 		const treewalker = document.createTreeWalker(
 			root,
 			NodeFilter.SHOW_TEXT,
 			{
-				acceptNode: ({ data }) => {
+				acceptNode ({ data }) {
 					if (Boolean(data.trim())) {
 						return NodeFilter.FILTER_ACCEPT
 					}

@@ -4,6 +4,7 @@ import './patches/addEventListener'
 import { canvas } from './render/canvas'
 import { createStringCanvas } from './render/font'
 import { Screen } from './structures/Screen'
+import { settings } from './helpers/settings'
 import * as maps from './maps/index'
 
 
@@ -24,7 +25,63 @@ const render = canvas(canvasElement)
 
 
 // screens
+const settingsScreen = new Screen({
+	onInit () {
+		const resumeButton = this.node.querySelector('[data-action="open:game"]')
+		resumeButton.on('click', () => gameScreen.show())
+
+		settings.on('change', ({ detail }) => {
+			const {
+				key,
+				value,
+			} = detail
+
+			const inputElement = this.node.querySelector(`[for="${key}"] .value`)
+
+			switch (typeof value) {
+				case 'boolean':
+					inputElement.innerHTML = value ? 'on' : 'off'
+					break
+
+				default:
+					inputElement.innerHTML = value
+			}
+		})
+
+		const inputs = this.node.querySelectorAll('input')
+		inputs.forEach(inputElement => {
+			inputElement.on('change', ({ target }) => {
+				const {
+					checked,
+					type,
+					value,
+				} = target
+
+				switch (type) {
+					case 'checkbox':
+						settings[target.id] = checked
+						break
+
+					case 'number':
+						settings[target.id] = value.replace(/[^/d]/gu, '')
+						break
+
+					default:
+						settings[target.id] = value
+				}
+			})
+		})
+	},
+
+	selector: '#settings-menu',
+})
+
 const gameScreen = new Screen({
+	onInit () {
+		const menuButton = this.node.querySelector('[data-action="open:menu"]')
+		menuButton.on('click', () => settingsScreen.show())
+	},
+
 	onShow () {
 		let frame = 0
 
@@ -84,7 +141,7 @@ const mapSelectScreen = new Screen({
 
 const mainMenuScreen = new Screen({
 	onInit () {
-		const startButtonElement = document.querySelector('#start')
+		const startButtonElement = this.node.querySelector('#start')
 		startButtonElement.on('click', () => mapSelectScreen.show())
 	},
 

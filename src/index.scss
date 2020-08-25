@@ -51,6 +51,25 @@ button {
 	&.go::before {
 		border-image-source: url('./assets/images/button.green.png');
 	}
+
+	&.option {
+		border-color: transparent;
+		border-style: solid;
+		border-width: 0;
+		border-bottom-width: 1px;
+		border-top-width: 1px;
+		padding: 1px 0;
+		transition: border-color 0.2s steps(2);
+
+		&.active,
+		&:hover {
+			border-color: #55415f;
+		}
+
+		&::before {
+			display: none;
+		}
+	}
 }
 
 canvas:not(#render) {
@@ -150,6 +169,15 @@ ol {
 
 .pull-right {
 	text-align: right;
+}
+
+.setting {
+	border-bottom: 1px solid #55415f;
+	cursor: pointer;
+	display: flex;
+	justify-content: space-between;
+	margin-top: 4px;
+	padding: 1px 2px;
 }
 
 .stretch {

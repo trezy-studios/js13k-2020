@@ -16,8 +16,7 @@
 	</div>
 
 	<div class="center frame dark stretch">
-		<div id="brand">
-		</div>
+		<div id="brand"></div>
 
 		<button
 			class="center go"
@@ -66,7 +65,9 @@
 		</dl>
 
 		<div class="bottom">
-			<button type="button">
+			<button
+				data-action="open:menu"
+				type="button">
 				Menu
 			</button>
 		</div>
@@ -87,5 +88,79 @@
 		<time data-font="Thaleah">
 			00:00
 		</time>
+	</div>
+</div>
+
+<div
+	class="screen"
+	hidden
+	id="settings-menu">
+	<div class="frame dark">
+		<h2>Menu</h2>
+
+		<button class="option">
+			Video
+		</button>
+
+		<button class="option">
+			Audio
+		</button>
+
+		<button class="option">
+			Controls
+		</button>
+
+		<button class="option">
+			Gameplay
+		</button>
+
+		<button class="option">
+			Credits
+		</button>
+
+		<div class="bottom">
+			<button
+				data-action="open:game"
+				class="resume">
+				Resume
+			</button>
+		</div>
+	</div>
+
+	<div class="frame dark stretch">
+		<h2>Video Settings</h2>
+
+		<input
+			id="autoscale"
+			hidden
+			type="checkbox">
+		<label
+			class="setting"
+			for="autoscale">
+			<div class="name">Autoscale</div>
+			<div class="value">Off</div>
+		</label>
+
+		<input
+			id="pixel-scale"
+			hidden
+			type="number">
+		<label
+			class="setting"
+			for="pixel-scale">
+			<div class="name">Pixel Scale</div>
+			<div class="value">5x</div>
+		</label>
+
+		<input
+			id="resolution"
+			hidden
+			type="text">
+		<label
+			class="setting"
+			for="resolution">
+			<div class="name">Resolution</div>
+			<div class="value">3840x2160</div>
+		</label>
 	</div>
 </div>

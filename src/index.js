@@ -66,27 +66,21 @@ const mapSelectScreen = new Screen({
 			mapsList.appendChild(mapButton)
 		}
 
-		this.store.mapNames().forEach(createMapButton)
+		this.node.querySelector('.back').addEventListener('click', () => mainMenuScreen.show())
+
+		Object.keys(maps).forEach(createMapButton)
 	},
 
 	selector: '#map-select',
-
-	store: {
-		mapNames: () => Object.keys(maps),
-	},
 })
 
 const mainMenuScreen = new Screen({
 	onInit () {
 		const startButtonElement = document.querySelector('#start')
-		startButtonElement.on('click', () => this.store.mapSelectScreen.show())
+		startButtonElement.on('click', () => mapSelectScreen.show())
 	},
 
 	selector: '#main-menu',
-
-	store: {
-		mapSelectScreen,
-	},
 })
 
 

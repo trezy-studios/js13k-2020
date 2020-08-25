@@ -8,12 +8,10 @@ export class Screen {
 			onInit,
 			onShow,
 			selector,
-			store = {},
 		} = options
 
 		this.node = document.querySelector(selector)
 		this.onShow = onShow
-		this.store = store
 
 		if (onInit) {
 			onInit.call(this)

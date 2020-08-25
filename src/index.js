@@ -1,5 +1,5 @@
 // Local imports
-import './index.css'
+import './index.scss'
 import './patches/addEventListener'
 import { canvas } from './render/canvas'
 import { createStringCanvas } from './render/font'

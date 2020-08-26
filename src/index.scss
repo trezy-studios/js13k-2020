@@ -97,11 +97,9 @@ button {
 	}
 }
 
-canvas {
-	&.text {
-		display: inline-block;
-		pointer-events: none;
-	}
+canvas.text {
+	display: inline-block;
+	pointer-events: none;
 }
 
 dl {
@@ -275,7 +273,6 @@ ol {
 	gap: 4px;
 	grid-template-columns: 54px 116px 54px;
 	height: 119px;
-	padding: 4px;
 }
 
 #brand {
@@ -312,7 +309,10 @@ ol {
 }
 
 #game-wrapper {
+	height: 127px;
+	padding: 4px;
 	transform-origin: 0 0;
+	width: 240px;
 }
 
 #play-info time {

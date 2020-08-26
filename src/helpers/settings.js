@@ -42,6 +42,7 @@ export const settings = new Proxy(settingsStore, {
 		settingsStore[key] = value
 		localStorage.setItem(`${localstoragePrefix}${key}`, value)
 
+		eventTarget.dispatchEvent(new CustomEvent(`change:${key}`, eventOptions))
 		eventTarget.dispatchEvent(new CustomEvent('change', eventOptions))
 
 		return true

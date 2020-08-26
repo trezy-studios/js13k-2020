@@ -50,23 +50,24 @@ const settingsScreen = new Screen({
 				case 'text':
 					inputElement.innerHTML = value
 			}
+		}
 
-			if (key === 'autoscale') {
-				const resolutionInputElement = this.node.querySelector('#resolution')
-				const resolutionValueElement = this.node.querySelector('[for="resolution"].value')
+		const handleAutoscaleChange = () => {
+			const resolutionInputElement = this.node.querySelector('#resolution')
+			const resolutionValueElement = this.node.querySelector('[for="resolution"].value')
 
-				if (value) {
-					resolutionInputElement.parentNode.classList.add('disabled')
-					resolutionInputElement.setAttribute('disabled', true)
-					resolutionValueElement.innerHTML = 'Autoscale'
-				} else {
-					resolutionInputElement.parentNode.classList.remove('disabled')
-					resolutionInputElement.removeAttribute('disabled')
-					resolutionValueElement.innerHTML = settings.resolution
-				}
+			if (settings.autoscale) {
+				resolutionInputElement.parentNode.classList.add('disabled')
+				resolutionInputElement.setAttribute('disabled', true)
+				resolutionValueElement.innerHTML = 'Autoscale'
+			} else {
+				resolutionInputElement.parentNode.classList.remove('disabled')
+				resolutionInputElement.removeAttribute('disabled')
+				resolutionValueElement.innerHTML = settings.resolution
 			}
 		}
 
+		settings.on('change:autoscale', handleAutoscaleChange)
 		settings.on('change', handleSettingsChange)
 
 		const options = this.node.querySelectorAll('.option')
@@ -258,6 +259,8 @@ const initialize = () => {
 		childList: true,
 		subtree: true,
 	})
+
+	settings.on('change:autoscale', () => updateGameScale())
 
 	updateGameScale()
 	renderStrings()

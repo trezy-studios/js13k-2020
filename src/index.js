@@ -5,6 +5,7 @@ import { canvas } from './render/canvas'
 import { createStringCanvas } from './render/font'
 import { Screen } from './structures/Screen'
 import { settings } from './helpers/settings'
+import { updateGameScale } from './helpers/updateGameScale'
 import * as maps from './maps/index'
 
 
@@ -16,6 +17,7 @@ const canvasElement = document.querySelector('canvas')
 const canvasHeight = canvasElement.height
 const canvasWidth = canvasElement.width
 const gameElement = document.querySelector('#game')
+const gameWrapperElement = document.querySelector('#game-wrapper')
 const mainMenuElement = document.querySelector('#main')
 const mapSelectMenuElement = document.querySelector('#map-select')
 const render = canvas(canvasElement)
@@ -257,8 +259,8 @@ const initialize = () => {
 		subtree: true,
 	})
 
+	updateGameScale()
 	renderStrings()
-
 	mainMenuScreen.show()
 }
 

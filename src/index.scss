@@ -1,10 +1,18 @@
+$black: #000;
+$green: #64b964;
+$grey: #646964;
+$purple: #55415f;
+$red: #d77355;
+$white: #dcf5ff;
+$yellow: #e6c86e;
+
 * {
 	box-sizing: border-box;
 }
 
 html, body {
-	background-color: #000;
-	color: #fff;
+	background-color: $black;
+	color: $white;
   height: 100vh;
 	image-rendering: pixelated;
   margin: 0;
@@ -183,7 +191,7 @@ ol {
 }
 
 .setting {
-	border-bottom: 1px solid #55415f;
+	border-bottom: 1px solid $purple;
 	cursor: pointer;
 	display: flex;
 	justify-content: space-between;

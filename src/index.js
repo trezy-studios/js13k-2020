@@ -50,14 +50,17 @@ const settingsScreen = new Screen({
 			}
 
 			if (key === 'autoscale') {
-				const resolutionElement = this.node.querySelector('#resolution')
+				const resolutionInputElement = this.node.querySelector('#resolution')
+				const resolutionValueElement = this.node.querySelector('[for="resolution"].value')
 
 				if (value) {
-					resolutionElement.parentNode.classList.add('disabled')
-					resolutionElement.setAttribute('disabled', true)
+					resolutionInputElement.parentNode.classList.add('disabled')
+					resolutionInputElement.setAttribute('disabled', true)
+					resolutionValueElement.innerHTML = 'Autoscale'
 				} else {
-					resolutionElement.parentNode.classList.remove('disabled')
-					resolutionElement.removeAttribute('disabled')
+					resolutionInputElement.parentNode.classList.remove('disabled')
+					resolutionInputElement.removeAttribute('disabled')
+					resolutionValueElement.innerHTML = settings.resolution
 				}
 			}
 		}

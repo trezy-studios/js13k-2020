@@ -98,23 +98,33 @@
 	<div class="frame dark">
 		<h2>Menu</h2>
 
-		<button class="option">
+		<button
+			class="option"
+			data-action="open:video-settings">
 			Video
 		</button>
 
-		<button class="option">
+		<button
+			class="option"
+			data-action="open:audio-settings">
 			Audio
 		</button>
 
-		<button class="option">
+		<button
+			class="option"
+			data-action="open:controls-settings">
 			Controls
 		</button>
 
-		<button class="option">
+		<button
+			class="option"
+			data-action="open:gameplay-settings">
 			Gameplay
 		</button>
 
-		<button class="option">
+		<button
+			class="option"
+			data-action="open:credits">
 			Credits
 		</button>
 
@@ -128,39 +138,184 @@
 	</div>
 
 	<div class="frame dark stretch">
-		<h2>Video Settings</h2>
+		<div id="video-settings">
+			<h2>Video Settings</h2>
 
-		<input
-			id="autoscale"
-			hidden
-			type="checkbox">
-		<label
-			class="setting"
-			for="autoscale">
-			<div class="name">Autoscale</div>
-			<div class="value">Off</div>
-		</label>
+			<input
+				id="autoscale"
+				hidden
+				type="checkbox">
+			<label
+				class="setting"
+				for="autoscale">
+				<div class="name">Autoscale</div>
+				<div class="value">Off</div>
+			</label>
 
-		<input
-			id="pixel-scale"
-			hidden
-			type="number">
-		<label
-			class="setting"
-			for="pixel-scale">
-			<div class="name">Pixel Scale</div>
-			<div class="value">5x</div>
-		</label>
+			<input
+				id="pixel-scale"
+				hidden
+				type="number">
+			<label
+				class="setting"
+				for="pixel-scale">
+				<div class="name">Pixel Scale</div>
+				<div class="value">5x</div>
+			</label>
 
-		<input
-			id="resolution"
+			<input
+				id="resolution"
+				hidden
+				type="text">
+			<label
+				class="setting"
+				for="resolution">
+				<div class="name">Resolution</div>
+				<div class="value">3840x2160</div>
+			</label>
+		</div>
+
+		<div
 			hidden
-			type="text">
-		<label
-			class="setting"
-			for="resolution">
-			<div class="name">Resolution</div>
-			<div class="value">3840x2160</div>
-		</label>
+			id="audio-settings">
+			<h2>Audio Settings</h2>
+
+			<input
+				id="autoscale"
+				hidden
+				type="checkbox">
+			<label
+				class="setting"
+				for="autoscale">
+				<div class="name">Autoscale</div>
+				<div class="value">Off</div>
+			</label>
+
+			<input
+				id="pixel-scale"
+				hidden
+				type="number">
+			<label
+				class="setting"
+				for="pixel-scale">
+				<div class="name">Pixel Scale</div>
+				<div class="value">5x</div>
+			</label>
+
+			<input
+				id="resolution"
+				hidden
+				type="text">
+			<label
+				class="setting"
+				for="resolution">
+				<div class="name">Resolution</div>
+				<div class="value">3840x2160</div>
+			</label>
+		</div>
+
+		<div
+			hidden
+			id="controls-settings">
+			<h2>Controls Settings</h2>
+
+			<input
+				id="autoscale"
+				hidden
+				type="checkbox">
+			<label
+				class="setting"
+				for="autoscale">
+				<div class="name">Autoscale</div>
+				<div class="value">Off</div>
+			</label>
+
+			<input
+				id="pixel-scale"
+				hidden
+				type="number">
+			<label
+				class="setting"
+				for="pixel-scale">
+				<div class="name">Pixel Scale</div>
+				<div class="value">5x</div>
+			</label>
+
+			<input
+				id="resolution"
+				hidden
+				type="text">
+			<label
+				class="setting"
+				for="resolution">
+				<div class="name">Resolution</div>
+				<div class="value">3840x2160</div>
+			</label>
+		</div>
+
+		<div
+			hidden
+			id="gameplay-settings">
+			<h2>Gameplay Settings</h2>
+
+			<input
+				id="autoscale"
+				hidden
+				type="checkbox">
+			<label
+				class="setting"
+				for="autoscale">
+				<div class="name">Autoscale</div>
+				<div class="value">Off</div>
+			</label>
+
+			<input
+				id="pixel-scale"
+				hidden
+				type="number">
+			<label
+				class="setting"
+				for="pixel-scale">
+				<div class="name">Pixel Scale</div>
+				<div class="value">5x</div>
+			</label>
+
+			<input
+				id="resolution"
+				hidden
+				type="text">
+			<label
+				class="setting"
+				for="resolution">
+				<div class="name">Resolution</div>
+				<div class="value">3840x2160</div>
+			</label>
+		</div>
+
+		<div
+			hidden
+			id="credits">
+			<h2>Credits</h2>
+
+			<dl>
+				<dt>Map and Character Art</dt>
+				<dd>Polyducks</dd>
+
+				<dt>User Interface Design</dt>
+				<dd>Trezy</dd>
+
+				<dt>User Experience Design</dt>
+				<dd>Trezy</dd>
+				<dd>Nitro</dd>
+
+				<dt>Software Engineering</dt>
+				<dd>Trezy</dd>
+				<dd>Nitro</dd>
+
+				<dt>Gameplay Testing</dt>
+
+				<dt>Music and Sound Effects</dt>
+			</dl>
+		</div>
 	</div>
 </div>

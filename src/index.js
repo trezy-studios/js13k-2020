@@ -48,6 +48,21 @@ const settingsScreen = new Screen({
 			}
 		})
 
+		const options = this.node.querySelectorAll('.option')
+		options.forEach(option => {
+			const [, target] = option.getAttribute('data-action').split(':')
+			const targetElement = this.node.querySelector(`#${target}`)
+			const menuElements = [...targetElement.parentNode.children]
+
+			option.on('click', () => {
+				options.forEach(otherOption => otherOption.classList.remove('active'))
+				option.classList.add('active')
+
+				menuElements.forEach(menuElement => menuElement.setAttribute('hidden', true))
+				targetElement.removeAttribute('hidden')
+			})
+		})
+
 		const inputs = this.node.querySelectorAll('input')
 		inputs.forEach(inputElement => {
 			inputElement.on('change', ({ target }) => {

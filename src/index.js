@@ -37,7 +37,7 @@ const settingsScreen = new Screen({
 			} = detail
 
 			const inputElement = this.node.querySelector(`#${key}`)
-			const valueElement = this.node.querySelector(`[for="${key}"] .value`)
+			const valueElement = this.node.querySelector(`[for="${key}"].value`)
 
 			switch (inputElement.type) {
 				case 'checkbox':

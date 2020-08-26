@@ -224,11 +224,19 @@ ol {
 
 .setting {
 	border-bottom: 1px solid $purple;
-	cursor: pointer;
 	display: flex;
 	justify-content: space-between;
 	margin-top: 4px;
 	padding: 1px 2px;
+
+	input[type=checkbox] {
+		height: 0;
+		width: 0;
+	}
+
+	.value {
+		cursor: pointer;
+	}
 }
 
 .stretch {
@@ -286,6 +294,18 @@ ol {
 	min-width: 42px;
 	padding: 4px;
 	text-align: center;
+}
+
+#settings-menu {
+	> :nth-child(2) {
+		> :focus-within > .setting {
+			opacity: 0.5;
+		}
+
+		.setting:focus-within {
+			opacity: 1;
+		}
+	}
 }
 
 *[hidden="true"] {

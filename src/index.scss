@@ -96,8 +96,11 @@ button {
 	}
 }
 
-canvas:not(#render) {
-	pointer-events: none;
+canvas {
+	&.text {
+		display: inline-block;
+		pointer-events: none;
+	}
 }
 
 dl {
@@ -233,11 +236,32 @@ ol {
 
 	input[type=checkbox] {
 		height: 0;
+		margin: 0;
 		width: 0;
+	}
+
+	.name {
+		align-items: center;
+		display: flex;
 	}
 
 	.value {
 		cursor: pointer;
+	}
+
+	&:focus-within .name {
+		&::before {
+			background-color: $yellow;
+			content: '';
+			display: block;
+			height: 2px;
+			margin-right: 1px;
+			width: 2px;
+		}
+	}
+
+	&.disabled {
+		opacity: 0.5;
 	}
 }
 

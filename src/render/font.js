@@ -53,6 +53,7 @@ export const createStringCanvas = (string, fontFamily = 'awkward') => {
 	const canvas = document.createElement('canvas')
 	const context = canvas.getContext('2d')
 
+	canvas.classList.add('text')
 	canvas.setAttribute('width', stringWidth)
 	canvas.setAttribute('height', stringHeight)
 

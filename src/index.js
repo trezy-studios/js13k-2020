@@ -48,6 +48,18 @@ const settingsScreen = new Screen({
 				case 'text':
 					inputElement.innerHTML = value
 			}
+
+			if (key === 'autoscale') {
+				const resolutionElement = this.node.querySelector('#resolution')
+
+				if (value) {
+					resolutionElement.parentNode.classList.add('disabled')
+					resolutionElement.setAttribute('disabled', true)
+				} else {
+					resolutionElement.parentNode.classList.remove('disabled')
+					resolutionElement.removeAttribute('disabled')
+				}
+			}
 		}
 
 		settings.on('change', handleSettingsChange)

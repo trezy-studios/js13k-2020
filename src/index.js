@@ -89,7 +89,6 @@ const gameScreen = new Screen({
 			frame++
 
 			render.drawGrid()
-			debugger;
 			render.drawMap(maps.test, 0, 0);
 			render.update()
 

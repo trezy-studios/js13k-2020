@@ -111,6 +111,12 @@ class Canvas {
     }
 
     drawMap(map, x, y) {
+        //is this still relevant?
+
+        // ctx.shadow.canvas.width = this.width * 7
+        // ctx.shadow.canvas.height = this.height * 9
+        // ctx.fitToScreen()
+
         map.render(this, x, y);
     }
 

@@ -2,8 +2,9 @@ import { tiles } from "../helpers/tiles";
 import { TILE_SIZE } from "../render/canvas";
 export class Map {
     constructor({ data, width, height }) {
-        this.original = data;
-        this.data = data;
+        const computed_data = BigInt(data).toString().padStart(width * height, '0').split('').map(num => +num)
+        this.original = computed_data;
+        this.data = computed_data;
         this.width = width;
         this.height = height;
     }
@@ -20,9 +21,6 @@ export class Map {
         return this.data[this.index(x, y)];
     }
     render(ctx, offset_x, offset_y) {
-        ctx.shadow.canvas.height = this.width * 7
-        ctx.shadow.canvas.width = this.height * 9
-        ctx.fitToScreen()
 
         this.data.forEach((type, index) => {
             const x = (index % this.width) * TILE_SIZE + offset_x

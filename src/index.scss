@@ -144,6 +144,33 @@ h1, h2 {
 	}
 }
 
+input {
+	&[type=range] {
+		appearance: none;
+		background-color: transparent;
+		outline: none;
+		width: 60px;
+
+		&::-webkit-slider-runnable-track {
+			background-color: $white;
+			height: 1px;
+		}
+
+		&::-webkit-slider-thumb {
+			appearance: none;
+			background-color: $white;
+			cursor: pointer;
+			height: 5px;
+			margin-top: -2px;
+			width: 2px;
+		}
+
+		&:focus::-webkit-slider-thumb {
+			background-color: $yellow;
+		}
+	}
+}
+
 ol {
 	margin: 0;
 	padding : 0;

@@ -1,15 +1,32 @@
+const localstoragePrefix = 'Trezy Studios::Not Found::'
+
+function getFromLocalStorage(key, defaultValue) {
+	const value = localStorage.getItem(`${localstoragePrefix}${key}`)
+
+	if (value) {
+		return JSON.parse(value)
+	}
+
+	return defaultValue
+}
+
 const defaultSettings = {
-	autoscale: true,
-	pixelScale: 5,
-	resolution: '3840x2160',
+	autoscale: getFromLocalStorage('autoscale', true),
+	enableMusic: getFromLocalStorage('enableMusic', true),
+	musicVolume: getFromLocalStorage('musicVolume', 50),
+	pixelScale: getFromLocalStorage('pixelScale', 5),
+	resolution: getFromLocalStorage('resolution', '3840x2160'),
+	soundFXVolume: getFromLocalStorage('soundFXVolume', 50),
 }
 
 const settingsStore = { ...defaultSettings }
 
-export const settings = new Proxy(new EventTarget, {
+const eventTarget = new EventTarget
+
+export const settings = new Proxy(settingsStore, {
 	get (object, key) {
 		if (key === 'on') {
-			return object.on.bind(object)
+			return eventTarget.on.bind(eventTarget)
 		}
 
 		return settingsStore[key]
@@ -24,8 +41,9 @@ export const settings = new Proxy(new EventTarget, {
 		}
 
 		settingsStore[key] = value
+		localStorage.setItem(`${localstoragePrefix}${key}`, value)
 
-		object.dispatchEvent(new CustomEvent('change', eventOptions))
+		eventTarget.dispatchEvent(new CustomEvent('change', eventOptions))
 
 		return true
 	},

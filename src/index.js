@@ -30,23 +30,27 @@ const settingsScreen = new Screen({
 		const resumeButton = this.node.querySelector('[data-action="open:game"]')
 		resumeButton.on('click', () => gameScreen.show())
 
-		settings.on('change', ({ detail }) => {
+		const handleSettingsChange = ({ detail }) => {
 			const {
 				key,
 				value,
 			} = detail
 
-			const inputElement = this.node.querySelector(`[for="${key}"] .value`)
+			const inputElement = this.node.querySelector(`#${key}`)
+			const valueElement = this.node.querySelector(`[for="${key}"] .value`)
 
-			switch (typeof value) {
-				case 'boolean':
-					inputElement.innerHTML = value ? 'on' : 'off'
+			switch (inputElement.type) {
+				case 'checkbox':
+					valueElement.innerHTML = value ? 'on' : 'off'
 					break
 
-				default:
+				case 'number':
+				case 'text':
 					inputElement.innerHTML = value
 			}
-		})
+		}
+
+		settings.on('change', handleSettingsChange)
 
 		const options = this.node.querySelectorAll('.option')
 		options.forEach(option => {
@@ -65,6 +69,8 @@ const settingsScreen = new Screen({
 
 		const inputs = this.node.querySelectorAll('input')
 		inputs.forEach(inputElement => {
+			const value = settings[inputElement.id]
+
 			inputElement.on('change', ({ target }) => {
 				const {
 					checked,
@@ -84,6 +90,19 @@ const settingsScreen = new Screen({
 					default:
 						settings[target.id] = value
 				}
+			})
+
+			if (typeof value === 'boolean') {
+				inputElement.checked = value
+			} else {
+				inputElement.value = value
+			}
+
+			handleSettingsChange({
+				detail: {
+					key: inputElement.id,
+					value,
+				},
 			})
 		})
 	},

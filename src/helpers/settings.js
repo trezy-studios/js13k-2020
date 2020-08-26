@@ -14,7 +14,6 @@ const defaultSettings = {
 	autoscale: getFromLocalStorage('autoscale', true),
 	enableMusic: getFromLocalStorage('enableMusic', true),
 	musicVolume: getFromLocalStorage('musicVolume', 50),
-	pixelScale: getFromLocalStorage('pixelScale', 5),
 	resolution: getFromLocalStorage('resolution', '3840x2160'),
 	soundFXVolume: getFromLocalStorage('soundFXVolume', 50),
 }

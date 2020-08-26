@@ -1,3 +1,4 @@
+import { tiles } from "../data/tiles";
 import { TILE_SIZE } from "../data/grid";
 export class Map {
     constructor({ data, width, height }) {

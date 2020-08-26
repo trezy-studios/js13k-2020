@@ -1,12 +1,5 @@
 // Local imports
-import { tileColors } from '../helpers/tiles';
 import * as maps from '../maps/index';
-
-
-
-
-// Local constants
-export const TILE_SIZE = 8
 
 
 

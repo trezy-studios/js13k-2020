@@ -1,5 +1,4 @@
-import { tiles } from "../helpers/tiles";
-import { TILE_SIZE } from "../render/canvas";
+import { TILE_SIZE } from "../data/grid";
 export class Map {
     constructor({ data, width, height }) {
         const computed_data = BigInt(data).toString().padStart(width * height, '0').split('').map(num => +num)
@@ -23,8 +22,8 @@ export class Map {
     render(ctx, offset_x, offset_y) {
 
         this.data.forEach((type, index) => {
-            const x = (index % this.width) * TILE_SIZE + offset_x
-            const y = Math.floor(index / this.width) * TILE_SIZE + offset_y
+            const x = (index % this.width) * TILE_SIZE.w + offset_x
+            const y = Math.floor(index / this.width) * TILE_SIZE.h + offset_y
             tiles[type](ctx, x, y);
         })
     }

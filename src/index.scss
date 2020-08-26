@@ -58,12 +58,23 @@ button {
 		border-width: 0;
 		border-bottom-width: 1px;
 		border-top-width: 1px;
+		margin-left: 2px;
+		margin-right: 2px;
+		min-width: auto;
+		outline: none;
 		padding: 1px 0;
-		transition: border-color 0.2s steps(2);
+		transition-property: border-color, margin-right;
+		transition-duration: 0.4s;
+		transition-timing-function: steps(4);
 
 		&.active,
 		&:hover {
 			border-color: #55415f;
+		}
+
+		&.active,
+		&:focus {
+			margin-right: -2px;
 		}
 
 		&::before {

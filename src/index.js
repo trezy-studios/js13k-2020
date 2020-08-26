@@ -26,7 +26,7 @@ const render = canvas(canvasElement)
 
 // screens
 const settingsScreen = new Screen({
-	onInit () {
+	onInit() {
 		const resumeButton = this.node.querySelector('[data-action="open:game"]')
 		resumeButton.on('click', () => gameScreen.show())
 
@@ -77,19 +77,20 @@ const settingsScreen = new Screen({
 })
 
 const gameScreen = new Screen({
-	onInit () {
+	onInit() {
 		const menuButton = this.node.querySelector('[data-action="open:menu"]')
 		menuButton.on('click', () => settingsScreen.show())
 	},
 
-	onShow () {
+	onShow() {
 		let frame = 0
 
 		const gameLoop = () => {
 			frame++
 
 			render.drawGrid()
-			render.drawMap()
+			debugger;
+			render.drawMap(maps.test, 0, 0);
 			render.update()
 
 			const timerElement = this.node.querySelector('#play-info time')
@@ -99,7 +100,6 @@ const gameScreen = new Screen({
 			if (timerElement.innerText.trim() !== timestamp) {
 				timerElement.innerHTML = timestamp
 			}
-
 			requestAnimationFrame(gameLoop)
 		}
 
@@ -110,7 +110,7 @@ const gameScreen = new Screen({
 })
 
 const mapSelectScreen = new Screen({
-	onInit () {
+	onInit() {
 		const mapsList = this.node.querySelector('#maps')
 
 		const handleMapButtonClick = event => {
@@ -140,7 +140,7 @@ const mapSelectScreen = new Screen({
 })
 
 const mainMenuScreen = new Screen({
-	onInit () {
+	onInit() {
 		const startButtonElement = this.node.querySelector('#start')
 		startButtonElement.on('click', () => mapSelectScreen.show())
 	},
@@ -153,7 +153,7 @@ const mainMenuScreen = new Screen({
 
 
 const initialize = () => {
-	function renderStrings (root = document.documentElement) {
+	function renderStrings(root = document.documentElement) {
 		if (root.nodeType === 3) {
 			root = root.parentNode
 		}
@@ -162,7 +162,7 @@ const initialize = () => {
 			root,
 			NodeFilter.SHOW_TEXT,
 			{
-				acceptNode ({ data }) {
+				acceptNode({ data }) {
 					if (Boolean(data.trim())) {
 						return NodeFilter.FILTER_ACCEPT
 					}

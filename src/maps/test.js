@@ -1,3 +1,4 @@
+import { Map } from "./map";
 const grid = [
   0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
   0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
@@ -16,12 +17,9 @@ const grid = [
   0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
   0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
 ]
-
-const columns = 12
-const rows = grid.length / columns
-
-export default {
-	grid,
-	columns,
-	rows,
-}
+const arr_to_bigstr = (arr) => `0x${BigInt(arr.join("")).toString(16)}`;
+const arr_from_bigint = (num, width, height) => num.toString().padStart(width * height, '0').split('').map(num => +num)
+export default new Map({
+  width: 12,
+  height: 16
+});

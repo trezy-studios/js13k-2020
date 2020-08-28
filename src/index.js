@@ -5,6 +5,7 @@ import { canvas } from './render/canvas'
 import { createStringCanvas } from './render/font'
 import { Screen } from './structures/Screen'
 import { settings } from './helpers/settings'
+import { updateGameScale } from './helpers/updateGameScale'
 import * as maps from './maps/index'
 
 
@@ -16,6 +17,7 @@ const canvasElement = document.querySelector('canvas')
 const canvasHeight = canvasElement.height
 const canvasWidth = canvasElement.width
 const gameElement = document.querySelector('#game')
+const gameWrapperElement = document.querySelector('#game-wrapper')
 const mainMenuElement = document.querySelector('#main')
 const mapSelectMenuElement = document.querySelector('#map-select')
 const render = canvas(canvasElement)
@@ -30,46 +32,148 @@ const settingsScreen = new Screen({
 		const resumeButton = this.node.querySelector('[data-action="open:game"]')
 		resumeButton.on('click', () => gameScreen.show())
 
-		settings.on('change', ({ detail }) => {
-			const {
-				key,
-				value,
-			} = detail
+		const handleAutoscaleChange = ({ detail }) => {
+			const resolutionInputElement = this.node.querySelector('#resolution')
+			// const resolutionValueElement = this.node.querySelector('[for="resolution"].value')
+			const resolutionOptionElements = this.node.querySelectorAll('[name="resolution"]')
 
-			const inputElement = this.node.querySelector(`[for="${key}"] .value`)
+			if (settings.autoscale) {
+				resolutionOptionElements.forEach(resolutionOptionElement => {
+					resolutionOptionElement.setAttribute('disabled', true)
+				})
+				// resolutionInputElement.parentNode.classList.add('disabled')
+				// resolutionInputElement.setAttribute('disabled', true)
+				// resolutionValueElement.innerHTML = 'Autoscale'
+				// settings.resolution = 'Autoscale'
+			} else {
+				resolutionOptionElements.forEach(resolutionOptionElement => {
+					resolutionOptionElement.removeAttribute('disabled')
+				})
+				// resolutionInputElement.parentNode.classList.remove('disabled')
+				// resolutionInputElement.removeAttribute('disabled')
+				// resolutionValueElement.innerHTML = settings.resolution
+				// settings.resolution = 'Autoscale'
+			}
+		}
 
-			switch (typeof value) {
-				case 'boolean':
-					inputElement.innerHTML = value ? 'on' : 'off'
-					break
+		settings.on('change:autoscale', handleAutoscaleChange)
 
-				default:
-					inputElement.innerHTML = value
+		const options = this.node.querySelectorAll('.option')
+		options.forEach(option => {
+			const [, target] = option.getAttribute('data-action').split(':')
+			const targetElement = this.node.querySelector(`#${target}`)
+			const menuElements = [...targetElement.parentNode.children]
+
+			option.on('click', () => {
+				options.forEach(otherOption => otherOption.classList.remove('active'))
+				option.classList.add('active')
+
+				menuElements.forEach(menuElement => menuElement.setAttribute('hidden', true))
+				targetElement.removeAttribute('hidden')
+			})
+		})
+
+		const resolutionsDropdownElement = this.node.querySelector('details')
+		const resolutionOptionsElement = this.node.querySelector('#resolution-options')
+		const resolutions = [
+			'640x480',
+			'1280x720',
+			'1920x1080',
+			'3840x2160',
+		]
+		const closeResolutionsDropdown = (refocus = false) => {
+			resolutionsDropdownElement.removeAttribute('open')
+
+			if (refocus) {
+				resolutionsDropdownElement.querySelector('summary').focus()
+			}
+		}
+		resolutions.forEach(resolution => {
+			const listItemElement = document.createElement('li')
+			const inputElement = document.createElement('input')
+			const labelElement = document.createElement('label')
+
+			inputElement.setAttribute('id', `r${resolution}`)
+			inputElement.setAttribute('name', 'resolution')
+			inputElement.setAttribute('type', 'radio')
+			inputElement.setAttribute('value', resolution)
+
+			// Managing focus is weird. When tabbing from one radio button to the
+			// next, there's a moment where there nothing is in focus. Also, clicking
+			// on a form element element causes the element to be unfocused for a
+			// second. Hence the tiny delay before closing the dropdown.
+			inputElement.on('blur', () => setTimeout(() => {
+				if (!resolutionsDropdownElement.contains(document.activeElement)) {
+					closeResolutionsDropdown()
+				}
+			}, 100))
+
+			inputElement.on('keydown', ({ code, target }) => {
+				if (code ==='Escape') {
+					closeResolutionsDropdown(true)
+				}
+			})
+
+			inputElement.on('keypress', ({ code, target }) => {
+				if (code === 'Enter') {
+					closeResolutionsDropdown(true)
+				}
+			})
+
+			if (settings.resolution === resolution) {
+				inputElement.setAttribute('checked', true)
+			}
+
+			labelElement.setAttribute('for', `r${resolution}`)
+			labelElement.innerHTML = resolution
+
+			listItemElement.appendChild(inputElement)
+			listItemElement.appendChild(labelElement)
+			resolutionOptionsElement.appendChild(listItemElement)
+		})
+
+		resolutionsDropdownElement.on('toggle', ({ target }) => {
+			if (target.open) {
+				resolutionOptionsElement.querySelector(':checked').focus()
 			}
 		})
 
 		const inputs = this.node.querySelectorAll('input')
 		inputs.forEach(inputElement => {
+			const {
+				name,
+				type,
+			} = inputElement
+
 			inputElement.on('change', ({ target }) => {
 				const {
 					checked,
-					type,
-					value,
 				} = target
 
 				switch (type) {
 					case 'checkbox':
-						settings[target.id] = checked
+						settings[name] = checked
 						break
 
 					case 'number':
-						settings[target.id] = value.replace(/[^/d]/gu, '')
+						settings[name] = target.value.replace(/[^/d]/gu, '')
 						break
 
 					default:
-						settings[target.id] = value
+						settings[name] = target.value
 				}
 			})
+
+			const settingsValue = settings[name]
+
+			if (typeof settingsValue === 'boolean') {
+				inputElement.checked = settingsValue
+			} else if (inputElement.type === 'radio') {
+				const targetElement = this.node.querySelector(`[name="${inputElement.name}"][value="${settingsValue}"]`)
+				targetElement.checked = true
+			} else {
+				inputElement.value = settingsValue
+			}
 		})
 	},
 
@@ -180,6 +284,12 @@ const initialize = () => {
 				fontFamily = 'thaleah'
 			}
 
+			const oldCanvas = container.querySelector('canvas')
+
+			if (oldCanvas) {
+				container.removeChild(oldCanvas)
+			}
+
 			const textCanvas = createStringCanvas(container.innerText, fontFamily)
 
 			container.style.fontSize = 0
@@ -207,8 +317,28 @@ const initialize = () => {
 		subtree: true,
 	})
 
-	renderStrings()
+	document.querySelectorAll('[data-bind]').forEach(boundElement => {
+		function update(targetElement, value) {
+			if (typeof value === 'boolean') {
+				targetElement.innerHTML = value ? 'On' : 'Off'
+			} else {
+				targetElement.innerHTML = value
+			}
+		}
 
+		const boundSetting = boundElement.getAttribute('data-bind')
+
+		settings.on(`change:${boundSetting}`, ({ detail }) => {
+			update(boundElement, detail.value)
+		})
+
+		update(boundElement, settings[boundSetting])
+	})
+
+	settings.on('change:autoscale', updateGameScale)
+
+	updateGameScale()
+	renderStrings()
 	mainMenuScreen.show()
 }
 

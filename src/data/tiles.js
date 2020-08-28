@@ -24,7 +24,6 @@ export const tiles = [
 		context.image(spritesheetImage, 0, 0, 8, 8, x, y - 1, 8, 8)
 	},
 	(context, x, y) => {
-		context.color("green", "green");
-		context.rect(x, y - 1, 8, 8);
+		context.image(spritesheetImage, 0, 8, 8, 8, x, y - 1, 8, 8)
 	},
 ]

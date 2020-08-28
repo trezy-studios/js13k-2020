@@ -4,7 +4,11 @@ function getFromLocalStorage(key, defaultValue) {
 	const value = localStorage.getItem(`${localstoragePrefix}${key}`)
 
 	if (value) {
-		return JSON.parse(value)
+		try {
+			return JSON.parse(value)
+		} catch (error) {
+			return value
+		}
 	}
 
 	return defaultValue

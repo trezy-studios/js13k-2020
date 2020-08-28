@@ -263,6 +263,12 @@ const initialize = () => {
 				fontFamily = 'thaleah'
 			}
 
+			const oldCanvas = container.querySelector('canvas')
+
+			if (oldCanvas) {
+				container.removeChild(oldCanvas)
+			}
+
 			const textCanvas = createStringCanvas(container.innerText, fontFamily)
 
 			container.style.fontSize = 0

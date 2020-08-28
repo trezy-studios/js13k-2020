@@ -32,43 +32,31 @@ const settingsScreen = new Screen({
 		const resumeButton = this.node.querySelector('[data-action="open:game"]')
 		resumeButton.on('click', () => gameScreen.show())
 
-		const handleSettingsChange = ({ detail }) => {
-			const {
-				key,
-				value,
-			} = detail
-
-			const inputElement = this.node.querySelector(`#${key}`)
-			const valueElement = this.node.querySelector(`[for="${key}"].value`)
-
-			switch (inputElement.type) {
-				case 'checkbox':
-					valueElement.innerHTML = value ? 'on' : 'off'
-					break
-
-				case 'number':
-				case 'text':
-					inputElement.innerHTML = value
-			}
-		}
-
-		const handleAutoscaleChange = () => {
+		const handleAutoscaleChange = ({ detail }) => {
 			const resolutionInputElement = this.node.querySelector('#resolution')
-			const resolutionValueElement = this.node.querySelector('[for="resolution"].value')
+			// const resolutionValueElement = this.node.querySelector('[for="resolution"].value')
+			const resolutionOptionElements = this.node.querySelectorAll('[name="resolution"]')
 
 			if (settings.autoscale) {
-				resolutionInputElement.parentNode.classList.add('disabled')
-				resolutionInputElement.setAttribute('disabled', true)
-				resolutionValueElement.innerHTML = 'Autoscale'
+				resolutionOptionElements.forEach(resolutionOptionElement => {
+					resolutionOptionElement.setAttribute('disabled', true)
+				})
+				// resolutionInputElement.parentNode.classList.add('disabled')
+				// resolutionInputElement.setAttribute('disabled', true)
+				// resolutionValueElement.innerHTML = 'Autoscale'
+				// settings.resolution = 'Autoscale'
 			} else {
-				resolutionInputElement.parentNode.classList.remove('disabled')
-				resolutionInputElement.removeAttribute('disabled')
-				resolutionValueElement.innerHTML = settings.resolution
+				resolutionOptionElements.forEach(resolutionOptionElement => {
+					resolutionOptionElement.removeAttribute('disabled')
+				})
+				// resolutionInputElement.parentNode.classList.remove('disabled')
+				// resolutionInputElement.removeAttribute('disabled')
+				// resolutionValueElement.innerHTML = settings.resolution
+				// settings.resolution = 'Autoscale'
 			}
 		}
 
 		settings.on('change:autoscale', handleAutoscaleChange)
-		settings.on('change', handleSettingsChange)
 
 		const options = this.node.querySelectorAll('.option')
 		options.forEach(option => {
@@ -85,53 +73,13 @@ const settingsScreen = new Screen({
 			})
 		})
 
-		const inputs = this.node.querySelectorAll('input')
-		inputs.forEach(inputElement => {
-			const value = settings[inputElement.id]
-
-			inputElement.on('change', ({ target }) => {
-				const {
-					checked,
-					type,
-					value,
-				} = target
-
-				switch (type) {
-					case 'checkbox':
-						settings[target.id] = checked
-						break
-
-					case 'number':
-						settings[target.id] = value.replace(/[^/d]/gu, '')
-						break
-
-					default:
-						settings[target.id] = value
-				}
-			})
-
-			if (typeof value === 'boolean') {
-				inputElement.checked = value
-			} else {
-				inputElement.value = value
-			}
-
-			handleSettingsChange({
-				detail: {
-					key: inputElement.id,
-					value,
-				},
-			})
-		})
-
-		const resolutionSetting = this.node.querySelector('#resolution')
+		const resolutionOptionsElement = this.node.querySelector('#resolution-options')
 		const resolutions = [
 			'640x480',
 			'1280x720',
 			'1920x1080',
 			'3840x2160',
 		]
-		const resolutionOptionsElement = resolutionSetting.querySelector('.value ol')
 		resolutions.forEach(resolution => {
 			const listItemElement = document.createElement('li')
 			const inputElement = document.createElement('input')
@@ -152,6 +100,44 @@ const settingsScreen = new Screen({
 			listItemElement.appendChild(inputElement)
 			listItemElement.appendChild(labelElement)
 			resolutionOptionsElement.appendChild(listItemElement)
+		})
+
+		const inputs = this.node.querySelectorAll('input')
+		inputs.forEach(inputElement => {
+			const {
+				name,
+				type,
+			} = inputElement
+
+			inputElement.on('change', ({ target }) => {
+				const {
+					checked,
+				} = target
+
+				switch (type) {
+					case 'checkbox':
+						settings[name] = checked
+						break
+
+					case 'number':
+						settings[name] = target.value.replace(/[^/d]/gu, '')
+						break
+
+					default:
+						settings[name] = target.value
+				}
+			})
+
+			const settingsValue = settings[name]
+
+			if (typeof settingsValue === 'boolean') {
+				inputElement.checked = settingsValue
+			} else if (inputElement.type === 'radio') {
+				const targetElement = this.node.querySelector(`[name="${inputElement.name}"][value="${settingsValue}"]`)
+				targetElement.checked = true
+			} else {
+				inputElement.value = settingsValue
+			}
 		})
 	},
 
@@ -296,8 +282,25 @@ const initialize = () => {
 		subtree: true,
 	})
 
-	settings.on('change:autoscale', () => updateGameScale())
-	settings.on('change:resolution', () => console.log('new resolution', settings.resolution))
+	document.querySelectorAll('[data-bind]').forEach(boundElement => {
+		function update(targetElement, value) {
+			if (typeof value === 'boolean') {
+				targetElement.innerHTML = value ? 'On' : 'Off'
+			} else {
+				targetElement.innerHTML = value
+			}
+		}
+
+		const boundSetting = boundElement.getAttribute('data-bind')
+
+		settings.on(`change:${boundSetting}`, ({ detail }) => {
+			update(boundElement, detail.value)
+		})
+
+		update(boundElement, settings[boundSetting])
+	})
+
+	settings.on('change:autoscale', updateGameScale)
 
 	updateGameScale()
 	renderStrings()

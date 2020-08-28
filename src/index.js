@@ -73,6 +73,7 @@ const settingsScreen = new Screen({
 			})
 		})
 
+		const resolutionsDropdownElement = this.node.querySelector('details')
 		const resolutionOptionsElement = this.node.querySelector('#resolution-options')
 		const resolutions = [
 			'640x480',
@@ -80,6 +81,13 @@ const settingsScreen = new Screen({
 			'1920x1080',
 			'3840x2160',
 		]
+		const closeResolutionsDropdown = (refocus = false) => {
+			resolutionsDropdownElement.removeAttribute('open')
+
+			if (refocus) {
+				resolutionsDropdownElement.querySelector('summary').focus()
+			}
+		}
 		resolutions.forEach(resolution => {
 			const listItemElement = document.createElement('li')
 			const inputElement = document.createElement('input')
@@ -89,6 +97,28 @@ const settingsScreen = new Screen({
 			inputElement.setAttribute('name', 'resolution')
 			inputElement.setAttribute('type', 'radio')
 			inputElement.setAttribute('value', resolution)
+
+			// Managing focus is weird. When tabbing from one radio button to the
+			// next, there's a moment where there nothing is in focus. Also, clicking
+			// on a form element element causes the element to be unfocused for a
+			// second. Hence the tiny delay before closing the dropdown.
+			inputElement.on('blur', () => setTimeout(() => {
+				if (!resolutionsDropdownElement.contains(document.activeElement)) {
+					closeResolutionsDropdown()
+				}
+			}, 100))
+
+			inputElement.on('keydown', ({ code, target }) => {
+				if (code ==='Escape') {
+					closeResolutionsDropdown(true)
+				}
+			})
+
+			inputElement.on('keypress', ({ code, target }) => {
+				if (code === 'Enter') {
+					closeResolutionsDropdown(true)
+				}
+			})
 
 			if (settings.resolution === resolution) {
 				inputElement.setAttribute('checked', true)
@@ -100,6 +130,12 @@ const settingsScreen = new Screen({
 			listItemElement.appendChild(inputElement)
 			listItemElement.appendChild(labelElement)
 			resolutionOptionsElement.appendChild(listItemElement)
+		})
+
+		resolutionsDropdownElement.on('toggle', ({ target }) => {
+			if (target.open) {
+				resolutionOptionsElement.querySelector(':checked').focus()
+			}
 		})
 
 		const inputs = this.node.querySelectorAll('input')

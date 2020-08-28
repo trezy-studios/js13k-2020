@@ -209,8 +209,9 @@ input {
 }
 
 ol {
+	list-style: none;
 	margin: 0;
-	padding : 0;
+	padding: 0;
 }
 
 .frame {
@@ -341,11 +342,16 @@ ol {
 	margin-top: 4px;
 	padding: 1px 2px;
 
-	input[type=checkbox] {
+	input[type=checkbox],
+	input[type=radio] {
 		height: 0;
 		margin: 0;
 		opacity: 0;
 		width: 0;
+	}
+
+	label {
+		display: inline-block;
 	}
 
 	.name {
@@ -355,6 +361,7 @@ ol {
 
 	.value {
 		cursor: pointer;
+		text-align: right;
 	}
 
 	&:focus-within .name {

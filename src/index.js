@@ -140,6 +140,11 @@ const settingsScreen = new Screen({
 			inputElement.setAttribute('id', `r${resolution}`)
 			inputElement.setAttribute('name', 'resolution')
 			inputElement.setAttribute('type', 'radio')
+			inputElement.setAttribute('value', resolution)
+
+			if (settings.resolution === resolution) {
+				inputElement.setAttribute('checked', true)
+			}
 
 			labelElement.setAttribute('for', `r${resolution}`)
 			labelElement.innerHTML = resolution
@@ -286,6 +291,7 @@ const initialize = () => {
 	})
 
 	settings.on('change:autoscale', () => updateGameScale())
+	settings.on('change:resolution', () => console.log('new resolution', settings.resolution))
 
 	updateGameScale()
 	renderStrings()

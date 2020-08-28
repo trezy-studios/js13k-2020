@@ -6,13 +6,21 @@ const MiniCSSExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const path = require('path')
-
+const xml = require("xml-js");
 
 
 
 
 const isProduction = process.env.npm_lifecycle_event === 'build'
+// function tsxloader(content) {
+// 	content;
+// };
 
+// tsxloader.pitch = function (remainingRequest, precedingRequest, data) {
+// 	return 'module.exports = require(' + JSON.stringify('-!' + remainingRequest) + ');';
+// };
+
+const arr_to_bigstr = (arr) => `0x${BigInt(arr.join("")).toString(16)}`;
 module.exports = {
 	devServer: {
 		contentBase: './dist',
@@ -33,6 +41,25 @@ module.exports = {
 
 	module: {
 		rules: [
+			{
+				test: /\.tmx$/,
+				exclude: /node_modules/,
+				use: [
+					{
+						loader: "url-loader",
+						options: {
+							generator: (content) => {
+								const xml_str = content.toString();
+								const json = JSON.parse(xml.xml2json(xml_str, {
+									"compact": true
+								}));
+								return arr_to_bigstr(json.map.layer.data._text.split(/,|\s/));
+							}
+						}
+					}
+					// require("./tmx-loader")
+				]
+			},
 			{
 				test: /\.m?js$/,
 				exclude: /node_modules/,
@@ -88,7 +115,7 @@ module.exports = {
 		new HTMLWebpackInlineSourcePlugin(HTMLWebpackPlugin),
 		new OptimizeCSSAssetsPlugin,
 		new MiniCSSExtractPlugin({
-      filename: '[name].css',
+			filename: '[name].css',
 		}),
 		new CopyWebpackPlugin({
 			patterns: [

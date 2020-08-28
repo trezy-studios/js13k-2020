@@ -1,15 +1,7 @@
 // Local imports
 import { settings } from '../helpers/settings'
-import { tileColors } from '../helpers/tileColors'
 import { updateGameScale } from '../helpers/updateGameScale'
 import * as maps from '../maps/index'
-
-
-
-
-
-// Local constants
-const TILE_SIZE = 8
 
 
 
@@ -33,14 +25,14 @@ class Canvas {
 		})
 	}
 
-	//queue an image to be drown to the current layer.
-	//image(img:HTMLImageElement|HTMLCanvasElement)
 	color(stroke = "black", fill = "black") {
 		this.queue[this.layer].push(["col", stroke, fill]);
 	}
 
-	image(img, x, y, w, h, opts = []) {
-		this.queue[this.layer].push(["drawImage", img, x, y, w, h, ...opts]);
+	//queue an image to be drawn to the current layer.
+	//image(img:HTMLImageElement|HTMLCanvasElement)
+	image(img, sx, sy, sw, sh, dx, dy, dw, dh, opts = []) {
+		this.queue[this.layer].push(["drawImage", img, sx, sy, sw, sh, dx, dy, dw, dh, ...opts]);
 	}
 
 	line(sx, sy, dx, dy, opts = []) {
@@ -68,7 +60,6 @@ class Canvas {
 		const ctx = this.shadow;
 		ctx.clearRect(0, 0, 0xffff, 0xffff);
 		const toRender = this.queue.flat();
-		// ctx.translate(-0.54, -0.54);
 		for (const task of toRender) {
 			const [call] = task;
 			switch (call) {
@@ -116,24 +107,8 @@ class Canvas {
 		}
 	}
 
-	drawMap() {
-		// const {
-		// 	grid,
-		// 	columns,
-		// 	rows,
-		// } = maps[this.map]
-
-		// this.shadow.canvas.height = rows * 7
-		// this.shadow.canvas.width = columns * 9
-		// this.fitToScreen()
-
-		// grid.forEach((type, index) => {
-		// 	const x = (index % columns) * TILE_SIZE
-		// 	const y = Math.floor(index / columns) * TILE_SIZE
-		// 	const tileColor = tileColors[type]
-		// 	this.color(tileColor, tileColor)
-		// 	this.rect(x, y, TILE_SIZE, TILE_SIZE)
-		// })
+	drawMap(map, x, y) {
+		map.render(this, x, y);
 	}
 }
 

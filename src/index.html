@@ -1,166 +1,271 @@
 <!doctype html>
 <meta charset="utf-8">
 
-<div
-	class="screen"
-	hidden
-	id="main-menu">
-	<div class="frame dark">
-		<h2>Menu</h2>
+<div id="game-wrapper">
+	<div
+		class="screen"
+		hidden
+		id="main-menu">
+		<div class="frame dark">
+			<h2>Menu</h2>
 
-		<div class="bottom">
-			<button id="settings">Settings</button>
-			<button id="credits">Credits</button>
-			<button id="exit">Exit</button>
-		</div>
-	</div>
-
-	<div class="center frame dark stretch">
-		<div id="brand"></div>
-
-		<button
-			class="center go"
-			id="start">
-			New Game
-		</button>
-	</div>
-</div>
-
-<div
-	class="screen"
-	hidden
-	id="map-select">
-	<div class="frame dark">
-		<h2>Menu</h2>
-
-		<div class="bottom">
-			<button class="back">Back</button>
-		</div>
-	</div>
-
-	<div class="frame dark stretch">
-		<h1>Choose a Map</h1>
-
-		<ol id="maps"></ol>
-	</div>
-</div>
-
-<div
-	class="screen"
-	hidden
-	id="game">
-	<div class="frame dark">
-		<h1>
-			<div data-font="Thaleah">Level</div>
-			<div
-				class="pull-right"
-				data-font="Thaleah">
-				00
+			<div class="bottom">
+				<button id="settings">Settings</button>
+				<button id="credits">Credits</button>
+				<button id="exit">Exit</button>
 			</div>
-		</h1>
+		</div>
 
-		<dl>
-			<dt>Score</dt>
-			<dd class="pull-right">123,456</dd>
-		</dl>
+		<div class="center frame dark stretch">
+			<div id="brand"></div>
 
-		<div class="bottom">
 			<button
-				data-action="open:menu"
-				type="button">
-				Menu
+				class="center go"
+				id="start">
+				New Game
 			</button>
 		</div>
 	</div>
 
 	<div
-		class="frame light"
-		id="canvas-wrap">
-		<canvas
-			height="97"
-			width="97">
-		</canvas>
-	</div>
+		class="screen"
+		hidden
+		id="map-select">
+		<div class="frame dark">
+			<h2>Menu</h2>
 
-	<div
-		class="frame dark"
-		id="play-info">
-		<time data-font="Thaleah">
-			00:00
-		</time>
-	</div>
-</div>
+			<div class="bottom">
+				<button class="back">Back</button>
+			</div>
+		</div>
 
-<div
-	class="screen"
-	hidden
-	id="settings-menu">
-	<div class="frame dark">
-		<h2>Menu</h2>
+		<div class="frame dark stretch">
+			<h1>Choose a Map</h1>
 
-		<button class="option">
-			Video
-		</button>
-
-		<button class="option">
-			Audio
-		</button>
-
-		<button class="option">
-			Controls
-		</button>
-
-		<button class="option">
-			Gameplay
-		</button>
-
-		<button class="option">
-			Credits
-		</button>
-
-		<div class="bottom">
-			<button
-				data-action="open:game"
-				class="resume">
-				Resume
-			</button>
+			<ol id="maps"></ol>
 		</div>
 	</div>
 
-	<div class="frame dark stretch">
-		<h2>Video Settings</h2>
+	<div
+		class="screen"
+		hidden
+		id="game">
+		<div class="frame dark">
+			<h1>
+				<div data-font="Thaleah">Level</div>
+				<div
+					class="pull-right"
+					data-font="Thaleah">
+					00
+				</div>
+			</h1>
 
-		<input
-			id="autoscale"
-			hidden
-			type="checkbox">
-		<label
-			class="setting"
-			for="autoscale">
-			<div class="name">Autoscale</div>
-			<div class="value">Off</div>
-		</label>
+			<dl>
+				<dt>Score</dt>
+				<dd class="pull-right">123,456</dd>
+			</dl>
 
-		<input
-			id="pixel-scale"
-			hidden
-			type="number">
-		<label
-			class="setting"
-			for="pixel-scale">
-			<div class="name">Pixel Scale</div>
-			<div class="value">5x</div>
-		</label>
+			<div class="bottom">
+				<button
+					data-action="open:menu"
+					type="button">
+					Menu
+				</button>
+			</div>
+		</div>
 
-		<input
-			id="resolution"
-			hidden
-			type="text">
-		<label
-			class="setting"
-			for="resolution">
-			<div class="name">Resolution</div>
-			<div class="value">3840x2160</div>
-		</label>
+		<div
+			class="frame light"
+			id="canvas-wrap">
+			<canvas
+				height="97"
+				width="97">
+			</canvas>
+		</div>
+
+		<div
+			class="frame dark"
+			id="play-info">
+			<time data-font="Thaleah">
+				00:00
+			</time>
+		</div>
+	</div>
+
+	<div
+		class="screen"
+		hidden
+		id="settings-menu">
+		<div class="frame dark">
+			<h2>Menu</h2>
+
+			<button
+				class="option"
+				data-action="open:video-settings">
+				Video
+			</button>
+
+			<button
+				class="option"
+				data-action="open:audio-settings">
+				Audio
+			</button>
+
+			<button
+				class="option"
+				data-action="open:controls-settings">
+				Controls
+			</button>
+
+			<button
+				class="option"
+				data-action="open:gameplay-settings">
+				Gameplay
+			</button>
+
+			<button
+				class="option"
+				data-action="open:credits">
+				Credits
+			</button>
+
+			<div class="bottom">
+				<button
+					data-action="open:game"
+					class="resume">
+					Resume
+				</button>
+			</div>
+		</div>
+
+		<div class="frame dark stretch">
+			<div id="video-settings">
+				<h2>Video Settings</h2>
+
+				<div class="setting">
+					<label
+						class="name"
+						for="autoscale">
+						Autoscale
+					</label>
+
+					<input
+						id="autoscale"
+						type="checkbox">
+					<label
+						class="value"
+						for="autoscale">
+						Off
+					</label>
+				</div>
+
+				<div class="setting">
+					<label
+						class="name"
+						for="resolution">
+						Resolution
+					</label>
+
+					<input
+						id="resolution"
+						hidden>
+					<label
+						class="value"
+						for="resolution">
+						3840x2160
+					</label>
+				</div>
+			</div>
+
+			<div
+				hidden
+				id="audio-settings">
+				<h2>Audio Settings</h2>
+
+				<div class="setting">
+					<label
+						class="name"
+						for="enableMusic">
+						Enable Music
+					</label>
+
+					<input
+						id="enableMusic"
+						type="checkbox">
+					<label
+						class="value"
+						for="enableMusic">
+						On
+					</label>
+				</div>
+
+				<div class="setting">
+					<label
+						class="name"
+						for="musicVolume">
+						Music Volume
+					</label>
+
+					<div
+						class="value">
+						<input
+							id="musicVolume"
+							type="range">
+					</div>
+				</div>
+
+				<div class="setting">
+					<label
+						class="name"
+						for="soundFXVolume">
+						Sound FX Volume
+					</label>
+
+					<div class="value">
+						<input
+							id="soundFXVolume"
+							type="range">
+					</div>
+				</div>
+			</div>
+
+			<div
+				hidden
+				id="controls-settings">
+				<h2>Controls Settings</h2>
+			</div>
+
+			<div
+				hidden
+				id="gameplay-settings">
+				<h2>Gameplay Settings</h2>
+			</div>
+
+			<div
+				hidden
+				id="credits">
+				<h2>Credits</h2>
+
+				<dl>
+					<dt>Map and Character Art</dt>
+					<dd>Polyducks</dd>
+
+					<dt>User Interface Design</dt>
+					<dd>Trezy</dd>
+
+					<dt>User Experience Design</dt>
+					<dd>Trezy</dd>
+					<dd>Nitro</dd>
+
+					<dt>Software Engineering</dt>
+					<dd>Trezy</dd>
+					<dd>Nitro</dd>
+
+					<dt>Gameplay Testing</dt>
+
+					<dt>Music and Sound Effects</dt>
+				</dl>
+			</div>
+		</div>
 	</div>
 </div>

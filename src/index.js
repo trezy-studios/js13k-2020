@@ -5,6 +5,7 @@ import { canvas } from './render/canvas'
 import { createStringCanvas } from './render/font'
 import { Screen } from './structures/Screen'
 import { settings } from './helpers/settings'
+import { updateGameScale } from './helpers/updateGameScale'
 import * as maps from './maps/index'
 
 
@@ -16,6 +17,7 @@ const canvasElement = document.querySelector('canvas')
 const canvasHeight = canvasElement.height
 const canvasWidth = canvasElement.width
 const gameElement = document.querySelector('#game')
+const gameWrapperElement = document.querySelector('#game-wrapper')
 const mainMenuElement = document.querySelector('#main')
 const mapSelectMenuElement = document.querySelector('#map-select')
 const render = canvas(canvasElement)
@@ -30,26 +32,63 @@ const settingsScreen = new Screen({
 		const resumeButton = this.node.querySelector('[data-action="open:game"]')
 		resumeButton.on('click', () => gameScreen.show())
 
-		settings.on('change', ({ detail }) => {
+		const handleSettingsChange = ({ detail }) => {
 			const {
 				key,
 				value,
 			} = detail
 
-			const inputElement = this.node.querySelector(`[for="${key}"] .value`)
+			const inputElement = this.node.querySelector(`#${key}`)
+			const valueElement = this.node.querySelector(`[for="${key}"].value`)
 
-			switch (typeof value) {
-				case 'boolean':
-					inputElement.innerHTML = value ? 'on' : 'off'
+			switch (inputElement.type) {
+				case 'checkbox':
+					valueElement.innerHTML = value ? 'on' : 'off'
 					break
 
-				default:
+				case 'number':
+				case 'text':
 					inputElement.innerHTML = value
 			}
+		}
+
+		const handleAutoscaleChange = () => {
+			const resolutionInputElement = this.node.querySelector('#resolution')
+			const resolutionValueElement = this.node.querySelector('[for="resolution"].value')
+
+			if (settings.autoscale) {
+				resolutionInputElement.parentNode.classList.add('disabled')
+				resolutionInputElement.setAttribute('disabled', true)
+				resolutionValueElement.innerHTML = 'Autoscale'
+			} else {
+				resolutionInputElement.parentNode.classList.remove('disabled')
+				resolutionInputElement.removeAttribute('disabled')
+				resolutionValueElement.innerHTML = settings.resolution
+			}
+		}
+
+		settings.on('change:autoscale', handleAutoscaleChange)
+		settings.on('change', handleSettingsChange)
+
+		const options = this.node.querySelectorAll('.option')
+		options.forEach(option => {
+			const [, target] = option.getAttribute('data-action').split(':')
+			const targetElement = this.node.querySelector(`#${target}`)
+			const menuElements = [...targetElement.parentNode.children]
+
+			option.on('click', () => {
+				options.forEach(otherOption => otherOption.classList.remove('active'))
+				option.classList.add('active')
+
+				menuElements.forEach(menuElement => menuElement.setAttribute('hidden', true))
+				targetElement.removeAttribute('hidden')
+			})
 		})
 
 		const inputs = this.node.querySelectorAll('input')
 		inputs.forEach(inputElement => {
+			const value = settings[inputElement.id]
+
 			inputElement.on('change', ({ target }) => {
 				const {
 					checked,
@@ -69,6 +108,19 @@ const settingsScreen = new Screen({
 					default:
 						settings[target.id] = value
 				}
+			})
+
+			if (typeof value === 'boolean') {
+				inputElement.checked = value
+			} else {
+				inputElement.value = value
+			}
+
+			handleSettingsChange({
+				detail: {
+					key: inputElement.id,
+					value,
+				},
 			})
 		})
 	},
@@ -208,8 +260,10 @@ const initialize = () => {
 		subtree: true,
 	})
 
-	renderStrings()
+	settings.on('change:autoscale', () => updateGameScale())
 
+	updateGameScale()
+	renderStrings()
 	mainMenuScreen.show()
 }
 

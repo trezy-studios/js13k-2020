@@ -36,12 +36,16 @@ export const createStringCanvas = (string, fontFamily = 'awkward') => {
 		stringCoords,
 		stringHeight,
 		stringWidth,
-	} = normalizedString.split('').reduce((accumulator, character) => {
+	} = normalizedString.split('').reduce((accumulator, character, index) => {
 		const characterCoords = coords[character]
 
 		accumulator.stringCoords.push(characterCoords)
 		accumulator.stringHeight = Math.max(accumulator.stringHeight, characterCoords.h)
-		accumulator.stringWidth += characterCoords.w + 1
+		accumulator.stringWidth += characterCoords.w
+
+		if (index !== normalizedString.length - 1) {
+			accumulator.stringWidth += 1
+		}
 
 		return accumulator
 	}, {

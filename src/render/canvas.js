@@ -26,8 +26,8 @@ class Canvas {
         this.queue[this.layer].push(["col", stroke, fill]);
     }
 
-    image(img, x, y, w, h, opts = []) {
-        this.queue[this.layer].push(["drawImage", img, x, y, w, h, ...opts]);
+    image(img, sx, sy, sw, sh, dx, dy, dw, dh, opts = []) {
+        this.queue[this.layer].push(["drawImage", img, sx, sy, sw, sh, dx, dy, dw, dh, ...opts]);
     }
 
     line(sx, sy, dx, dy, opts = []) {

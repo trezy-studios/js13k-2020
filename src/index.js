@@ -123,6 +123,31 @@ const settingsScreen = new Screen({
 				},
 			})
 		})
+
+		const resolutionSetting = this.node.querySelector('#resolution')
+		const resolutions = [
+			'640x480',
+			'1280x720',
+			'1920x1080',
+			'3840x2160',
+		]
+		const resolutionOptionsElement = resolutionSetting.querySelector('.value ol')
+		resolutions.forEach(resolution => {
+			const listItemElement = document.createElement('li')
+			const inputElement = document.createElement('input')
+			const labelElement = document.createElement('label')
+
+			inputElement.setAttribute('id', `r${resolution}`)
+			inputElement.setAttribute('name', 'resolution')
+			inputElement.setAttribute('type', 'radio')
+
+			labelElement.setAttribute('for', `r${resolution}`)
+			labelElement.innerHTML = resolution
+
+			listItemElement.appendChild(inputElement)
+			listItemElement.appendChild(labelElement)
+			resolutionOptionsElement.appendChild(listItemElement)
+		})
 	},
 
 	selector: '#settings-menu',

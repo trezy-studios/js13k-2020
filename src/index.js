@@ -6,6 +6,7 @@ import { Controller } from './structures/Controller'
 import { createStringCanvas } from './render/font'
 import { Screen } from './structures/Screen'
 import { settings } from './helpers/settings'
+import { state } from './data/state'
 import { updateGameScale } from './helpers/updateGameScale'
 import * as maps from './maps/index'
 
@@ -197,7 +198,7 @@ const gameScreen = new Screen({
 			frame++
 
 			render.drawGrid()
-			render.drawMap(maps.test, 0, 0);
+			render.drawMap(state.map, 0, 0);
 			render.drawPlacement()
 			render.update()
 
@@ -223,7 +224,7 @@ const mapSelectScreen = new Screen({
 
 		const handleMapButtonClick = event => {
 			const { target: { value } } = event
-			render.map = value
+			state.map = value
 			gameScreen.show()
 		}
 

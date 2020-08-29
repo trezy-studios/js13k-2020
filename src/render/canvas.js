@@ -25,7 +25,6 @@ function ctx2d(el) {
 
 class Canvas {
 	constructor(el) {
-		this.map = null
 		this.target = ctx2d(el);
 		this.shadow = ctx2d(el.cloneNode());
 		this.queue = [[], [], []];

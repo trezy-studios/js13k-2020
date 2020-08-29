@@ -184,6 +184,10 @@ const settingsScreen = new Screen({
 })
 
 const gameScreen = new Screen({
+	onHide() {
+		controller.stop()
+	},
+
 	onInit() {
 		const menuButton = this.node.querySelector('[data-action="open:menu"]')
 		menuButton.on('click', () => settingsScreen.show())

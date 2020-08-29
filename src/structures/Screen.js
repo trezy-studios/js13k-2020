@@ -7,6 +7,7 @@ export class Screen {
 
 	constructor (options) {
 		const {
+			onHide,
 			onInit,
 			onShow,
 			selector,
@@ -15,6 +16,7 @@ export class Screen {
 		screens.push(this)
 
 		this.node = document.querySelector(selector)
+		this.onHide = onHide
 		this.onShow = onShow
 
 		if (onInit) {
@@ -24,6 +26,10 @@ export class Screen {
 
 	hide () {
 		this.node.setAttribute('hidden', 'true')
+
+		if (this.onHide) {
+			this.onHide()
+		}
 	}
 
 	show () {

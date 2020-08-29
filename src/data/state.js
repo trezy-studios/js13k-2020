@@ -36,13 +36,13 @@ export const state = new Proxy(stateObject, {
 
 		switch (key) {
 			case 'placeX':
-				if ((value >= 0) && (value <= (TILE_SIZE.w * (GRID_SIZE.w - h)))) {
+				if ((value >= 0) && (value <= (GRID_SIZE.w - h))) {
 					target[key] = value
 				}
 				break
 
 			case 'placeY':
-				if ((value >= 0) && (value <= (TILE_SIZE.h * (GRID_SIZE.h - w)))) {
+				if ((value >= 0) && (value <= (GRID_SIZE.h - w))) {
 					target[key] = value
 				}
 				break

@@ -1,10 +1,6 @@
 // Local imports
 import { decodeTile } from '../helpers/decodeTile'
 import { state } from '../data/state'
-import {
-	GRID_SIZE,
-	TILE_SIZE,
-} from '../data/grid'
 
 
 
@@ -18,19 +14,19 @@ export class Controller {
 			if (this.enabled) {
 				switch (code) {
 					case 'ArrowDown':
-						state.placeY += TILE_SIZE.h
+						state.placeY += 1
 						break
 
 					case 'ArrowLeft':
-						state.placeX -= TILE_SIZE.w
+						state.placeX -= 1
 						break
 
 					case 'ArrowRight':
-						state.placeX += TILE_SIZE.w
+						state.placeX += 1
 						break
 
 					case 'ArrowUp':
-						state.placeY -= TILE_SIZE.h
+						state.placeY -= 1
 						break
 
 					case 'Enter':
@@ -55,8 +51,8 @@ export class Controller {
 		tile.grid.forEach((rowTiles, rowIndex) => {
 			rowTiles.forEach((type, columnIndex) => {
 				if (type) {
-					const x = columnIndex + (placeX / TILE_SIZE.w)
-					const y = rowIndex + (placeY / TILE_SIZE.h)
+					const x = columnIndex + placeX
+					const y = rowIndex + placeY
 					map.update(type, x, y)
 				}
 			})

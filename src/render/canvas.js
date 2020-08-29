@@ -145,8 +145,8 @@ class Canvas {
 				return
 			}
 
-			const x = (column * TILE_SIZE.w) + state.placeX
-			const y = (row * TILE_SIZE.h) + state.placeY
+			const x = (column + state.placeX) * TILE_SIZE.w
+			const y = (row + state.placeY) * TILE_SIZE.h
 
 			tiles[type](this, x, y - 1, true)
 

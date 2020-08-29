@@ -1,7 +1,19 @@
 // Local imports
 import { settings } from '../helpers/settings'
+import { state } from '../data/state'
+import { TILE_SIZE } from '../data/grid'
+import { tiles } from '../data/tiles'
 import { updateGameScale } from '../helpers/updateGameScale'
-import * as maps from '../maps/index'
+
+
+
+
+
+// Local constants
+const canvasOffset = {
+	x: 0,
+	y: 7,
+}
 
 
 
@@ -23,6 +35,10 @@ class Canvas {
 				updateGameScale()
 			}
 		})
+	}
+
+	alpha(alpha) {
+		this.queue[this.layer].push(["a", alpha])
 	}
 
 	color(stroke = "black", fill = "black") {
@@ -57,27 +73,32 @@ class Canvas {
 	//no params, push all updates to screen.
 	update() {
 		//clear the canvas
-		const ctx = this.shadow;
-		ctx.clearRect(0, 0, 0xffff, 0xffff);
-		const toRender = this.queue.flat();
+		const toRender = this.queue.flat()
+		const context = this.shadow
+		context.clearRect(0, 0, 0xffff, 0xffff)
+		context.translate(canvasOffset.x, canvasOffset.y)
+
 		for (const task of toRender) {
-			const [call] = task;
+			const [call] = task
 			switch (call) {
+				case "a":
+					[, context.globalAlpha] = task
+					break
 				case "col":
-					[, ctx.strokeStyle, ctx.fillStyle] = task;
-					break;
+					[, context.strokeStyle, context.fillStyle] = task
+					break
 				case "lineWidth":
-					[, ctx.lineWidth] = task;
-					break;
+					[, context.lineWidth] = task
+					break
 				default:
-					const [, ...args] = task;
-					ctx[call](...args);
-					break;
+					const [, ...args] = task
+					context[call](...args)
+					break
 			}
 		}
-		// ctx.setTransform(1, 0, 0, 1, 0, 0);
-		this.refresh();
-		this.queue = [[], [], []];
+		context.setTransform(1, 0, 0, 1, 0, 0)
+		this.refresh()
+		this.queue = [[], [], []]
 	}
 
 	refresh() {
@@ -109,6 +130,26 @@ class Canvas {
 
 	drawMap(map, x, y) {
 		map.render(this, x, y);
+	}
+
+	drawPlacement() {
+		let column = 0
+		let row = 0
+
+		state.currentTile.split('').forEach((type, index) => {
+			if (type === '\n') {
+				column = 0
+				row += 1
+				return
+			}
+
+			const x = (column * TILE_SIZE.w) + state.placeX
+			const y = (row * TILE_SIZE.h) + state.placeY
+
+			tiles[type](this, x, y - 1, true)
+
+			column += 1
+		})
 	}
 }
 

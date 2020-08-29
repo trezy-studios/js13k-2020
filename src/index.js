@@ -194,6 +194,7 @@ const gameScreen = new Screen({
 
 			render.drawGrid()
 			render.drawMap(maps.test, 0, 0);
+			render.drawPlacement()
 			render.update()
 
 			const timerElement = this.node.querySelector('#play-info time')

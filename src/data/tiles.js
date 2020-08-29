@@ -7,7 +7,7 @@ import { spritesheetImage } from '../helpers/spritesheet'
 
 export const tiles = [
 	// Empty
-	() => { },
+	() => {},
 
 	// Normal tile
 	(context, x, y, placing = false) => {

@@ -15,18 +15,23 @@ export class Map {
 		this.original = computed_data
 		this.data = computed_data
 	}
+
 	index(x, y) {
 		return y * GRID_SIZE.w + x
 	}
+
 	reset() {
 		this.data = this.original
 	}
+
 	update(tile, x, y) {
 		this.data[this.index(x, y)] = tile
 	}
+
 	at(x, y) {
 		return this.data[this.index(x, y)]
 	}
+
 	render(ctx, offset_x, offset_y) {
 		this.data.forEach((type, index) => {
 			if (tiles[type]) {

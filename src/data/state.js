@@ -3,6 +3,7 @@ import {
 	GRID_SIZE,
 	TILE_SIZE,
 } from './grid'
+import { decodeTile } from '../helpers/decodeTile'
 import * as maps from '../maps'
 
 
@@ -18,25 +19,30 @@ const stateObject = {
 
 export const state = new Proxy(stateObject, {
 	set (target, key, value) {
+		if (key === 'currentTile') {
+			target[key] = decodeTile(value)
+			return true
+		}
+
 		if (key === 'map') {
 			target[key] = maps[value]
 			return true
 		}
 
 		const {
-			columns = 2,
-			rows = 3,
+			w = 2,
+			h = 3,
 		} = target.currentTile
 
 		switch (key) {
 			case 'placeX':
-				if ((value >= 0) && (value <= (TILE_SIZE.w * (GRID_SIZE.w - rows)))) {
+				if ((value >= 0) && (value <= (TILE_SIZE.w * (GRID_SIZE.w - h)))) {
 					target[key] = value
 				}
 				break
 
 			case 'placeY':
-				if ((value >= 0) && (value <= (TILE_SIZE.h * (GRID_SIZE.h - columns)))) {
+				if ((value >= 0) && (value <= (TILE_SIZE.h * (GRID_SIZE.h - w)))) {
 					target[key] = value
 				}
 				break

@@ -1,7 +1,10 @@
 // Local imports
+import {
+	GRID_SIZE,
+	TILE_SIZE,
+} from '../data/grid'
 import { settings } from '../helpers/settings'
 import { state } from '../data/state'
-import { TILE_SIZE } from '../data/grid'
 import { tiles } from '../data/tiles'
 import { updateGameScale } from '../helpers/updateGameScale'
 
@@ -112,14 +115,14 @@ class Canvas {
 		let column = 0
 		let row = 0
 
-		while (row <= 16) {
+		while (row <= GRID_SIZE.h) {
 			const y = (6 * row) + 0.5
 			this.color(color, 'transparent')
 			this.line(0, y, 97, y)
 			row += 1
 		}
 
-		while (column <= 12) {
+		while (column <= GRID_SIZE.w) {
 			const x = (8 * column) + 0.5
 			this.color(color, 'transparent')
 			this.line(x, 0, x, 97)

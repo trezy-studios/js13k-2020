@@ -1,5 +1,8 @@
 // Local imports
-import { TILE_SIZE } from './grid'
+import {
+	GRID_SIZE,
+	TILE_SIZE,
+} from './grid'
 import * as maps from '../maps'
 
 
@@ -27,13 +30,13 @@ export const state = new Proxy(stateObject, {
 
 		switch (key) {
 			case 'placeX':
-				if ((value >= 0) && (value <= (TILE_SIZE.w * (12 - rows)))) {
+				if ((value >= 0) && (value <= (TILE_SIZE.w * (GRID_SIZE.w - rows)))) {
 					target[key] = value
 				}
 				break
 
 			case 'placeY':
-				if ((value >= 0) && (value <= (TILE_SIZE.h * (16 - columns)))) {
+				if ((value >= 0) && (value <= (TILE_SIZE.h * (GRID_SIZE.h - columns)))) {
 					target[key] = value
 				}
 				break

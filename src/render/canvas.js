@@ -135,22 +135,19 @@ class Canvas {
 	}
 
 	drawPlacement() {
-		let column = 0
-		let row = 0
+		const {
+			grid,
+			h,
+			w,
+		} = state.currentTile
 
-		state.currentTile.split('').forEach((type, index) => {
-			if (type === '\n') {
-				column = 0
-				row += 1
-				return
+		state.currentTile.grid.forEach((type, index) => {
+			if (type) {
+				const x = ((index % w) + state.placeX) * TILE_SIZE.w
+				const y = (Math.floor(index / w) + state.placeY) * TILE_SIZE.h
+
+				tiles[type](this, x, y, true)
 			}
-
-			const x = (column + state.placeX) * TILE_SIZE.w
-			const y = (row + state.placeY) * TILE_SIZE.h
-
-			tiles[type](this, x, y - 1, true)
-
-			column += 1
 		})
 	}
 }

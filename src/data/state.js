@@ -11,7 +11,8 @@ import * as maps from '../maps'
 
 
 const stateObject = {
-	currentTile: `010\n111`,
+	canPlace: true,
+	currentTile: decodeTile(`010\n111`),
 	map: null,
 	placeX: 0,
 	placeY: 0,
@@ -30,8 +31,8 @@ export const state = new Proxy(stateObject, {
 		}
 
 		const {
-			w = 2,
-			h = 3,
+			w,
+			h,
 		} = target.currentTile
 
 		switch (key) {
@@ -49,6 +50,18 @@ export const state = new Proxy(stateObject, {
 
 			default:
 				target[key] = value
+		}
+
+		if (['placeX', 'placeY'].includes(key)) {
+			target.canPlace = !target.currentTile.grid.some((type, index) => {
+					if (type) {
+						const x = (index % w) + target.placeX
+						const y = Math.floor(index / w) + target.placeY
+						return target.map.at(x, y) !== 0
+					}
+
+					return false
+			})
 		}
 
 		return true

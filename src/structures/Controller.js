@@ -40,22 +40,23 @@ export class Controller {
 
 	place() {
 		const {
+			canPlace,
 			currentTile,
 			map,
 			placeX,
 			placeY,
 		} = state
 
-		const tile = decodeTile(currentTile)
+		if (!canPlace) {
+			return
+		}
 
-		tile.grid.forEach((rowTiles, rowIndex) => {
-			rowTiles.forEach((type, columnIndex) => {
-				if (type) {
-					const x = columnIndex + placeX
-					const y = rowIndex + placeY
-					map.update(type, x, y)
-				}
-			})
+		currentTile.grid.forEach((type, index) => {
+			if (type) {
+				const x = (index % currentTile.w) + placeX
+				const y = Math.floor(index / currentTile.w) + placeY
+				map.update(type, x, y)
+			}
 		})
 	}
 

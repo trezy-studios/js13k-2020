@@ -2,9 +2,11 @@
 import './index.scss'
 import './patches/addEventListener'
 import { canvas } from './render/canvas'
+import { Controller } from './structures/Controller'
 import { createStringCanvas } from './render/font'
 import { Screen } from './structures/Screen'
 import { settings } from './helpers/settings'
+import { state } from './data/state'
 import { updateGameScale } from './helpers/updateGameScale'
 import * as maps from './maps/index'
 
@@ -16,6 +18,7 @@ import * as maps from './maps/index'
 const canvasElement = document.querySelector('canvas')
 const canvasHeight = canvasElement.height
 const canvasWidth = canvasElement.width
+const controller = new Controller
 const gameElement = document.querySelector('#game')
 const gameWrapperElement = document.querySelector('#game-wrapper')
 const mainMenuElement = document.querySelector('#main')
@@ -181,6 +184,10 @@ const settingsScreen = new Screen({
 })
 
 const gameScreen = new Screen({
+	onHide() {
+		controller.stop()
+	},
+
 	onInit() {
 		const menuButton = this.node.querySelector('[data-action="open:menu"]')
 		menuButton.on('click', () => settingsScreen.show())
@@ -189,11 +196,14 @@ const gameScreen = new Screen({
 	onShow() {
 		let frame = 0
 
+		controller.start()
+
 		const gameLoop = () => {
 			frame++
 
 			render.drawGrid()
-			render.drawMap(maps.test, 0, 0);
+			render.drawMap(state.map, 0, 0);
+			render.drawPlacement()
 			render.update()
 
 			const timerElement = this.node.querySelector('#play-info time')
@@ -218,7 +228,7 @@ const mapSelectScreen = new Screen({
 
 		const handleMapButtonClick = event => {
 			const { target: { value } } = event
-			render.map = value
+			state.map = value
 			gameScreen.show()
 		}
 

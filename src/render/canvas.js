@@ -1,7 +1,22 @@
 // Local imports
+import {
+	GRID_SIZE,
+	TILE_SIZE,
+} from '../data/grid'
 import { settings } from '../helpers/settings'
+import { state } from '../data/state'
+import { tiles } from '../data/tiles'
 import { updateGameScale } from '../helpers/updateGameScale'
-import * as maps from '../maps/index'
+
+
+
+
+
+// Local constants
+const canvasOffset = {
+	x: 0,
+	y: 7,
+}
 
 
 
@@ -13,7 +28,6 @@ function ctx2d(el) {
 
 class Canvas {
 	constructor(el) {
-		this.map = null
 		this.target = ctx2d(el);
 		this.shadow = ctx2d(el.cloneNode());
 		this.queue = [[], [], []];
@@ -23,6 +37,10 @@ class Canvas {
 				updateGameScale()
 			}
 		})
+	}
+
+	alpha(alpha) {
+		this.queue[this.layer].push(["a", alpha])
 	}
 
 	color(stroke = "black", fill = "black") {
@@ -57,27 +75,32 @@ class Canvas {
 	//no params, push all updates to screen.
 	update() {
 		//clear the canvas
-		const ctx = this.shadow;
-		ctx.clearRect(0, 0, 0xffff, 0xffff);
-		const toRender = this.queue.flat();
+		const toRender = this.queue.flat()
+		const context = this.shadow
+		context.clearRect(0, 0, 0xffff, 0xffff)
+		context.translate(canvasOffset.x, canvasOffset.y)
+
 		for (const task of toRender) {
-			const [call] = task;
+			const [call] = task
 			switch (call) {
+				case "a":
+					[, context.globalAlpha] = task
+					break
 				case "col":
-					[, ctx.strokeStyle, ctx.fillStyle] = task;
-					break;
+					[, context.strokeStyle, context.fillStyle] = task
+					break
 				case "lineWidth":
-					[, ctx.lineWidth] = task;
-					break;
+					[, context.lineWidth] = task
+					break
 				default:
-					const [, ...args] = task;
-					ctx[call](...args);
-					break;
+					const [, ...args] = task
+					context[call](...args)
+					break
 			}
 		}
-		// ctx.setTransform(1, 0, 0, 1, 0, 0);
-		this.refresh();
-		this.queue = [[], [], []];
+		context.setTransform(1, 0, 0, 1, 0, 0)
+		this.refresh()
+		this.queue = [[], [], []]
 	}
 
 	refresh() {
@@ -92,14 +115,14 @@ class Canvas {
 		let column = 0
 		let row = 0
 
-		while (row <= 16) {
+		while (row <= GRID_SIZE.h) {
 			const y = (6 * row) + 0.5
 			this.color(color, 'transparent')
 			this.line(0, y, 97, y)
 			row += 1
 		}
 
-		while (column <= 12) {
+		while (column <= GRID_SIZE.w) {
 			const x = (8 * column) + 0.5
 			this.color(color, 'transparent')
 			this.line(x, 0, x, 97)
@@ -109,6 +132,33 @@ class Canvas {
 
 	drawMap(map, x, y) {
 		map.render(this, x, y);
+	}
+
+	drawPlacement() {
+		const {
+			currentTile,
+			map,
+			placeX,
+			placeY,
+		} = state
+		const {
+			grid,
+			h,
+			w,
+		} = currentTile
+
+		grid.forEach((type, index) => {
+			if (type) {
+				const x = (index % w) + placeX
+				const xPixel = x * TILE_SIZE.w
+				const y = Math.floor(index / w) + placeY
+				const yPixel = y * TILE_SIZE.h
+
+				const canPlace = map.at(x, y) === 0
+
+				tiles[type](this, xPixel, yPixel, true, canPlace)
+			}
+		})
 	}
 }
 

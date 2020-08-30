@@ -1,3 +1,5 @@
+const screens = []
+
 export class Screen {
 	appendChild (child) {
 		this.node.appendChild(child)
@@ -5,12 +7,16 @@ export class Screen {
 
 	constructor (options) {
 		const {
+			onHide,
 			onInit,
 			onShow,
 			selector,
 		} = options
 
+		screens.push(this)
+
 		this.node = document.querySelector(selector)
+		this.onHide = onHide
 		this.onShow = onShow
 
 		if (onInit) {
@@ -18,12 +24,18 @@ export class Screen {
 		}
 	}
 
-	show () {
-		function hideElement (element) {
-			element.setAttribute('hidden', 'true')
-		}
+	hide () {
+		this.node.setAttribute('hidden', 'true')
 
-		document.querySelectorAll('.screen').forEach(hideElement)
+		if (this.onHide) {
+			this.onHide()
+		}
+	}
+
+	show () {
+		screens.forEach(screen => {
+			screen.hide()
+		})
 
 		this.node.removeAttribute('hidden')
 

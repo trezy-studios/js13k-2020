@@ -136,17 +136,27 @@ class Canvas {
 
 	drawPlacement() {
 		const {
+			currentTile,
+			map,
+			placeX,
+			placeY,
+		} = state
+		const {
 			grid,
 			h,
 			w,
-		} = state.currentTile
+		} = currentTile
 
-		state.currentTile.grid.forEach((type, index) => {
+		grid.forEach((type, index) => {
 			if (type) {
-				const x = ((index % w) + state.placeX) * TILE_SIZE.w
-				const y = (Math.floor(index / w) + state.placeY) * TILE_SIZE.h
+				const x = (index % w) + placeX
+				const xPixel = x * TILE_SIZE.w
+				const y = Math.floor(index / w) + placeY
+				const yPixel = y * TILE_SIZE.h
 
-				tiles[type](this, x, y, true)
+				const canPlace = map.at(x, y) === 0
+
+				tiles[type](this, xPixel, yPixel, true, canPlace)
 			}
 		})
 	}

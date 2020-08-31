@@ -1,0 +1,44 @@
+name: Deploy to Github Pages
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+			- uses: actions/checkout@v2
+			- name: Setup Node.js
+				uses: actions/setup-node@v1
+				with:
+					node-version: '14'
+
+			- name: Get yarn cache directory path
+				id: yarn-cache-dir-path
+				run: echo "::set-output name=dir::$(yarn cache dir)"
+
+			- name: Cache `node_modules`
+				uses: actions/cache@v2
+				id: yarn-cache
+				with:
+					path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+					key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+					restore-keys: |
+						${{ runner.os }}-yarn-
+
+			- name: Install dependencies
+				run: yarn install
+
+			- name: Build
+				run: yarn build
+      -
+        name: Deploy to GitHub Pages
+        if: success()
+        uses: crazy-max/ghaction-github-pages@v2
+        with:
+					build_dir: dist
+					jekyll: false
+          target_branch: gh-pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

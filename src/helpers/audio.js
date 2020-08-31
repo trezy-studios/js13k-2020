@@ -1,24 +1,16 @@
 // Local imports
-import * as sounds from '../sounds'
 import {
-	zzfxG,
 	zzfxP,
+	zzfxX,
 } from '../lib/zzfx'
 import { settings } from '../helpers/settings'
-import { zzfxM } from '../lib/zzfxm'
 
 
 
 
 
 // Local constants
-const audioBuffers = Object.entries(sounds).reduce((accumulator, [name, data]) => ({
-	...accumulator,
-	[name]: {
-		a: (data.t === 'm' ? zzfxM : zzfxG)(...data.a),
-		t: data.t,
-	},
-}), {})
+export const audioBuffers = {}
 
 
 

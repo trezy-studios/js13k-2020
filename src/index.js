@@ -202,7 +202,7 @@ const gameScreen = new Screen({
 			frame++
 
 			render.drawGrid()
-			render.drawMap(state.map, 0, 0);
+			render.drawMap(state.map, 0, 0)
 			render.drawPlacement()
 			render.update()
 
@@ -288,6 +288,11 @@ const initialize = () => {
 
 		while (nextNode = treewalker.nextNode()) {
 			const container = nextNode.parentNode
+
+			if (['SCRIPT', 'STYLE'].includes(container.tagName)) {
+				continue
+			}
+
 			let fontFamily = (container.getAttribute('data-font') || 'awkward').toLowerCase()
 
 			if (/^h\d$/iu.test(container.nodeName)) {

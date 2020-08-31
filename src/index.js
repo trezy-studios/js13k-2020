@@ -4,6 +4,7 @@ import './patches/addEventListener'
 import { canvas } from './render/canvas'
 import { Controller } from './structures/Controller'
 import { createStringCanvas } from './render/font'
+import { playAudio } from './helpers/audio'
 import { Screen } from './structures/Screen'
 import { settings } from './helpers/settings'
 import { state } from './data/state'
@@ -355,6 +356,12 @@ const initialize = () => {
 	updateGameScale()
 	renderStrings()
 	mainMenuScreen.show()
+
+	document.querySelectorAll('button').forEach(buttonElement => {
+		buttonElement.on('mousedown', () => playAudio('button'))
+	})
+
+	playAudio('depp')
 }
 
 initialize()

@@ -281,7 +281,6 @@ ol {
 	position: relative;
 
 	&::before {
-		// border: 7px solid transparent;
 		clip-path: polygon(
 			/* Top left */
 			0 6px,
@@ -357,8 +356,6 @@ ol {
 		);
 		content: '';
 		display: block;
-		// border-image-repeat: repeat;
-		// border-image-slice: 7;
 		bottom: 0;
 		left: 0;
 		pointer-events: none;
@@ -369,12 +366,10 @@ ol {
 
 	&.dark::before {
 		background-color: $purple;
-		// border-image-source: url('./assets/images/border.dark.png');
 	}
 
 	&.light::before {
 		background-color: $white;
-		// border-image-source: url('./assets/images/border.light.png');
 	}
 
 	.bottom {
@@ -443,6 +438,10 @@ ol {
 	grid-column: span 2;
 }
 
+.stretch-full {
+	grid-column: span 3;
+}
+
 .screen {
 	display: grid;
 	gap: 4px;
@@ -489,6 +488,10 @@ ol {
 	transform-origin: 0 0;
 	transition: transform 0.5s;
 	width: 240px;
+}
+
+#loading {
+	margin-bottom: 2px;
 }
 
 #play-info time {

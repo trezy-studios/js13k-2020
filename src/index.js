@@ -1,6 +1,12 @@
 // Local imports
 import './index.scss'
 import './patches/addEventListener'
+import LoadingImage from './assets/images/loading.png'
+import {
+	preloadAudio,
+	preloadFonts,
+	preloadSprites,
+} from './helpers/preloaders'
 import { canvas } from './render/canvas'
 import { Controller } from './structures/Controller'
 import { createStringCanvas } from './render/font'
@@ -31,6 +37,40 @@ const render = canvas(canvasElement)
 
 
 // screens
+const loadingScreen = new Screen({
+	async onInit() {
+		console.log('loading')
+
+		// Load the "LOADING" image so it displays before we start loading anything
+		// else.
+		const loadingElement = document.querySelector('#loading')
+		const loadingImageElement = document.createElement('img')
+		const loadingMessageElement = document.querySelector('#loading-message')
+
+		function setMessage (text) {
+			loadingMessageElement.innerHTML = text
+		}
+
+		loadingElement.appendChild(loadingImageElement)
+		loadingImageElement.src = LoadingImage
+		await new Promise(resolve => loadingImageElement.on('load', resolve))
+
+		setMessage('Loading fonts')
+		await preloadFonts()
+
+		setMessage('Loading sprites')
+		await preloadSprites()
+
+		setMessage('Loading audio')
+		await preloadAudio()
+
+		setMessage('Done')
+		setTimeout(() => mainMenuScreen.show(), 1000)
+	},
+
+	selector: '#loading-screen',
+})
+
 const settingsScreen = new Screen({
 	onInit() {
 		const resumeButton = this.node.querySelector('[data-action="open:game"]')
@@ -259,6 +299,10 @@ const mainMenuScreen = new Screen({
 		startButtonElement.on('click', () => mapSelectScreen.show())
 	},
 
+	onShow() {
+		playAudio('depp')
+	},
+
 	selector: '#main-menu',
 })
 
@@ -355,13 +399,11 @@ const initialize = () => {
 
 	updateGameScale()
 	renderStrings()
-	mainMenuScreen.show()
+	loadingScreen.show()
 
 	document.querySelectorAll('button').forEach(buttonElement => {
 		buttonElement.on('mousedown', () => playAudio('button'))
 	})
-
-	playAudio('depp')
 }
 
 initialize()

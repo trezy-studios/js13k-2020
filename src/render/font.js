@@ -26,6 +26,7 @@ function drawStringToCanvas (stringCoords, sourceImage, context) {
 
 export const createStringCanvas = (string, fontFamily = 'awkward') => {
 	const {
+		characterDefaults,
 		coords,
 		fontImage,
 		state,
@@ -37,7 +38,10 @@ export const createStringCanvas = (string, fontFamily = 'awkward') => {
 		stringHeight,
 		stringWidth,
 	} = normalizedString.split('').reduce((accumulator, character, index) => {
-		const characterCoords = coords[character]
+		const characterCoords = {
+			...characterDefaults,
+			...coords[character],
+		}
 
 		accumulator.stringCoords.push(characterCoords)
 		accumulator.stringHeight = Math.max(accumulator.stringHeight, characterCoords.h)

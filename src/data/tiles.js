@@ -18,17 +18,9 @@ export const tiles = [
 		}
 
 		if (!canPlace) {
-			const bufferCanvas = document.createElement('canvas')
-			const bufferContext = bufferCanvas.getContext('2d')
-			bufferCanvas.height = 8
-			bufferCanvas.width = 8
-
-			bufferContext.fillStyle = 'red'
-			bufferContext.fillRect(0, 0, 8, 8)
-			bufferContext.globalCompositeOperation = 'destination-atop'
-			bufferContext.drawImage(spritesheetImage, 0, 0, 8, 8, 0, 0, 8, 8)
+			context.color(null, 'red')
 			context.alpha(0.5)
-			context.image(bufferCanvas, 0, 0, 8, 8, x, y - 1, 8, 8)
+			context.rect(x, y - 1, 8, 8)
 			context.alpha(1)
 		} else {
 			context.image(spritesheetImage, 0, 0, 8, 8, x, y - 1, 8, 8)

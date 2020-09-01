@@ -9,7 +9,7 @@ import {
 
 
 
-export class Map {
+class Map {
 	constructor({ data }) {
 		const computed_data = BigInt(data).toString().padStart(GRID_SIZE.w * GRID_SIZE.h, '0').split('').map(num => +num)
 		this.original = computed_data
@@ -42,3 +42,4 @@ export class Map {
 		})
 	}
 }
+globalThis.Map = Map;

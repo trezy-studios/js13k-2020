@@ -1,5 +1,6 @@
-import test from './test'
-
+import "./map.js";
+import test from '../../maps/Test.json';
+console.log(test);
 
 
 

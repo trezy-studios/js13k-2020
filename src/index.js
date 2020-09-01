@@ -335,7 +335,7 @@ let initialize = () => {
 
 	document.querySelectorAll('[data-bind]').forEach(boundElement => {
 		function update(targetElement, value) {
-			if (typeof value === 'boolean') {
+			if ([0, 1].includes(value)) {
 				targetElement.innerHTML = value ? 'On' : 'Off'
 			} else {
 				targetElement.innerHTML = value

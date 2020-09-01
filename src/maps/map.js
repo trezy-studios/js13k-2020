@@ -10,10 +10,17 @@ import {
 
 
 export class Map {
-	constructor({ data }) {
-		const computed_data = BigInt(data).toString().padStart(GRID_SIZE.w * GRID_SIZE.h, '0').split('').map(num => +num)
+	constructor(data, w = GRID_SIZE.w, h = GRID_SIZE.h) {
+		const computed_data = data[0].toString().padStart(w * h, '0').split('').map(num => +num)
 		this.original = computed_data
 		this.data = computed_data
+		this.objects = data[1];
+		this.tiles = data.slice(2).map(tile => {
+			const w = +tile[0];
+			const h = +tile[1];
+			const data = BigInt("0x" + tile.slice(2));
+			return new Map([data, []], w, h);
+		});
 	}
 
 	index(x, y) {
@@ -42,3 +49,6 @@ export class Map {
 		})
 	}
 }
+globalThis.Map = Map;
+
+export default Map;

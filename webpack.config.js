@@ -6,7 +6,6 @@ const MiniCSSExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const path = require('path')
-const xml = require("xml-js")
 
 
 
@@ -35,27 +34,18 @@ module.exports = {
 
 	output: {
 		filename: 'index.js',
-		path: path.resolve(__dirname, 'dist'),
+		path: path.resolve(__dirname, 'dist')
 	},
 
 	module: {
 		rules: [
 			{
-				test: /\.tmx$/,
+				test: /\.json$/,
 				exclude: /node_modules/,
+				type: "javascript/auto",
 				use: [
-					{
-						loader: "url-loader",
-						options: {
-							generator: (content) => {
-								const xml_str = content.toString()
-								const json = JSON.parse(xml.xml2json(xml_str, {
-									"compact": true
-								}))
-								return arr_to_bigstr(json.map.layer.data._text.split(/,|\s/))
-							},
-						},
-					},
+					'babel-loader',
+					path.resolve("./json-loader.js"),
 				],
 			},
 			{
@@ -114,14 +104,6 @@ module.exports = {
 		new OptimizeCSSAssetsPlugin,
 		new MiniCSSExtractPlugin({
 			filename: '[name].css',
-		}),
-		new CopyWebpackPlugin({
-			patterns: [
-				{
-					from: 'src/assets',
-					to: 'assets',
-				},
-			],
-		}),
+		})
 	],
 }

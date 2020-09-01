@@ -7,10 +7,13 @@ import {
 	preloadFonts,
 	preloadSprites,
 } from './helpers/preloaders'
+import {
+	playAudio,
+	setMusicVolume,
+} from './helpers/audio'
 import { canvas } from './render/canvas'
 import { Controller } from './structures/Controller'
 import { createStringCanvas } from './render/font'
-import { playAudio } from './helpers/audio'
 import { Screen } from './structures/Screen'
 import { settings } from './helpers/settings'
 import { state } from './data/state'
@@ -31,6 +34,13 @@ const gameWrapperElement = document.querySelector('#game-wrapper')
 const mainMenuElement = document.querySelector('#main')
 const mapSelectMenuElement = document.querySelector('#map-select')
 const render = canvas(canvasElement)
+
+
+
+
+
+// Local variables
+let music = null
 
 
 
@@ -101,6 +111,8 @@ const settingsScreen = new Screen({
 		}
 
 		settings.on('change:autoscale', handleAutoscaleChange)
+		settings.on('change:enableMusic', () => (settings.enableMusic ? (music = playAudio('depp', 1)) : music.stop()))
+		settings.on('change:musicVolume', () => setMusicVolume())
 
 		const options = this.node.querySelectorAll('.option')
 		options.forEach(option => {
@@ -300,7 +312,7 @@ const mainMenuScreen = new Screen({
 	},
 
 	onShow() {
-		playAudio('depp')
+		music = playAudio('depp', 1)
 	},
 
 	selector: '#main-menu',

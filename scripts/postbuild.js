@@ -1,12 +1,8 @@
 const archiver = require('archiver')
 const fs = require('fs-extra')
-const path = require('path')
+const path = require('path');
 
-
-
-
-
-;(async function archive () {
+(async function archive() {
 	// Delete superfluous files
 	const distPath = path.resolve('dist')
 	const distFiles = await fs.readdir(distPath)
@@ -18,7 +14,7 @@ const path = require('path')
 	}))
 
 	// Start streaming to the zip file
-	const output = fs.createWriteStream('./dist/build.zip')
+	const output = fs.createWriteStream('./build.zip')
 	const archive = archiver('zip', {
 		zlib: { level: 9 } // set compression to best
 	})
@@ -54,11 +50,7 @@ const path = require('path')
 	archive.pipe(output)
 
 	// Start zipping the output
-	archive.append(
-		fs.createReadStream('./dist/index.html'), {
-			name: 'index.html'
-		}
-	)
+	archive.directory("./dist", false)
 
 	archive.finalize()
 })()

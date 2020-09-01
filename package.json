@@ -8,7 +8,9 @@
   "scripts": {
     "build": "webpack --mode production",
     "postbuild": "node scripts/postbuild.js",
-    "start": "webpack-dev-server --mode development"
+    "prebuild": "node scripts/prebuild.js",
+    "start": "webpack-dev-server --mode development",
+    "debug": "webpack -v"
   },
   "devDependencies": {
     "@babel/core": "^7.11.1",

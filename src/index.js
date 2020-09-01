@@ -2,7 +2,10 @@
 import './index.scss'
 import './patches/addEventListener'
 import { canvas } from './render/canvas'
-import { Controller } from './structures/Controller'
+import {
+	start as startController,
+	stop as stopController,
+} from './helpers/controls'
 import { createStringCanvas } from './render/font'
 import { Screen } from './structures/Screen'
 import { settings } from './helpers/settings'
@@ -18,7 +21,6 @@ import * as maps from './maps/index'
 const canvasElement = document.querySelector('canvas')
 const canvasHeight = canvasElement.height
 const canvasWidth = canvasElement.width
-const controller = new Controller
 const gameElement = document.querySelector('#game')
 const gameWrapperElement = document.querySelector('#game-wrapper')
 const mainMenuElement = document.querySelector('#main')
@@ -185,7 +187,7 @@ const settingsScreen = new Screen({
 
 const gameScreen = new Screen({
 	onHide() {
-		controller.stop()
+		stopController()
 	},
 
 	onInit() {
@@ -196,7 +198,7 @@ const gameScreen = new Screen({
 	onShow() {
 		let frame = 0
 
-		controller.start()
+		startController()
 
 		const gameLoop = () => {
 			frame++

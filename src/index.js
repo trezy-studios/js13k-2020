@@ -43,10 +43,10 @@ let settingsScreen = new Screen({
 
 			if (settings.autoscale) {
 				resolutionOptionElements.forEach(resolutionOptionElement => {
-					resolutionOptionElement.setAttribute('disabled', true)
+					resolutionOptionElement.setAttribute('disabled', 1)
 				})
 				// resolutionInputElement.parentNode.classList.add('disabled')
-				// resolutionInputElement.setAttribute('disabled', true)
+				// resolutionInputElement.setAttribute('disabled', 1)
 				// resolutionValueElement.innerHTML = 'Autoscale'
 				// settings.resolution = 'Autoscale'
 			} else {
@@ -72,7 +72,7 @@ let settingsScreen = new Screen({
 				options.forEach(otherOption => otherOption.classList.remove('active'))
 				option.classList.add('active')
 
-				menuElements.forEach(menuElement => menuElement.setAttribute('hidden', true))
+				menuElements.forEach(menuElement => menuElement.setAttribute('hidden', 1))
 				targetElement.removeAttribute('hidden')
 			})
 		})
@@ -85,7 +85,7 @@ let settingsScreen = new Screen({
 			'1920x1080',
 			'3840x2160',
 		]
-		let closeResolutionsDropdown = (refocus = false) => {
+		let closeResolutionsDropdown = (refocus = 0) => {
 			resolutionsDropdownElement.removeAttribute('open')
 
 			if (refocus) {
@@ -114,18 +114,18 @@ let settingsScreen = new Screen({
 
 			inputElement.on('keydown', ({ code, target }) => {
 				if (code ==='Escape') {
-					closeResolutionsDropdown(true)
+					closeResolutionsDropdown(1)
 				}
 			})
 
 			inputElement.on('keypress', ({ code, target }) => {
 				if (code === 'Enter') {
-					closeResolutionsDropdown(true)
+					closeResolutionsDropdown(1)
 				}
 			})
 
 			if (settings.resolution === resolution) {
-				inputElement.setAttribute('checked', true)
+				inputElement.setAttribute('checked', 1)
 			}
 
 			labelElement.setAttribute('for', `r${resolution}`)
@@ -174,7 +174,7 @@ let settingsScreen = new Screen({
 				inputElement.checked = settingsValue
 			} else if (inputElement.type === 'radio') {
 				let targetElement = this.node.querySelector(`[name="${inputElement.name}"][value="${settingsValue}"]`)
-				targetElement.checked = true
+				targetElement.checked = 1
 			} else {
 				inputElement.value = settingsValue
 			}
@@ -282,7 +282,7 @@ let initialize = () => {
 					}
 				},
 			},
-			false
+			0
 		)
 
 		let nextNode = null
@@ -329,8 +329,8 @@ let initialize = () => {
 	})
 
 	mutationObserver.observe(document.documentElement, {
-		childList: true,
-		subtree: true,
+		childList: 1,
+		subtree: 1,
 	})
 
 	document.querySelectorAll('[data-bind]').forEach(boundElement => {

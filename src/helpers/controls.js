@@ -6,7 +6,7 @@ import { state } from '../data/state'
 
 
 
-let enabled = false
+let enabled = 0
 
 let place = () => {
 	let {
@@ -30,9 +30,9 @@ let place = () => {
 	})
 }
 
-export let start = () => enabled = true
+export let start = () => enabled = 1
 
-export let stop = () => enabled = false
+export let stop = () => enabled = 0
 
 document.on('keydown', ({ code }) => {
 	if (enabled) {

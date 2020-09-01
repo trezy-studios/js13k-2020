@@ -7,11 +7,11 @@ import ThaleahImage from '../assets/images/thaleah.font.png'
 
 export let fontImage = new Image
 export let state = {
-	loaded: false,
+	loaded: 0,
 }
 
 fontImage.src = ThaleahImage
-fontImage.on('load', () => state.loaded = true)
+fontImage.on('load', () => state.loaded = 1)
 
 export let characterDefaults = {
 	h: 7,

@@ -25,7 +25,7 @@ export class Screen {
 	}
 
 	hide () {
-		this.node.setAttribute('hidden', 'true')
+		this.node.setAttribute('hidden', 1)
 
 		if (this.onHide) {
 			this.onHide()

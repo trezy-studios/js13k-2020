@@ -11,7 +11,7 @@ import * as maps from '../maps'
 
 
 let stateObject = {
-	canPlace: true,
+	canPlace: 1,
 	currentTile: decodeTile(`010\n111`),
 	map: null,
 	placeX: 0,
@@ -22,12 +22,12 @@ export let state = new Proxy(stateObject, {
 	set (target, key, value) {
 		if (key === 'currentTile') {
 			target[key] = decodeTile(value)
-			return true
+			return 1
 		}
 
 		if (key === 'map') {
 			target[key] = maps[value]
-			return true
+			return 1
 		}
 
 		let {
@@ -60,10 +60,10 @@ export let state = new Proxy(stateObject, {
 						return target.map.at(x, y) !== 0
 					}
 
-					return false
+					return 0
 			})
 		}
 
-		return true
+		return 1
 	}
 })

@@ -15,8 +15,8 @@ function getFromLocalStorage(key, defaultValue) {
 }
 
 let defaultSettings = {
-	autoscale: getFromLocalStorage('autoscale', true),
-	enableMusic: getFromLocalStorage('enableMusic', true),
+	autoscale: getFromLocalStorage('autoscale', 1),
+	enableMusic: getFromLocalStorage('enableMusic', 1),
 	musicVolume: getFromLocalStorage('musicVolume', 50),
 	resolution: getFromLocalStorage('resolution', '3840x2160'),
 	soundFXVolume: getFromLocalStorage('soundFXVolume', 50),
@@ -49,6 +49,6 @@ export let settings = new Proxy(settingsStore, {
 		eventTarget.dispatchEvent(new CustomEvent(`change:${key}`, eventOptions))
 		eventTarget.dispatchEvent(new CustomEvent('change', eventOptions))
 
-		return true
+		return 1
 	},
 })

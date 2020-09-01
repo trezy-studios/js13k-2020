@@ -10,7 +10,7 @@ export let tiles = [
 	() => {},
 
 	// Normal tile
-	(context, x, y, placing = false, canPlace = true) => {
+	(context, x, y, placing = 0, canPlace = 1) => {
 		if (placing) {
 			let sourceY = canPlace ? 16 : 21
 			context.alpha(0.5)
@@ -32,7 +32,7 @@ export let tiles = [
 	},
 
 	// Corrupted tile
-	(context, x, y, placing = false, canPlace = true) => {
+	(context, x, y, placing = 0, canPlace = 1) => {
 		if (placing) {
 			context.alpha(0.5)
 			context.image(spritesheetImage, 0, 16, 7, 5, x + 1, y + 2, 7, 5)

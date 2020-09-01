@@ -155,7 +155,7 @@ class Canvas {
 
 				let canPlace = map.at(x, y) === 0
 
-				tiles[type](this, xPixel, yPixel, true, canPlace)
+				tiles[type](this, xPixel, yPixel, 1, canPlace)
 			}
 		})
 	}

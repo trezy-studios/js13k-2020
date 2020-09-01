@@ -28,7 +28,6 @@ const get_tile = (map) => {
             size.w = x;
         }
     }
-    console.log(size);
     for (let y = 0; y < size.h; y++) {
         for (let x = 0; x < size.w; x++) {
             res.push(getPos(x, y));
@@ -52,6 +51,5 @@ module.exports = function (content) {
         args.push(get_tile(layers[tile].data));
     } while (layers[++tile]);
     const code = `const {Map} = require(${JSON.stringify(path.resolve(process.cwd(), 'src', 'maps', 'map.js'))}); module.exports = new Map([${args}])`;
-    console.log(code);
     return code
 }

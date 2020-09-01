@@ -1,5 +1,5 @@
 export function decodeTile(tile) {
-	const tileLines = tile.split('\n')
+	let tileLines = tile.split('\n')
 
 	return {
 		grid: tile.replace('\n', '').split('').map(type => parseInt(type)),

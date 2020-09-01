@@ -1,7 +1,7 @@
-const localstoragePrefix = 'Trezy Studios::Not Found::'
+let localstoragePrefix = 'Trezy Studios::Not Found::'
 
 function getFromLocalStorage(key, defaultValue) {
-	const value = localStorage.getItem(`${localstoragePrefix}${key}`)
+	let value = localStorage.getItem(`${localstoragePrefix}${key}`)
 
 	if (value) {
 		try {
@@ -14,7 +14,7 @@ function getFromLocalStorage(key, defaultValue) {
 	return defaultValue
 }
 
-const defaultSettings = {
+let defaultSettings = {
 	autoscale: getFromLocalStorage('autoscale', true),
 	enableMusic: getFromLocalStorage('enableMusic', true),
 	musicVolume: getFromLocalStorage('musicVolume', 50),
@@ -22,11 +22,11 @@ const defaultSettings = {
 	soundFXVolume: getFromLocalStorage('soundFXVolume', 50),
 }
 
-const settingsStore = { ...defaultSettings }
+let settingsStore = { ...defaultSettings }
 
-const eventTarget = new EventTarget
+let eventTarget = new EventTarget
 
-export const settings = new Proxy(settingsStore, {
+export let settings = new Proxy(settingsStore, {
 	get (object, key) {
 		if (key === 'on') {
 			return eventTarget.on.bind(eventTarget)
@@ -36,7 +36,7 @@ export const settings = new Proxy(settingsStore, {
 	},
 
 	set (object, key, value) {
-		const eventOptions = {
+		let eventOptions = {
 			detail: {
 				key,
 				value,

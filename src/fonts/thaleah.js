@@ -5,20 +5,20 @@ import ThaleahImage from '../assets/images/thaleah.font.png'
 
 
 
-export const fontImage = new Image
-export const state = {
+export let fontImage = new Image
+export let state = {
 	loaded: false,
 }
 
 fontImage.src = ThaleahImage
 fontImage.on('load', () => state.loaded = true)
 
-export const characterDefaults = {
+export let characterDefaults = {
 	h: 7,
 	w: 7,
 }
 
-export const coords = {
+export let coords = {
 	a: {
 		x: 0,
 	},

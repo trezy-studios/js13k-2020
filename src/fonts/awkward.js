@@ -5,20 +5,20 @@ import AwkwardImage from '../assets/images/awkward.font.png'
 
 
 
-export const fontImage = new Image
-export const state = {
+export let fontImage = new Image
+export let state = {
 	loaded: false,
 }
 
 fontImage.src = AwkwardImage
 fontImage.on('load', () => state.loaded = true)
 
-export const characterDefaults = {
+export let characterDefaults = {
 	h: 5,
 	w: 4,
 }
 
-export const coords = {
+export let coords = {
 	a: {
 		x: 0,
 	},

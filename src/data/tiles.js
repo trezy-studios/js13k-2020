@@ -5,14 +5,14 @@ import { spritesheetImage } from '../helpers/spritesheet'
 
 
 
-export const tiles = [
+export let tiles = [
 	// Empty
 	() => {},
 
 	// Normal tile
 	(context, x, y, placing = false, canPlace = true) => {
 		if (placing) {
-			const sourceY = canPlace ? 16 : 21
+			let sourceY = canPlace ? 16 : 21
 			context.alpha(0.5)
 			context.image(spritesheetImage, 0, sourceY, 7, 5, x + 1, y + 2, 7, 5)
 		}

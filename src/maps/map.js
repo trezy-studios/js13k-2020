@@ -11,16 +11,16 @@ import {
 
 export class Map {
 	constructor(data, w = GRID_SIZE.w, h = GRID_SIZE.h) {
-		const computed_data = data[0].toString().padStart(w * h, '0').split('').map(num => +num)
+		let computed_data = data[0].toString().padStart(w * h, '0').split('').map(num => +num)
 		this.original = computed_data
 		this.data = computed_data
-		this.objects = data[1];
+		this.objects = data[1]
 		this.tiles = data.slice(2).map(tile => {
-			const w = +tile[0];
-			const h = +tile[1];
-			const data = BigInt("0x" + tile.slice(2));
-			return new Map([data, []], w, h);
-		});
+			let w = +tile[0]
+			let h = +tile[1]
+			let data = BigInt("0x" + tile.slice(2))
+			return new Map([data, []], w, h)
+		})
 	}
 
 	index(x, y) {
@@ -42,13 +42,13 @@ export class Map {
 	render(ctx, offset_x, offset_y) {
 		this.data.forEach((type, index) => {
 			if (tiles[type]) {
-				const x = (index % GRID_SIZE.w) * TILE_SIZE.w + offset_x
-				const y = Math.floor(index / GRID_SIZE.w) * TILE_SIZE.h + offset_y
+				let x = (index % GRID_SIZE.w) * TILE_SIZE.w + offset_x
+				let y = Math.floor(index / GRID_SIZE.w) * TILE_SIZE.h + offset_y
 				tiles[type](ctx, x, y)
 			}
 		})
 	}
 }
-globalThis.Map = Map;
+globalThis.Map = Map
 
-export default Map;
+export default Map

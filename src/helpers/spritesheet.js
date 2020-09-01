@@ -6,7 +6,7 @@ import SpritesheetImage from '../assets/images/spritesheet.png'
 
 
 // Local constants
-export const spritesheetImage = new Image
+export let spritesheetImage = new Image
 
 
 

@@ -12,8 +12,7 @@ import { updateGameScale } from '../helpers/updateGameScale'
 
 
 
-// Local constants
-const canvasOffset = {
+let canvasOffset = {
 	x: 0,
 	y: 7,
 }
@@ -23,15 +22,15 @@ const canvasOffset = {
 
 
 function ctx2d(el) {
-	return el.getContext("2d");
+	return el.getContext("2d")
 }
 
 class Canvas {
 	constructor(el) {
-		this.target = ctx2d(el);
-		this.shadow = ctx2d(el.cloneNode());
-		this.queue = [[], [], []];
-		this.layer = canvas.BG;
+		this.target = ctx2d(el)
+		this.shadow = ctx2d(el.cloneNode())
+		this.queue = [[], [], []]
+		this.layer = canvas.BG
 		window.on('resize', () => {
 			if (settings.autoscale) {
 				updateGameScale()
@@ -44,44 +43,44 @@ class Canvas {
 	}
 
 	color(stroke = "black", fill = "black") {
-		this.queue[this.layer].push(["col", stroke, fill]);
+		this.queue[this.layer].push(["col", stroke, fill])
 	}
 
 	//queue an image to be drawn to the current layer.
 	//image(img:HTMLImageElement|HTMLCanvasElement)
 	image(img, sx, sy, sw, sh, dx, dy, dw, dh, opts = []) {
-		this.queue[this.layer].push(["drawImage", img, sx, sy, sw, sh, dx, dy, dw, dh, ...opts]);
+		this.queue[this.layer].push(["drawImage", img, sx, sy, sw, sh, dx, dy, dw, dh, ...opts])
 	}
 
 	line(sx, sy, dx, dy, opts = []) {
-		this.queue[this.layer].push(["beginPath"]);
-		this.queue[this.layer].push(["moveTo", sx, sy]);
-		this.queue[this.layer].push(["lineTo", dx, dy]);
-		this.queue[this.layer].push(["stroke"]);
+		this.queue[this.layer].push(["beginPath"])
+		this.queue[this.layer].push(["moveTo", sx, sy])
+		this.queue[this.layer].push(["lineTo", dx, dy])
+		this.queue[this.layer].push(["stroke"])
 	}
 
 	lineWidth(width) {
-		this.queue[this.layer].push(["lineWidth", lineWidth]);
+		this.queue[this.layer].push(["lineWidth", lineWidth])
 	}
 
 	rect(x, y, w, h, opts = [], mode = "fill") {
-		this.queue[this.layer].push([mode + "Rect", x, y, w, h, ...opts]);
+		this.queue[this.layer].push([mode + "Rect", x, y, w, h, ...opts])
 	}
 
 	text(x, y, fontSize, text, opts = [], mode = "fill") {
-		this.queue[this.layer].push([mode + "Text", x, y, fontSize, text, ...opts]);
+		this.queue[this.layer].push([mode + "Text", x, y, fontSize, text, ...opts])
 	}
 
 	//no params, push all updates to screen.
 	update() {
 		//clear the canvas
-		const toRender = this.queue.flat()
-		const context = this.shadow
+		let toRender = this.queue.flat()
+		let context = this.shadow
 		context.clearRect(0, 0, 0xffff, 0xffff)
 		context.translate(canvasOffset.x, canvasOffset.y)
 
-		for (const task of toRender) {
-			const [call] = task
+		for (let task of toRender) {
+			let [call] = task
 			switch (call) {
 				case "a":
 					[, context.globalAlpha] = task
@@ -93,7 +92,7 @@ class Canvas {
 					[, context.lineWidth] = task
 					break
 				default:
-					const [, ...args] = task
+					let [, ...args] = task
 					context[call](...args)
 					break
 			}
@@ -106,24 +105,24 @@ class Canvas {
 	refresh() {
 		this.target.canvas.height = this.shadow.canvas.height
 		this.target.canvas.width = this.shadow.canvas.width
-		this.target.clearRect(0, 0, 0xffff, 0xffff);
-		this.target.drawImage(this.shadow.canvas, 0, 0);
+		this.target.clearRect(0, 0, 0xffff, 0xffff)
+		this.target.drawImage(this.shadow.canvas, 0, 0)
 	}
 
 	drawGrid() {
-		const color = `hsla(278, 19%, 25%, 0.5)`
+		let color = `hsla(278, 19%, 25%, 0.5)`
 		let column = 0
 		let row = 0
 
 		while (row <= GRID_SIZE.h) {
-			const y = (6 * row) + 0.5
+			let y = (6 * row) + 0.5
 			this.color(color, 'transparent')
 			this.line(0, y, 97, y)
 			row += 1
 		}
 
 		while (column <= GRID_SIZE.w) {
-			const x = (8 * column) + 0.5
+			let x = (8 * column) + 0.5
 			this.color(color, 'transparent')
 			this.line(x, 0, x, 97)
 			column += 1
@@ -131,17 +130,17 @@ class Canvas {
 	}
 
 	drawMap(map, x, y) {
-		map.render(this, x, y);
+		map.render(this, x, y)
 	}
 
 	drawPlacement() {
-		const {
+		let {
 			currentTile,
 			map,
 			placeX,
 			placeY,
 		} = state
-		const {
+		let {
 			grid,
 			h,
 			w,
@@ -149,12 +148,12 @@ class Canvas {
 
 		grid.forEach((type, index) => {
 			if (type) {
-				const x = (index % w) + placeX
-				const xPixel = x * TILE_SIZE.w
-				const y = Math.floor(index / w) + placeY
-				const yPixel = y * TILE_SIZE.h
+				let x = (index % w) + placeX
+				let xPixel = x * TILE_SIZE.w
+				let y = Math.floor(index / w) + placeY
+				let yPixel = y * TILE_SIZE.h
 
-				const canPlace = map.at(x, y) === 0
+				let canPlace = map.at(x, y) === 0
 
 				tiles[type](this, xPixel, yPixel, true, canPlace)
 			}
@@ -162,10 +161,10 @@ class Canvas {
 	}
 }
 
-canvas.BG = 0;
-canvas.FG = 1;
-canvas.SPRITES = 2;
+canvas.BG = 0
+canvas.FG = 1
+canvas.SPRITES = 2
 
 export function canvas(el) {
-	return new Canvas(el);
+	return new Canvas(el)
 }

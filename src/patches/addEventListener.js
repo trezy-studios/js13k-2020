@@ -1,8 +1,8 @@
-const proto = EventTarget.prototype;
+let proto = EventTarget.prototype;
 proto.on = proto.addEventListener;
 proto.off = proto.removeEventListener;
 proto.once = function (type, func) {
-    const cb = (e) => {
+    let cb = (e) => {
         func(e);
         this.off(type, cb);
     };

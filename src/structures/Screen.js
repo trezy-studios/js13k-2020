@@ -1,4 +1,4 @@
-const screens = []
+let screens = []
 
 export class Screen {
 	appendChild (child) {
@@ -6,7 +6,7 @@ export class Screen {
 	}
 
 	constructor (options) {
-		const {
+		let {
 			onHide,
 			onInit,
 			onShow,

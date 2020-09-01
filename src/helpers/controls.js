@@ -8,8 +8,8 @@ import { state } from '../data/state'
 
 let enabled = false
 
-const place = () => {
-	const {
+let place = () => {
+	let {
 		canPlace,
 		currentTile,
 		map,
@@ -23,16 +23,16 @@ const place = () => {
 
 	currentTile.grid.forEach((type, index) => {
 		if (type) {
-			const x = (index % currentTile.w) + placeX
-			const y = Math.floor(index / currentTile.w) + placeY
+			let x = (index % currentTile.w) + placeX
+			let y = Math.floor(index / currentTile.w) + placeY
 			map.update(type, x, y)
 		}
 	})
 }
 
-export const start = () => enabled = true
+export let start = () => enabled = true
 
-export const stop = () => enabled = false
+export let stop = () => enabled = false
 
 document.on('keydown', ({ code }) => {
 	if (enabled) {

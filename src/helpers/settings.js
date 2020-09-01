@@ -15,7 +15,8 @@ function getFromLocalStorage(key, defaultValue) {
 }
 
 let defaultSettings = {
-	enableMusic: getFromLocalStorage('enableMusic', 1),
+	enableMusic: getFromLocalStorage('enableMusic', true),
+	enableSFX: getFromLocalStorage('enableSFX', true),
 	musicVolume: getFromLocalStorage('musicVolume', 50),
 	soundFXVolume: getFromLocalStorage('soundFXVolume', 50),
 }

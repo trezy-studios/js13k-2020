@@ -52,7 +52,7 @@ export const playAudio = (name, isMusic = 0) => {
 
 	isMusic ? setMusicVolume() : setSFXVolume()
 
-	if (settings.enableMusic || !isMusic) {
+	if ((isMusic && settings.enableMusic) || (!isMusic && settings.enableSFX)) {
 		source.start()
 	}
 

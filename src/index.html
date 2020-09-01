@@ -116,18 +116,6 @@
 
 			<button
 				class="option"
-				data-action="open:controls-settings">
-				Controls
-			</button>
-
-			<button
-				class="option"
-				data-action="open:gameplay-settings">
-				Gameplay
-			</button>
-
-			<button
-				class="option"
 				data-action="open:credits">
 				Credits
 			</button>
@@ -182,6 +170,24 @@
 				<div class="setting">
 					<label
 						class="name"
+						for="enableSFX">
+						Enable Sound FX
+					</label>
+
+					<input
+						id="enableSFX"
+						name="enableSFX"
+						type="checkbox">
+					<label
+						class="value"
+						data-bind="enableSFX"
+						for="enableSFX">
+					</label>
+				</div>
+
+				<div class="setting">
+					<label
+						class="name"
 						for="soundFXVolume">
 						Sound FX Volume
 					</label>
@@ -193,18 +199,6 @@
 							type="range">
 					</div>
 				</div>
-			</div>
-
-			<div
-				hidden
-				id="controls-settings">
-				<h2>Controls Settings</h2>
-			</div>
-
-			<div
-				hidden
-				id="gameplay-settings">
-				<h2>Gameplay Settings</h2>
 			</div>
 
 			<div
@@ -230,6 +224,7 @@
 					<dt>Gameplay Testing</dt>
 
 					<dt>Music and Sound Effects</dt>
+					<dd>Basile</dd>
 				</dl>
 			</div>
 		</div>

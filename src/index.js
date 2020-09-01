@@ -7,13 +7,16 @@ import {
 	preloadFonts,
 	preloadSprites,
 } from './helpers/preloaders'
+import {
+	playAudio,
+	setMusicVolume,
+} from './helpers/audio'
 import { canvas } from './render/canvas'
 import {
 	start as startController,
 	stop as stopController,
 } from './helpers/controls'
 import { createStringCanvas } from './render/font'
-import { playAudio } from './helpers/audio'
 import { Screen } from './structures/Screen'
 import { settings } from './helpers/settings'
 import { state } from './data/state'
@@ -32,6 +35,13 @@ let gameWrapperElement = document.querySelector('#game-wrapper')
 let mainMenuElement = document.querySelector('#main')
 let mapSelectMenuElement = document.querySelector('#map-select')
 let render = canvas(canvasElement)
+
+
+
+
+
+// Local variables
+let music = null
 
 
 
@@ -213,7 +223,7 @@ let mainMenuScreen = new Screen({
 	},
 
 	onShow() {
-		playAudio('depp')
+		music = playAudio('depp', 1)
 	},
 
 	selector: '#main-menu',

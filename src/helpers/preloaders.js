@@ -27,10 +27,7 @@ async function preloadImages (images) {
 export function preloadAudio () {
 	return new Promise(resolve => setTimeout(() => {
 		Object.entries(sounds).forEach(([name, data]) => {
-			audioBuffers[name] = {
-				a: (data.t === 'm' ? zzfxM : zzfxG)(...data.a),
-				t: data.t,
-			}
+			audioBuffers[name] = (data.t === 'm' ? zzfxM : zzfxG)(...data.a)
 		})
 
 		resolve()

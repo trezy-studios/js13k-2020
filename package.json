@@ -8,6 +8,7 @@
   "scripts": {
     "build": "webpack --mode production",
     "postbuild": "node scripts/postbuild.js",
+    "prebuild": "node scripts/prebuild.js",
     "start": "webpack-dev-server --mode development",
     "debug": "webpack -v"
   },

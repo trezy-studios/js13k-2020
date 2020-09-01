@@ -34,7 +34,7 @@ module.exports = {
 
 	output: {
 		filename: 'index.js',
-		path: path.resolve(__dirname, 'dist'),
+		path: path.resolve(__dirname, 'dist')
 	},
 
 	module: {
@@ -44,7 +44,8 @@ module.exports = {
 				exclude: /node_modules/,
 				type: "javascript/auto",
 				use: [
-					path.resolve("./json-loader.js")
+					'babel-loader',
+					path.resolve("./json-loader.js"),
 				],
 			},
 			{
@@ -103,14 +104,6 @@ module.exports = {
 		new OptimizeCSSAssetsPlugin,
 		new MiniCSSExtractPlugin({
 			filename: '[name].css',
-		}),
-		new CopyWebpackPlugin({
-			patterns: [
-				{
-					from: 'src/assets',
-					to: 'assets',
-				},
-			],
-		}),
+		})
 	],
 }

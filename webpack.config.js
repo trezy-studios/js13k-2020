@@ -89,7 +89,17 @@ module.exports = {
 		minimize: isProduction,
 		minimizer: [
 			// new ClosureCompilerPlugin,
-			new TerserPlugin,
+			new TerserPlugin({
+				terserOptions: {
+					compress: {
+						booleans_as_integers: true,
+						drop_console: false,
+						ecma: 6,
+						passes: 5,
+						unsafe: true,
+					},
+				},
+			}),
 		],
 	},
 

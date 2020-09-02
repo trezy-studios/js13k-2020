@@ -39,8 +39,9 @@ export let createStringCanvas = (string, fontFamily = 'awkward') => {
 	} = normalizedString.split('').reduce((accumulator, character, index) => {
 		let characterCoords = {
 			...characterDefaults,
-			...coords[character],
 		}
+
+		coords[character].map((coord, index) => (typeof coord !== 'undefined') ? (characterCoords['xwh'[index]] = coord) : 0)
 
 		accumulator.stringCoords.push(characterCoords)
 		accumulator.stringHeight = Math.max(accumulator.stringHeight, characterCoords.h)

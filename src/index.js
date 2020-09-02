@@ -86,7 +86,7 @@ let settingsScreen = new Screen({
 	onInit() {
 		let resumeButton = this.node.querySelector('[data-action="open:game"]')
 		resumeButton.on('click', () => gameScreen.show())
-		settings.on('change:enableMusic', () => (settings.enableMusic ? (music = playAudio('depp', 1)) : music.stop()))
+		settings.on('change:enableMusic', () => (settings.enableMusic ? (music = playAudio('test', 1)) : music.stop()))
 		settings.on('change:musicVolume', () => setMusicVolume())
 
 		let options = this.node.querySelectorAll('.option')
@@ -223,7 +223,7 @@ let mainMenuScreen = new Screen({
 	},
 
 	onShow() {
-		music = playAudio('depp', 1)
+		music = playAudio('test', 1)
 	},
 
 	selector: '#main-menu',

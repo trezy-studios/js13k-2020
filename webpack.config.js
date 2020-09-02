@@ -11,15 +11,6 @@ const path = require('path')
 
 
 const isProduction = process.env.npm_lifecycle_event === 'build'
-// function tsxloader(content) {
-// 	content
-// }
-
-// tsxloader.pitch = function (remainingRequest, precedingRequest, data) {
-// 	return 'module.exports = require(' + JSON.stringify('-!' + remainingRequest) + ')'
-// }
-
-const arr_to_bigstr = (arr) => `0x${BigInt(arr.join("")).toString(16)}`
 module.exports = {
 	devServer: {
 		contentBase: './dist',
@@ -40,14 +31,25 @@ module.exports = {
 	module: {
 		rules: [
 			{
-				test: /\.json$/,
+				test: /\.zzfx$/,
 				exclude: /node_modules/,
-				type: "javascript/auto",
+				type: 'javascript/auto',
 				use: [
 					'babel-loader',
-					path.resolve("./json-loader.js"),
+					path.resolve('webpack', 'zzfx-loader.js'),
 				],
 			},
+
+			{
+				test: /\.json$/,
+				exclude: /node_modules/,
+				type: 'javascript/auto',
+				use: [
+					'babel-loader',
+					path.resolve('webpack', 'json-map-loader.js'),
+				],
+			},
+
 			{
 				test: /\.m?js$/,
 				exclude: /node_modules/,
@@ -97,6 +99,12 @@ module.exports = {
 						ecma: 6,
 						passes: 5,
 						unsafe: true,
+					},
+					mangle: {
+						// properties: {
+						// 	builtins: false,
+						// 	reserved: ['on'],
+						// },
 					},
 				},
 			}),

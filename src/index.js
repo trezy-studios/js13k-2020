@@ -12,7 +12,10 @@ import {
 	setMusicVolume,
 } from './helpers/audio'
 import { canvas } from './render/canvas'
-import { Controller } from './structures/Controller'
+import {
+	start as startController,
+	stop as stopController,
+} from './helpers/controls'
 import { createStringCanvas } from './render/font'
 import { Screen } from './structures/Screen'
 import { settings } from './helpers/settings'
@@ -24,16 +27,14 @@ import * as maps from './maps/index'
 
 
 
-// Local constants
-const canvasElement = document.querySelector('canvas')
-const canvasHeight = canvasElement.height
-const canvasWidth = canvasElement.width
-const controller = new Controller
-const gameElement = document.querySelector('#game')
-const gameWrapperElement = document.querySelector('#game-wrapper')
-const mainMenuElement = document.querySelector('#main')
-const mapSelectMenuElement = document.querySelector('#map-select')
-const render = canvas(canvasElement)
+let canvasElement = document.querySelector('canvas')
+let canvasHeight = canvasElement.height
+let canvasWidth = canvasElement.width
+let gameElement = document.querySelector('#game')
+let gameWrapperElement = document.querySelector('#game-wrapper')
+let mainMenuElement = document.querySelector('#main')
+let mapSelectMenuElement = document.querySelector('#map-select')
+let render = canvas(canvasElement)
 
 
 
@@ -47,15 +48,15 @@ let music = null
 
 
 // screens
-const loadingScreen = new Screen({
+let loadingScreen = new Screen({
 	async onInit() {
 		console.log('loading')
 
 		// Load the "LOADING" image so it displays before we start loading anything
 		// else.
-		const loadingElement = document.querySelector('#loading')
-		const loadingImageElement = document.createElement('img')
-		const loadingMessageElement = document.querySelector('#loading-message')
+		let loadingElement = document.querySelector('#loading')
+		let loadingImageElement = document.createElement('img')
+		let loadingMessageElement = document.querySelector('#loading-message')
 
 		function setMessage (text) {
 			loadingMessageElement.innerHTML = text
@@ -81,128 +82,37 @@ const loadingScreen = new Screen({
 	selector: '#loading-screen',
 })
 
-const settingsScreen = new Screen({
+let settingsScreen = new Screen({
 	onInit() {
-		const resumeButton = this.node.querySelector('[data-action="open:game"]')
+		let resumeButton = this.node.querySelector('[data-action="open:game"]')
 		resumeButton.on('click', () => gameScreen.show())
-
-		const handleAutoscaleChange = ({ detail }) => {
-			const resolutionInputElement = this.node.querySelector('#resolution')
-			// const resolutionValueElement = this.node.querySelector('[for="resolution"].value')
-			const resolutionOptionElements = this.node.querySelectorAll('[name="resolution"]')
-
-			if (settings.autoscale) {
-				resolutionOptionElements.forEach(resolutionOptionElement => {
-					resolutionOptionElement.setAttribute('disabled', true)
-				})
-				// resolutionInputElement.parentNode.classList.add('disabled')
-				// resolutionInputElement.setAttribute('disabled', true)
-				// resolutionValueElement.innerHTML = 'Autoscale'
-				// settings.resolution = 'Autoscale'
-			} else {
-				resolutionOptionElements.forEach(resolutionOptionElement => {
-					resolutionOptionElement.removeAttribute('disabled')
-				})
-				// resolutionInputElement.parentNode.classList.remove('disabled')
-				// resolutionInputElement.removeAttribute('disabled')
-				// resolutionValueElement.innerHTML = settings.resolution
-				// settings.resolution = 'Autoscale'
-			}
-		}
-
-		settings.on('change:autoscale', handleAutoscaleChange)
-		settings.on('change:enableMusic', () => (settings.enableMusic ? (music = playAudio('depp', 1)) : music.stop()))
+		settings.on('change:enableMusic', () => (settings.enableMusic ? (music = playAudio('test', 1)) : music.stop()))
 		settings.on('change:musicVolume', () => setMusicVolume())
 
-		const options = this.node.querySelectorAll('.option')
+		let options = this.node.querySelectorAll('.option')
 		options.forEach(option => {
-			const [, target] = option.getAttribute('data-action').split(':')
-			const targetElement = this.node.querySelector(`#${target}`)
-			const menuElements = [...targetElement.parentNode.children]
+			let [, target] = option.getAttribute('data-action').split(':')
+			let targetElement = this.node.querySelector(`#${target}`)
+			let menuElements = [...targetElement.parentNode.children]
 
 			option.on('click', () => {
 				options.forEach(otherOption => otherOption.classList.remove('active'))
 				option.classList.add('active')
 
-				menuElements.forEach(menuElement => menuElement.setAttribute('hidden', true))
+				menuElements.forEach(menuElement => menuElement.setAttribute('hidden', 1))
 				targetElement.removeAttribute('hidden')
 			})
 		})
 
-		const resolutionsDropdownElement = this.node.querySelector('details')
-		const resolutionOptionsElement = this.node.querySelector('#resolution-options')
-		const resolutions = [
-			'640x480',
-			'1280x720',
-			'1920x1080',
-			'3840x2160',
-		]
-		const closeResolutionsDropdown = (refocus = false) => {
-			resolutionsDropdownElement.removeAttribute('open')
-
-			if (refocus) {
-				resolutionsDropdownElement.querySelector('summary').focus()
-			}
-		}
-		resolutions.forEach(resolution => {
-			const listItemElement = document.createElement('li')
-			const inputElement = document.createElement('input')
-			const labelElement = document.createElement('label')
-
-			inputElement.setAttribute('id', `r${resolution}`)
-			inputElement.setAttribute('name', 'resolution')
-			inputElement.setAttribute('type', 'radio')
-			inputElement.setAttribute('value', resolution)
-
-			// Managing focus is weird. When tabbing from one radio button to the
-			// next, there's a moment where there nothing is in focus. Also, clicking
-			// on a form element element causes the element to be unfocused for a
-			// second. Hence the tiny delay before closing the dropdown.
-			inputElement.on('blur', () => setTimeout(() => {
-				if (!resolutionsDropdownElement.contains(document.activeElement)) {
-					closeResolutionsDropdown()
-				}
-			}, 100))
-
-			inputElement.on('keydown', ({ code, target }) => {
-				if (code ==='Escape') {
-					closeResolutionsDropdown(true)
-				}
-			})
-
-			inputElement.on('keypress', ({ code, target }) => {
-				if (code === 'Enter') {
-					closeResolutionsDropdown(true)
-				}
-			})
-
-			if (settings.resolution === resolution) {
-				inputElement.setAttribute('checked', true)
-			}
-
-			labelElement.setAttribute('for', `r${resolution}`)
-			labelElement.innerHTML = resolution
-
-			listItemElement.appendChild(inputElement)
-			listItemElement.appendChild(labelElement)
-			resolutionOptionsElement.appendChild(listItemElement)
-		})
-
-		resolutionsDropdownElement.on('toggle', ({ target }) => {
-			if (target.open) {
-				resolutionOptionsElement.querySelector(':checked').focus()
-			}
-		})
-
-		const inputs = this.node.querySelectorAll('input')
+		let inputs = this.node.querySelectorAll('input')
 		inputs.forEach(inputElement => {
-			const {
+			let {
 				name,
 				type,
 			} = inputElement
 
 			inputElement.on('change', ({ target }) => {
-				const {
+				let {
 					checked,
 				} = target
 
@@ -220,13 +130,14 @@ const settingsScreen = new Screen({
 				}
 			})
 
-			const settingsValue = settings[name]
+			let settingsValue = settings[name]
 
+			console.log({inputElement})
 			if (typeof settingsValue === 'boolean') {
 				inputElement.checked = settingsValue
 			} else if (inputElement.type === 'radio') {
-				const targetElement = this.node.querySelector(`[name="${inputElement.name}"][value="${settingsValue}"]`)
-				targetElement.checked = true
+				let targetElement = this.node.querySelector(`[name="${inputElement.name}"][value="${settingsValue}"]`)
+				targetElement.checked = 1
 			} else {
 				inputElement.value = settingsValue
 			}
@@ -236,22 +147,22 @@ const settingsScreen = new Screen({
 	selector: '#settings-menu',
 })
 
-const gameScreen = new Screen({
+let gameScreen = new Screen({
 	onHide() {
-		controller.stop()
+		stopController()
 	},
 
 	onInit() {
-		const menuButton = this.node.querySelector('[data-action="open:menu"]')
+		let menuButton = this.node.querySelector('[data-action="open:menu"]')
 		menuButton.on('click', () => settingsScreen.show())
 	},
 
 	onShow() {
 		let frame = 0
 
-		controller.start()
+		startController()
 
-		const gameLoop = () => {
+		let gameLoop = () => {
 			frame++
 
 			render.drawGrid()
@@ -259,9 +170,9 @@ const gameScreen = new Screen({
 			render.drawPlacement()
 			render.update()
 
-			const timerElement = this.node.querySelector('#play-info time')
-			const now = new Date
-			const timestamp = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`
+			let timerElement = this.node.querySelector('#play-info time')
+			let now = new Date
+			let timestamp = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`
 
 			if (timerElement.innerText.trim() !== timestamp) {
 				timerElement.innerHTML = timestamp
@@ -275,23 +186,23 @@ const gameScreen = new Screen({
 	selector: '#game',
 })
 
-const mapSelectScreen = new Screen({
+let mapSelectScreen = new Screen({
 	onInit() {
-		const mapsList = this.node.querySelector('#maps')
+		let mapsList = this.node.querySelector('#maps')
 
-		const handleMapButtonClick = event => {
-			const { target: { value } } = event
+		let handleMapButtonClick = event => {
+			let { target: { value } } = event
 			state.map = value
 			gameScreen.show()
 		}
 
-		const createMapButton = mapName => {
-			const mapButton = document.createElement('button')
+		let createMapButton = mapName => {
+			let mapButton = document.createElement('button')
 			mapButton.setAttribute('type', 'button')
 			mapButton.setAttribute('value', mapName)
 			mapButton.on('click', handleMapButtonClick)
 
-			const mapNameCanvas = createStringCanvas(mapName)
+			let mapNameCanvas = createStringCanvas(mapName)
 
 			mapButton.appendChild(mapNameCanvas)
 			mapsList.appendChild(mapButton)
@@ -305,14 +216,14 @@ const mapSelectScreen = new Screen({
 	selector: '#map-select',
 })
 
-const mainMenuScreen = new Screen({
+let mainMenuScreen = new Screen({
 	onInit() {
-		const startButtonElement = this.node.querySelector('#start')
+		let startButtonElement = this.node.querySelector('#start')
 		startButtonElement.on('click', () => mapSelectScreen.show())
 	},
 
 	onShow() {
-		music = playAudio('depp', 1)
+		music = playAudio('test', 1)
 	},
 
 	selector: '#main-menu',
@@ -322,13 +233,13 @@ const mainMenuScreen = new Screen({
 
 
 
-const initialize = () => {
+let initialize = () => {
 	function renderStrings(root = document.documentElement) {
 		if (root.nodeType === 3) {
 			root = root.parentNode
 		}
 
-		const treewalker = document.createTreeWalker(
+		let treewalker = document.createTreeWalker(
 			root,
 			NodeFilter.SHOW_TEXT,
 			{
@@ -338,13 +249,13 @@ const initialize = () => {
 					}
 				},
 			},
-			false
+			0
 		)
 
 		let nextNode = null
 
 		while (nextNode = treewalker.nextNode()) {
-			const container = nextNode.parentNode
+			let container = nextNode.parentNode
 
 			if (['SCRIPT', 'STYLE'].includes(container.tagName)) {
 				continue
@@ -356,21 +267,21 @@ const initialize = () => {
 				fontFamily = 'thaleah'
 			}
 
-			const oldCanvas = container.querySelector('canvas')
+			let oldCanvas = container.querySelector('canvas')
 
 			if (oldCanvas) {
 				container.removeChild(oldCanvas)
 			}
 
-			const textCanvas = createStringCanvas(container.innerText, fontFamily)
+			let textCanvas = createStringCanvas(container.innerText, fontFamily)
 
 			container.style.fontSize = 0
 			container.appendChild(textCanvas)
 		}
 	}
 
-	const handleMutation = mutation => {
-		const {
+	let handleMutation = mutation => {
+		let {
 			addedNodes,
 			type,
 		} = mutation
@@ -380,25 +291,25 @@ const initialize = () => {
 		}
 	}
 
-	const mutationObserver = new MutationObserver((mutations, observer) => {
+	let mutationObserver = new MutationObserver((mutations, observer) => {
 		mutations.forEach(handleMutation)
 	})
 
 	mutationObserver.observe(document.documentElement, {
-		childList: true,
-		subtree: true,
+		childList: 1,
+		subtree: 1,
 	})
 
 	document.querySelectorAll('[data-bind]').forEach(boundElement => {
 		function update(targetElement, value) {
-			if (typeof value === 'boolean') {
+			if ([0, 1].includes(value)) {
 				targetElement.innerHTML = value ? 'On' : 'Off'
 			} else {
 				targetElement.innerHTML = value
 			}
 		}
 
-		const boundSetting = boundElement.getAttribute('data-bind')
+		let boundSetting = boundElement.getAttribute('data-bind')
 
 		settings.on(`change:${boundSetting}`, ({ detail }) => {
 			update(boundElement, detail.value)
@@ -406,8 +317,6 @@ const initialize = () => {
 
 		update(boundElement, settings[boundSetting])
 	})
-
-	settings.on('change:autoscale', updateGameScale)
 
 	updateGameScale()
 	renderStrings()

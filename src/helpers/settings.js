@@ -1,7 +1,7 @@
-const localstoragePrefix = 'Trezy Studios::Not Found::'
+let localstoragePrefix = 'Trezy Studios::Not Found::'
 
 function getFromLocalStorage(key, defaultValue) {
-	const value = localStorage.getItem(`${localstoragePrefix}${key}`)
+	let value = localStorage.getItem(`${localstoragePrefix}${key}`)
 
 	if (value) {
 		try {
@@ -14,20 +14,18 @@ function getFromLocalStorage(key, defaultValue) {
 	return defaultValue
 }
 
-const defaultSettings = {
-	autoscale: getFromLocalStorage('autoscale', true),
-	enableMusic: getFromLocalStorage('enableMusic', true),
-	enableSFX: getFromLocalStorage('enableSFX', true),
+let defaultSettings = {
+	enableMusic: getFromLocalStorage('enableMusic', 1),
+	enableSFX: getFromLocalStorage('enableSFX', 1),
 	musicVolume: getFromLocalStorage('musicVolume', 50),
-	resolution: getFromLocalStorage('resolution', '3840x2160'),
 	soundFXVolume: getFromLocalStorage('soundFXVolume', 50),
 }
 
-const settingsStore = { ...defaultSettings }
+let settingsStore = { ...defaultSettings }
 
-const eventTarget = new EventTarget
+let eventTarget = new EventTarget
 
-export const settings = new Proxy(settingsStore, {
+export let settings = new Proxy(settingsStore, {
 	get (object, key) {
 		if (key === 'on') {
 			return eventTarget.on.bind(eventTarget)
@@ -37,7 +35,7 @@ export const settings = new Proxy(settingsStore, {
 	},
 
 	set (object, key, value) {
-		const eventOptions = {
+		let eventOptions = {
 			detail: {
 				key,
 				value,
@@ -50,6 +48,6 @@ export const settings = new Proxy(settingsStore, {
 		eventTarget.dispatchEvent(new CustomEvent(`change:${key}`, eventOptions))
 		eventTarget.dispatchEvent(new CustomEvent('change', eventOptions))
 
-		return true
+		return 1
 	},
 })

@@ -5,233 +5,97 @@ import ThaleahImage from '../assets/images/thaleah.font.png'
 
 
 
-const baseCharacter = {
+export let fontImage = new Image
+export let state = {
+	loaded: 0,
+}
+
+fontImage.src = ThaleahImage
+fontImage.on('load', () => state.loaded = 1)
+
+export let characterDefaults = {
 	h: 7,
 	w: 7,
 }
 
-const fontImage = new Image
-const state = {
-	loaded: false,
-}
+export let coords = {
+	a: [0],
 
-fontImage.src = ThaleahImage
-fontImage.on('load', () => state.loaded = true)
+	b: [7],
 
-const coords = {
-	a: {
-		...baseCharacter,
-		x: 0,
-	},
+	c: [14],
 
-	b: {
-		...baseCharacter,
-		x: 7,
-	},
+	d: [21],
 
-	c: {
-		...baseCharacter,
-		x: 14,
-	},
+	e: [28],
 
-	d: {
-		...baseCharacter,
-		x: 21,
-	},
+	f: [35],
 
-	e: {
-		...baseCharacter,
-		x: 28,
-	},
+	g: [42],
 
-	f: {
-		...baseCharacter,
-		x: 35,
-	},
+	h: [49],
 
-	g: {
-		...baseCharacter,
-		x: 42,
-	},
+	i: [56, 2],
 
-	h: {
-		...baseCharacter,
-		x: 49,
-	},
+	j: [58],
 
-	i: {
-		...baseCharacter,
-		x: 56,
-		w: 2,
-	},
+	k: [65],
 
-	j: {
-		...baseCharacter,
-		x: 58,
-	},
+	l: [72],
 
-	k: {
-		...baseCharacter,
-		x: 65,
-	},
+	m: [79],
 
-	l: {
-		...baseCharacter,
-		x: 72,
-	},
+	n: [86],
 
-	m: {
-		...baseCharacter,
-		x: 79,
-	},
+	o: [93],
 
-	n: {
-		...baseCharacter,
-		x: 86,
-	},
+	p: [100],
 
-	o: {
-		...baseCharacter,
-		x: 93,
-	},
+	q: [107],
 
-	p: {
-		...baseCharacter,
-		x: 100,
-	},
+	r: [114],
 
-	q: {
-		...baseCharacter,
-		x: 107,
-	},
+	s: [121],
 
-	r: {
-		...baseCharacter,
-		x: 114,
-	},
+	t: [128, 6],
 
-	s: {
-		...baseCharacter,
-		x: 121,
-	},
+	u: [134],
 
-	t: {
-		...baseCharacter,
-		x: 128,
-		w: 6,
-	},
+	v: [141],
 
-	u: {
-		...baseCharacter,
-		x: 134,
-	},
+	w: [148],
 
-	v: {
-		...baseCharacter,
-		x: 141,
-	},
+	x: [155],
 
-	w: {
-		...baseCharacter,
-		x: 148,
-	},
+	y: [162, 6],
 
-	x: {
-	...baseCharacter,
-		x: 155,
-	},
+	z: [168],
 
-	y: {
-		...baseCharacter,
-		x: 162,
-		w: 6,
-	},
+	0: [175],
 
-	z: {
-		...baseCharacter,
-		x: 168,
-	},
+	1: [182, 4],
 
-	0: {
-		...baseCharacter,
-		x: 175,
-	},
+	2: [186],
 
-	1: {
-		...baseCharacter,
-		x: 182,
-		w: 4,
-	},
+	3: [193],
 
-	2: {
-		...baseCharacter,
-		x: 186,
-	},
+	4: [200],
 
-	3: {
-		...baseCharacter,
-		x: 193,
-	},
+	5: [207],
 
-	4: {
-		...baseCharacter,
-		x: 200,
-	},
+	6: [214],
 
-	5: {
-		...baseCharacter,
-		x: 207,
-	},
+	7: [221],
 
-	6: {
-		...baseCharacter,
-		x: 214,
-	},
+	8: [228],
 
-	7: {
-		...baseCharacter,
-		x: 221,
-	},
+	9: [235],
 
-	8: {
-		...baseCharacter,
-		x: 228,
-	},
+	':': [242, 2],
 
-	9: {
-		...baseCharacter,
-		x: 235,
-	},
+	'!': [244, 2],
 
-	':': {
-		...baseCharacter,
-		w: 2,
-		x: 242,
-	},
+	'?': [246],
 
-	'!': {
-		...baseCharacter,
-		w: 2,
-		x: 244,
-	},
-
-	'?': {
-		...baseCharacter,
-		x: 246,
-	},
-
-	' ': {
-		...baseCharacter,
-		x: 254,
-	},
-}
-
-
-
-
-
-export {
-	coords,
-	fontImage,
-	state,
+	' ': [254],
 }

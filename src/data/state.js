@@ -10,27 +10,27 @@ import * as maps from '../maps'
 
 
 
-const stateObject = {
-	canPlace: true,
+let stateObject = {
+	canPlace: 1,
 	currentTile: decodeTile(`010\n111`),
 	map: null,
 	placeX: 0,
 	placeY: 0,
 }
 
-export const state = new Proxy(stateObject, {
+export let state = new Proxy(stateObject, {
 	set (target, key, value) {
 		if (key === 'currentTile') {
 			target[key] = decodeTile(value)
-			return true
+			return 1
 		}
 
 		if (key === 'map') {
 			target[key] = maps[value]
-			return true
+			return 1
 		}
 
-		const {
+		let {
 			w,
 			h,
 		} = target.currentTile
@@ -55,15 +55,15 @@ export const state = new Proxy(stateObject, {
 		if (['placeX', 'placeY'].includes(key)) {
 			target.canPlace = !target.currentTile.grid.some((type, index) => {
 					if (type) {
-						const x = (index % w) + target.placeX
-						const y = Math.floor(index / w) + target.placeY
+						let x = (index % w) + target.placeX
+						let y = Math.floor(index / w) + target.placeY
 						return target.map.at(x, y) !== 0
 					}
 
-					return false
+					return 0
 			})
 		}
 
-		return true
+		return 1
 	}
 })

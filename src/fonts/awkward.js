@@ -5,243 +5,99 @@ import AwkwardImage from '../assets/images/awkward.font.png'
 
 
 
-const baseCharacter = {
+export let fontImage = new Image
+export let state = {
+	loaded: 0,
+}
+
+fontImage.src = AwkwardImage
+fontImage.on('load', () => state.loaded = 1)
+
+export let characterDefaults = {
 	h: 5,
 	w: 4,
 }
 
-const fontImage = new Image
-const state = {
-	loaded: false,
-}
+export let coords = {
+	a: [0],
 
-fontImage.src = AwkwardImage
-fontImage.on('load', () => state.loaded = true)
+	b: [4],
 
-const coords = {
-	a: {
-		...baseCharacter,
-		x: 0,
-	},
+	c: [8],
 
-	b: {
-		...baseCharacter,
-		x: 4,
-	},
+	d: [12],
 
-	c: {
-		...baseCharacter,
-		x: 8,
-	},
+	e: [16],
 
-	d: {
-		...baseCharacter,
-		x: 12,
-	},
+	f: [20],
 
-	e: {
-		...baseCharacter,
-		x: 16,
-	},
+	g: [24],
 
-	f: {
-		...baseCharacter,
-		x: 20,
-	},
+	h: [28],
 
-	g: {
-		...baseCharacter,
-		x: 24,
-	},
+	i: [32, 1],
 
-	h: {
-		...baseCharacter,
-		x: 28,
-	},
+	j: [33],
 
-	i: {
-		...baseCharacter,
-		x: 32,
-		w: 1,
-	},
+	k: [37],
 
-	j: {
-		...baseCharacter,
-		x: 33,
-	},
+	l: [41],
 
-	k: {
-		...baseCharacter,
-		x: 37,
-	},
+	m: [45, 5],
 
-	l: {
-		...baseCharacter,
-		x: 41,
-	},
+	n: [50, 5],
 
-	m: {
-		...baseCharacter,
-		w: 5,
-		x: 45,
-	},
+	o: [55],
 
-	n: {
-		...baseCharacter,
-		w: 5,
-		x: 50,
-	},
+	p: [59],
 
-	o: {
-		...baseCharacter,
-		x: 55,
-	},
+	q: [63],
 
-	p: {
-		...baseCharacter,
-		x: 59,
-	},
+	r: [67],
 
-	q: {
-		...baseCharacter,
-		x: 63,
-	},
+	s: [71],
 
-	r: {
-		...baseCharacter,
-		x: 67,
-	},
+	t: [75, 5],
 
-	s: {
-		...baseCharacter,
-		x: 71,
-	},
+	u: [80],
 
-	t: {
-		...baseCharacter,
-		w: 5,
-		x: 75,
-	},
+	v: [84],
 
-	u: {
-		...baseCharacter,
-		x: 80,
-	},
+	w: [88, 5],
 
-	v: {
-		...baseCharacter,
-		x: 84,
-	},
+	x: [93],
 
-	w: {
-		...baseCharacter,
-		w: 5,
-		x: 88,
-	},
+	y: [97],
 
-	x: {
-	...baseCharacter,
-		x: 93,
-	},
+	z: [101],
 
-	y: {
-		...baseCharacter,
-		x: 97,
-	},
+	0: [105],
 
-	z: {
-		...baseCharacter,
-		x: 101,
-	},
+	1: [109, 1],
 
-	0: {
-		...baseCharacter,
-		x: 105,
-	},
+	2: [110],
 
-	1: {
-		...baseCharacter,
-		x: 109,
-		w: 1,
-	},
+	3: [114],
 
-	2: {
-		...baseCharacter,
-		x: 110,
-	},
+	4: [118],
 
-	3: {
-		...baseCharacter,
-		x: 114,
-	},
+	5: [122],
 
-	4: {
-		...baseCharacter,
-		x: 118,
-	},
+	6: [126],
 
-	5: {
-		...baseCharacter,
-		x: 122,
-	},
+	7: [130],
 
-	6: {
-		...baseCharacter,
-		x: 126,
-	},
+	8: [134],
 
-	7: {
-		...baseCharacter,
-		x: 130,
-	},
+	9: [138],
 
-	8: {
-		...baseCharacter,
-		x: 134,
-	},
+	':': [142, 1],
 
-	9: {
-		...baseCharacter,
-		x: 138,
-	},
+	'!': [143, 1],
 
-	':': {
-		...baseCharacter,
-		w: 1,
-		x: 142,
-	},
+	'?': [144, 3],
 
-	'!': {
-		...baseCharacter,
-		w: 1,
-		x: 143,
-	},
+	',': [147, 1, 6],
 
-	'?': {
-		...baseCharacter,
-		w: 3,
-		x: 144,
-	},
-
-	',': {
-		...baseCharacter,
-		h: 6,
-		w: 1,
-		x: 147,
-	},
-
-	' ': {
-		...baseCharacter,
-		x: 148,
-	},
-}
-
-
-
-
-
-export {
-	coords,
-	fontImage,
-	state,
+	' ': [148],
 }

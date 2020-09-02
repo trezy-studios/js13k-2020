@@ -6,8 +6,7 @@ import * as thaleah from '../fonts/thaleah'
 
 
 
-// Local constants
-const fonts = {
+let fonts = {
 	awkward,
 	thaleah,
 }
@@ -24,20 +23,25 @@ function drawStringToCanvas (stringCoords, sourceImage, context) {
 	})
 }
 
-export const createStringCanvas = (string, fontFamily = 'awkward') => {
-	const {
+export let createStringCanvas = (string, fontFamily = 'awkward') => {
+	let {
+		characterDefaults,
 		coords,
 		fontImage,
 		state,
 	} = fonts[fontFamily]
-	const normalizedString = string.toLowerCase().trim()
+	let normalizedString = string.toLowerCase().trim()
 
-	const {
+	let {
 		stringCoords,
 		stringHeight,
 		stringWidth,
 	} = normalizedString.split('').reduce((accumulator, character, index) => {
-		const characterCoords = coords[character]
+		let characterCoords = {
+			...characterDefaults,
+		}
+
+		coords[character].map((coord, index) => (typeof coord !== 'undefined') ? (characterCoords['xwh'[index]] = coord) : 0)
 
 		accumulator.stringCoords.push(characterCoords)
 		accumulator.stringHeight = Math.max(accumulator.stringHeight, characterCoords.h)
@@ -54,8 +58,8 @@ export const createStringCanvas = (string, fontFamily = 'awkward') => {
 		stringWidth: 0,
 	})
 
-	const canvas = document.createElement('canvas')
-	const context = canvas.getContext('2d')
+	let canvas = document.createElement('canvas')
+	let context = canvas.getContext('2d')
 
 	canvas.classList.add('text')
 	canvas.setAttribute('width', stringWidth)

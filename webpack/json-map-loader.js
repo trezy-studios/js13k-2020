@@ -50,6 +50,6 @@ module.exports = function (content) {
     do {
         args.push(get_tile(layers[tile].data));
     } while (layers[++tile]);
-    const code = `const {Map} = require(${JSON.stringify(path.resolve(process.cwd(), 'src', 'maps', 'map.js'))}); module.exports = new Map([${args}])`;
+    const code = `export default new (require(${JSON.stringify(path.resolve(process.cwd(), 'src', 'maps', 'map.js'))}).Map)([${args}])`;
     return code
 }

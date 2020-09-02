@@ -214,65 +214,6 @@ ol {
 	padding: 0;
 }
 
-.dropdown {
-	summary {
-		outline: none;
-	}
-
-	&[open] {
-		position: relative;
-
-		ol {
-			background: $black;
-			border: 1px solid $purple;
-			border-right: none;
-			margin-right: -2px;
-			padding: 3px 0 3px 3px;
-			position: absolute;
-			right: 0;
-			top: -4px;
-		}
-
-		li {
-			display: block;
-
-			&:not(:first-child) {
-				margin-top: 3px;
-			}
-		}
-
-		label {
-			position: relative;
-			width: 100%;
-			padding-left: 4px;
-		}
-
-		:checked + label::before {
-			background-color: $white;
-			content: '';
-			clip-path: polygon(
-				0 0,
-				1px 0,
-				1px 1px,
-				2px 1px,
-				2px 2px,
-				3px 2px,
-				3px 3px,
-				2px 3px,
-				2px 4px,
-				1px 4px,
-				1px 5px,
-				0 5px
-			);
-			display: block;
-			left: 0;
-			height: 5px;
-			position: absolute;
-			width: 3px;
-		}
-	}
-}
-
 .frame {
 	display: flex;
 	flex-direction: column;
@@ -396,8 +337,7 @@ ol {
 	margin-top: 4px;
 	padding: 1px 2px;
 
-	input[type=checkbox],
-	input[type=radio] {
+	input[type=checkbox] {
 		height: 0;
 		margin: 0;
 		opacity: 0;
@@ -516,6 +456,6 @@ ol {
 	}
 }
 
-*[hidden="true"] {
+*[hidden] {
 	display: none;
 }

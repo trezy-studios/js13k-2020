@@ -1,12 +1,12 @@
 export function updateGameScale () {
-	const gameHeight = 127
-	const gameWidth = 240
-	const windowHeight = window.innerHeight
-	const windowWidth = window.innerWidth
+	let gameHeight = 127
+	let gameWidth = 240
+	let windowHeight = window.innerHeight
+	let windowWidth = window.innerWidth
 
 	// Get the aspect ratios in case we need to expand or shrink to fit
-	const gameAspectRatio = gameWidth / gameHeight;
-	const windowAspectRatio = windowWidth / windowHeight;
+	let gameAspectRatio = gameWidth / gameHeight;
+	let windowAspectRatio = windowWidth / windowHeight;
 
 	let scale = windowHeight / gameHeight
 
@@ -16,6 +16,6 @@ export function updateGameScale () {
 		scale = Math.floor(windowWidth / gameWidth)
 	}
 
-	const gameWrapper = document.querySelector('#game-wrapper')
+	let gameWrapper = document.querySelector('#game-wrapper')
 	gameWrapper.style.transform = `scale(${scale})`
 }

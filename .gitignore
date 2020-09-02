@@ -1,7 +1,7 @@
 .DS_Store
 .size-snapshot.json
+build.zip
 yarn-error.log
 
-builds/
 dist/
 node_modules/

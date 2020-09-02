@@ -110,12 +110,6 @@
 
 			<button
 				class="option"
-				data-action="open:video-settings">
-				Video
-			</button>
-
-			<button
-				class="option"
 				data-action="open:audio-settings">
 				Audio
 			</button>
@@ -136,45 +130,7 @@
 		</div>
 
 		<div class="frame dark stretch">
-			<div id="video-settings">
-				<h2>Video Settings</h2>
-
-				<div class="setting">
-					<label
-						class="name"
-						for="autoscale">
-						Autoscale
-					</label>
-
-					<input
-						id="autoscale"
-						name="autoscale"
-						type="checkbox">
-					<label
-						class="value"
-						data-bind="autoscale"
-						for="autoscale">
-						Off
-					</label>
-				</div>
-
-				<div class="setting">
-					<label class="name">
-						Resolution
-					</label>
-
-					<div class="value">
-						<details class="dropdown">
-							<summary data-bind="resolution"></summary>
-							<ol id="resolution-options"></ol>
-						</details>
-					</div>
-				</div>
-			</div>
-
-			<div
-				hidden
-				id="audio-settings">
+			<div id="audio-settings">
 				<h2>Audio Settings</h2>
 
 				<div class="setting">
@@ -192,7 +148,6 @@
 						class="value"
 						data-bind="enableMusic"
 						for="enableMusic">
-						On
 					</label>
 				</div>
 

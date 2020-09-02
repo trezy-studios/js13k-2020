@@ -31,11 +31,7 @@ class Canvas {
 		this.shadow = ctx2d(el.cloneNode())
 		this.queue = [[], [], []]
 		this.layer = canvas.BG
-		window.on('resize', () => {
-			if (settings.autoscale) {
-				updateGameScale()
-			}
-		})
+		window.on('resize', updateGameScale)
 	}
 
 	alpha(alpha) {

@@ -35,32 +35,8 @@ let settingsScreen = new Screen({
 	onInit() {
 		let resumeButton = this.node.querySelector('[data-action="open:game"]')
 		resumeButton.on('click', () => gameScreen.show())
-
-		let handleAutoscaleChange = ({ detail }) => {
-			let resolutionInputElement = this.node.querySelector('#resolution')
-			// let resolutionValueElement = this.node.querySelector('[for="resolution"].value')
-			let resolutionOptionElements = this.node.querySelectorAll('[name="resolution"]')
-
-			if (settings.autoscale) {
-				resolutionOptionElements.forEach(resolutionOptionElement => {
-					resolutionOptionElement.setAttribute('disabled', 1)
-				})
-				// resolutionInputElement.parentNode.classList.add('disabled')
-				// resolutionInputElement.setAttribute('disabled', 1)
-				// resolutionValueElement.innerHTML = 'Autoscale'
-				// settings.resolution = 'Autoscale'
-			} else {
-				resolutionOptionElements.forEach(resolutionOptionElement => {
-					resolutionOptionElement.removeAttribute('disabled')
-				})
-				// resolutionInputElement.parentNode.classList.remove('disabled')
-				// resolutionInputElement.removeAttribute('disabled')
-				// resolutionValueElement.innerHTML = settings.resolution
-				// settings.resolution = 'Autoscale'
-			}
-		}
-
-		settings.on('change:autoscale', handleAutoscaleChange)
+		settings.on('change:enableMusic', () => (settings.enableMusic ? (music = playAudio('depp', 1)) : music.stop()))
+		settings.on('change:musicVolume', () => setMusicVolume())
 
 		let options = this.node.querySelectorAll('.option')
 		options.forEach(option => {
@@ -75,71 +51,6 @@ let settingsScreen = new Screen({
 				menuElements.forEach(menuElement => menuElement.setAttribute('hidden', 1))
 				targetElement.removeAttribute('hidden')
 			})
-		})
-
-		let resolutionsDropdownElement = this.node.querySelector('details')
-		let resolutionOptionsElement = this.node.querySelector('#resolution-options')
-		let resolutions = [
-			'640x480',
-			'1280x720',
-			'1920x1080',
-			'3840x2160',
-		]
-		let closeResolutionsDropdown = (refocus = 0) => {
-			resolutionsDropdownElement.removeAttribute('open')
-
-			if (refocus) {
-				resolutionsDropdownElement.querySelector('summary').focus()
-			}
-		}
-		resolutions.forEach(resolution => {
-			let listItemElement = document.createElement('li')
-			let inputElement = document.createElement('input')
-			let labelElement = document.createElement('label')
-
-			inputElement.setAttribute('id', `r${resolution}`)
-			inputElement.setAttribute('name', 'resolution')
-			inputElement.setAttribute('type', 'radio')
-			inputElement.setAttribute('value', resolution)
-
-			// Managing focus is weird. When tabbing from one radio button to the
-			// next, there's a moment where there nothing is in focus. Also, clicking
-			// on a form element element causes the element to be unfocused for a
-			// second. Hence the tiny delay before closing the dropdown.
-			inputElement.on('blur', () => setTimeout(() => {
-				if (!resolutionsDropdownElement.contains(document.activeElement)) {
-					closeResolutionsDropdown()
-				}
-			}, 100))
-
-			inputElement.on('keydown', ({ code, target }) => {
-				if (code ==='Escape') {
-					closeResolutionsDropdown(1)
-				}
-			})
-
-			inputElement.on('keypress', ({ code, target }) => {
-				if (code === 'Enter') {
-					closeResolutionsDropdown(1)
-				}
-			})
-
-			if (settings.resolution === resolution) {
-				inputElement.setAttribute('checked', 1)
-			}
-
-			labelElement.setAttribute('for', `r${resolution}`)
-			labelElement.innerHTML = resolution
-
-			listItemElement.appendChild(inputElement)
-			listItemElement.appendChild(labelElement)
-			resolutionOptionsElement.appendChild(listItemElement)
-		})
-
-		resolutionsDropdownElement.on('toggle', ({ target }) => {
-			if (target.open) {
-				resolutionOptionsElement.querySelector(':checked').focus()
-			}
 		})
 
 		let inputs = this.node.querySelectorAll('input')
@@ -170,6 +81,7 @@ let settingsScreen = new Screen({
 
 			let settingsValue = settings[name]
 
+			console.log({inputElement})
 			if (typeof settingsValue === 'boolean') {
 				inputElement.checked = settingsValue
 			} else if (inputElement.type === 'radio') {
@@ -350,8 +262,6 @@ let initialize = () => {
 
 		update(boundElement, settings[boundSetting])
 	})
-
-	settings.on('change:autoscale', updateGameScale)
 
 	updateGameScale()
 	renderStrings()

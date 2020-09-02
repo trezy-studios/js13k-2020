@@ -15,10 +15,8 @@ function getFromLocalStorage(key, defaultValue) {
 }
 
 let defaultSettings = {
-	autoscale: getFromLocalStorage('autoscale', 1),
 	enableMusic: getFromLocalStorage('enableMusic', 1),
 	musicVolume: getFromLocalStorage('musicVolume', 50),
-	resolution: getFromLocalStorage('resolution', '3840x2160'),
 	soundFXVolume: getFromLocalStorage('soundFXVolume', 50),
 }
 

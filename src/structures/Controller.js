@@ -1,5 +1,6 @@
 // Local imports
 import { decodeTile } from '../helpers/decodeTile'
+import { playAudio } from '../helpers/audio'
 import { state } from '../data/state'
 
 
@@ -14,23 +15,28 @@ export class Controller {
 			if (this.enabled) {
 				switch (code) {
 					case 'ArrowDown':
+						playAudio('button')
 						state.placeY += 1
 						break
 
 					case 'ArrowLeft':
+						playAudio('button')
 						state.placeX -= 1
 						break
 
 					case 'ArrowRight':
+						playAudio('button')
 						state.placeX += 1
 						break
 
 					case 'ArrowUp':
+						playAudio('button')
 						state.placeY -= 1
 						break
 
 					case 'Enter':
 					case 'Space':
+						playAudio('placeTile')
 						this.place()
 						break
 				}

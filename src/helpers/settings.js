@@ -17,6 +17,7 @@ function getFromLocalStorage(key, defaultValue) {
 const defaultSettings = {
 	autoscale: getFromLocalStorage('autoscale', true),
 	enableMusic: getFromLocalStorage('enableMusic', true),
+	enableSFX: getFromLocalStorage('enableSFX', true),
 	musicVolume: getFromLocalStorage('musicVolume', 50),
 	resolution: getFromLocalStorage('resolution', '3840x2160'),
 	soundFXVolume: getFromLocalStorage('soundFXVolume', 50),

@@ -27,9 +27,6 @@ async function preloadImages (images) {
 	}))
 }
 
-export function preloadAudio () {
-}
-
 export function preloadFonts () {
 	return preloadImages([
 		AwkwardImage,

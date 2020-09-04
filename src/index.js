@@ -3,7 +3,6 @@ import './index.scss'
 import './patches/addEventListener'
 import LoadingImage from './assets/images/loading.png'
 import {
-	preloadAudio,
 	preloadFonts,
 	preloadSprites,
 } from './helpers/preloaders'
@@ -69,9 +68,6 @@ let loadingScreen = new Screen({
 
 		setMessage('Loading sprites')
 		await preloadSprites()
-
-		setMessage('Loading audio')
-		await preloadAudio()
 
 		setMessage('Done')
 		setTimeout(() => mainMenuScreen.show(), 1000)

@@ -1,3 +1,10 @@
+// Local imports
+import { createObservable } from './createObservable'
+
+
+
+
+
 let localstoragePrefix = 'Trezy Studios::Not Found::'
 
 function getFromLocalStorage(key, defaultValue) {
@@ -25,29 +32,13 @@ let settingsStore = { ...defaultSettings }
 
 let eventTarget = new EventTarget
 
-export let settings = new Proxy(settingsStore, {
-	get (object, key) {
-		if (key === 'on') {
-			return eventTarget.on.bind(eventTarget)
-		}
+export let settings = createObservable(settingsStore)
 
-		return settingsStore[key]
-	},
+settings.on('change', ({ detail })=> {
+	const {
+		key,
+		value,
+	} = detail
 
-	set (object, key, value) {
-		let eventOptions = {
-			detail: {
-				key,
-				value,
-			},
-		}
-
-		settingsStore[key] = value
-		localStorage.setItem(`${localstoragePrefix}${key}`, value)
-
-		eventTarget.dispatchEvent(new CustomEvent(`change:${key}`, eventOptions))
-		eventTarget.dispatchEvent(new CustomEvent('change', eventOptions))
-
-		return 1
-	},
+	localStorage.setItem(`${localstoragePrefix}${key}`, value)
 })

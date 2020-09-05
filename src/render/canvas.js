@@ -137,23 +137,12 @@ class Canvas {
 			placeY,
 		} = state
 		let {
-			grid,
+			data: tileData,
+		} = map.tiles[currentTile]
+		let {
 			h,
 			w,
-		} = currentTile
-
-		grid.forEach((type, index) => {
-			if (type) {
-				let x = (index % w) + placeX
-				let xPixel = x * TILE_SIZE.w
-				let y = Math.floor(index / w) + placeY
-				let yPixel = y * TILE_SIZE.h
-
-				let canPlace = map.at(x, y) === 0
-
-				tiles[type](this, xPixel, yPixel, 1, canPlace)
-			}
-		})
+		} = GRID_SIZE
 	}
 }
 

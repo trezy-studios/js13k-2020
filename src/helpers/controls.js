@@ -1,5 +1,4 @@
 // Local imports
-import { decodeTile } from './decodeTile'
 import { state } from '../data/state'
 
 

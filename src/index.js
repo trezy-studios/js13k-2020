@@ -3,7 +3,6 @@ import './index.scss'
 import './patches/addEventListener'
 import LoadingImage from './assets/images/loading.png'
 import {
-	preloadAudio,
 	preloadFonts,
 	preloadSprites,
 } from './helpers/preloaders'
@@ -18,7 +17,7 @@ import {
 } from './helpers/controls'
 import { createStringCanvas } from './render/font'
 import { Screen } from './structures/Screen'
-import { settings } from './helpers/settings'
+import { settings } from './data/settings'
 import { state } from './data/state'
 import { updateGameScale } from './helpers/updateGameScale'
 import * as maps from './maps/index'
@@ -50,8 +49,6 @@ let music = null
 // screens
 let loadingScreen = new Screen({
 	async onInit() {
-		console.log('loading')
-
 		// Load the "LOADING" image so it displays before we start loading anything
 		// else.
 		let loadingElement = document.querySelector('#loading')
@@ -71,9 +68,6 @@ let loadingScreen = new Screen({
 
 		setMessage('Loading sprites')
 		await preloadSprites()
-
-		setMessage('Loading audio')
-		await preloadAudio()
 
 		setMessage('Done')
 		setTimeout(() => mainMenuScreen.show(), 1000)
@@ -118,7 +112,7 @@ let settingsScreen = new Screen({
 
 				switch (type) {
 					case 'checkbox':
-						settings[name] = checked
+						settings[name] = +checked
 						break
 
 					case 'number':
@@ -132,7 +126,6 @@ let settingsScreen = new Screen({
 
 			let settingsValue = settings[name]
 
-			console.log({inputElement})
 			if (typeof settingsValue === 'boolean') {
 				inputElement.checked = settingsValue
 			} else if (inputElement.type === 'radio') {

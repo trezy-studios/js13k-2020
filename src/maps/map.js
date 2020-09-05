@@ -7,21 +7,68 @@ import {
 	TILE_SIZE,
 } from '../data/grid'
 
-function* path(data, size, start, end) {
+//floodfill check offsets
+let PATH_OFFSETS = [[-1, 0], [1, 0], [0, 1], [0, -1], [0, 0]];
+//data = grid,
+//size = grid size,
+//start = x,y start post
+//end = x,y end pos
+function path(data, size, start, end) {
 	let
 		{ x: sx, y: sy } = start,
 		{ x: ex, y: ey } = end,
 		map = [],
-		frame;
+		frame,
+		temp;
 	data.forEach((item, index) => {
 		let
-			x = index - size.w,
+			x = index % size.w,
 			y = (index - x) / size.w
 		map[x] = map[x] || []
-		map[x][y] = item == 1
+		map[x][y] = item;
 	});
-	frame = { mask: map, layer: map.map((row, x) => row.map((cell, y) => x == sx && y == sy ? 0 : 1)) };
-	console.log(frames);
+	frame = {
+		mask: map.map((row) => row.map((cell) => cell == 1)),
+		layer: map.map((row, x) =>
+			row.map((cell, y) =>
+				+(x == sx && y == sy)
+			))
+	};
+	for (let i = 0, next_frame = {}; i < size.w * size.h && frame.layer[ex][ey] == 0; i++) {
+		next_frame.mask = frame.mask;
+		next_frame.layer = frame.layer.map((row, x) => row.map((cell, y) => {
+			let to_update = false;
+			for (let offset of PATH_OFFSETS) {
+				if ((temp = frame.layer[x + offset[0]]) && temp[y + offset[1]]) {
+					to_update = true;
+				}
+			}
+			return frame.layer[x][y] + to_update * frame.mask[x][y];
+		}));
+		frame = next_frame;
+	}
+	let x = ex;
+	let y = ey;
+	let moves = [];
+	while (sx != x || sy != y) {
+		let positions = [];
+		let max = 0;
+		for (let offset of PATH_OFFSETS) {
+			let loc = [x + offset[0], y + offset[1]];
+			max = Math.max(max, (temp = frame.layer[loc[0]]) && temp[loc[1]] || 0);
+		}
+		if (max == 0) {
+			return { x: -1, y: -1 };
+		}
+		for (let offset of PATH_OFFSETS) {
+			let loc = [x + offset[0], y + offset[1]];
+			let val = (temp = frame.layer[loc[0]]) && temp[loc[1]];
+			if (val == max) positions.push(loc);
+		}
+		moves.push({ x, y });
+		[x, y] = positions[Math.random() * positions.length | 0];
+	}
+	return moves.reverse();
 }
 
 

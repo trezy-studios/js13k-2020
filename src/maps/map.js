@@ -1,5 +1,7 @@
 // Local imports
-import { tiles } from '../data/tiles'
+import {
+	tiles
+} from '../data/tiles'
 import {
 	GRID_SIZE,
 	TILE_SIZE,
@@ -15,10 +17,11 @@ export class Map {
 		this.original = computed_data
 		this.data = computed_data
 		this.objects = data[1]
+		this.size = { w, h };
 		this.tiles = data.slice(2).map(tile => {
 			let w = +tile[0]
 			let h = +tile[1]
-			let data = BigInt("0x" + tile.slice(2))
+			let data = BigInt(tile.slice(2))
 			return new Map([data, []], w, h)
 		})
 	}
@@ -47,6 +50,9 @@ export class Map {
 				tiles[type](ctx, x, y)
 			}
 		})
+	}
+	path(start, end) {
+		return path(this.data, this.size, start, end);
 	}
 }
 globalThis.Map = Map

@@ -125,8 +125,8 @@ class Canvas {
 		}
 	}
 
-	drawMap(map, x, y, isPlacing) {
-		map.render(this, x, y, isPlacing)
+	drawMap(map, x, y, targetMap) {
+		map.render(this, x, y, targetMap)
 	}
 
 	drawPlacement() {
@@ -137,7 +137,7 @@ class Canvas {
 			placeY,
 		} = state
 
-		this.drawMap(map.tiles[currentTile], placeX, placeY, true)
+		this.drawMap(map.tiles[currentTile], placeX, placeY, map)
 	}
 }
 

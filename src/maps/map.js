@@ -42,14 +42,17 @@ export class Map {
 		return this.data[this.index(x, y)]
 	}
 
-	render(ctx, offsetX = 0, offsetY = 0, isPlacing = false) {
+	render(ctx, offsetX = 0, offsetY = 0, targetMap = 0) {
 		const horizontalOffset = offsetX * TILE_SIZE.w
 		const verticalOffset = offsetY * TILE_SIZE.h
 		this.data.forEach((type, index) => {
 			if (tiles[type]) {
-				let x = (index % this.size.w) * TILE_SIZE.w + horizontalOffset
-				let y = Math.floor(index / this.size.w) * TILE_SIZE.h + verticalOffset
-				tiles[type](ctx, x, y, isPlacing)
+				let x = index % this.size.w
+				let xPixel = x * TILE_SIZE.w + horizontalOffset
+				let y = Math.floor(index / this.size.w)
+				let yPixel = y * TILE_SIZE.h + verticalOffset
+
+				tiles[type](ctx, xPixel, yPixel, targetMap, !targetMap || !targetMap.at(x + offsetX, y + offsetY))
 			}
 		})
 	}

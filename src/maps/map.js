@@ -27,7 +27,7 @@ export class Map {
 	}
 
 	index(x, y) {
-		return y * GRID_SIZE.w + x
+		return y * this.size.w + x
 	}
 
 	reset() {
@@ -42,15 +42,18 @@ export class Map {
 		return this.data[this.index(x, y)]
 	}
 
-	render(ctx, offset_x, offset_y) {
+	render(ctx, offsetX = 0, offsetY = 0, isPlacing = false) {
+		const horizontalOffset = offsetX * TILE_SIZE.w
+		const verticalOffset = offsetY * TILE_SIZE.h
 		this.data.forEach((type, index) => {
 			if (tiles[type]) {
-				let x = (index % GRID_SIZE.w) * TILE_SIZE.w + offset_x
-				let y = Math.floor(index / GRID_SIZE.w) * TILE_SIZE.h + offset_y
-				tiles[type](ctx, x, y)
+				let x = (index % this.size.w) * TILE_SIZE.w + horizontalOffset
+				let y = Math.floor(index / this.size.w) * TILE_SIZE.h + verticalOffset
+				tiles[type](ctx, x, y, isPlacing)
 			}
 		})
 	}
+
 	path(start, end) {
 		return path(this.data, this.size, start, end);
 	}

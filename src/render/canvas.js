@@ -125,8 +125,8 @@ class Canvas {
 		}
 	}
 
-	drawMap(map, x, y) {
-		map.render(this, x, y)
+	drawMap(map, x, y, isPlacing) {
+		map.render(this, x, y, isPlacing)
 	}
 
 	drawPlacement() {
@@ -136,13 +136,8 @@ class Canvas {
 			placeX,
 			placeY,
 		} = state
-		let {
-			data: tileData,
-		} = map.tiles[currentTile]
-		let {
-			h,
-			w,
-		} = GRID_SIZE
+
+		this.drawMap(map.tiles[currentTile], placeX, placeY, true)
 	}
 }
 

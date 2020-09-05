@@ -3,7 +3,7 @@ import {
 	GRID_SIZE,
 	TILE_SIZE,
 } from './grid'
-import { decodeTile } from '../helpers/decodeTile'
+import { createObservable } from '../helpers/createObservable'
 import * as maps from '../maps'
 
 
@@ -18,7 +18,7 @@ let stateObject = {
 	placeY: 0,
 }
 
-export let state = new Proxy(stateObject, {
+export let state = createObservable(new Proxy(stateObject, {
 	set (target, key, value) {
 		if (key === 'currentTile') {
 			target[key] = decodeTile(value)
@@ -66,4 +66,4 @@ export let state = new Proxy(stateObject, {
 
 		return 1
 	}
-})
+}))

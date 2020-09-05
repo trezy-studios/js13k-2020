@@ -1,8 +1,5 @@
 // Local imports
-
 import { audioBuffers } from './audio'
-import { zzfxG } from '../lib/zzfx'
-import { zzfxM } from '../lib/zzfxm'
 
 // images
 import AwkwardImage from '../assets/images/awkward.font.png'
@@ -28,18 +25,6 @@ async function preloadImages (images) {
 		imageElement.src = imageFile
 		return imageElement.decode()
 	}))
-}
-
-export function preloadAudio () {
-	let generateAudioSamples = (name, data) => audioBuffers[name] = (data.t === 'm' ? zzfxM : zzfxG)(...data.a)
-
-	return new Promise(resolve => setTimeout(() => {
-		generateAudioSamples('button', button)
-		generateAudioSamples('placeTile', placeTile)
-		generateAudioSamples('test', TestMusic)
-
-		resolve()
-	}, 10))
 }
 
 export function preloadFonts () {

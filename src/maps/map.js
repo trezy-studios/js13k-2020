@@ -7,8 +7,22 @@ import {
 	TILE_SIZE,
 } from '../data/grid'
 
-
-
+function* path(data, size, start, end) {
+	let
+		{ x: sx, y: sy } = start,
+		{ x: ex, y: ey } = end,
+		map = [],
+		frame;
+	data.forEach((item, index) => {
+		let
+			x = index - size.w,
+			y = (index - x) / size.w
+		map[x] = map[x] || []
+		map[x][y] = item == 1
+	});
+	frame = { mask: map, layer: map.map((row, x) => row.map((cell, y) => x == sx && y == sy ? 0 : 1)) };
+	console.log(frames);
+}
 
 
 export class Map {

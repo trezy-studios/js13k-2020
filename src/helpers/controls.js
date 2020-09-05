@@ -20,13 +20,7 @@ let place = () => {
 		return
 	}
 
-	currentTile.grid.forEach((type, index) => {
-		if (type) {
-			let x = (index % currentTile.w) + placeX
-			let y = Math.floor(index / currentTile.w) + placeY
-			map.update(type, x, y)
-		}
-	})
+	state.currentTile += 1
 }
 
 export let start = () => enabled = 1

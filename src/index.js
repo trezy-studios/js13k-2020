@@ -155,6 +155,12 @@ let gameScreen = new Screen({
 	onInit() {
 		let menuButton = this.node.querySelector('[data-action="open:menu"]')
 		menuButton.on('click', () => settingsScreen.show())
+
+		state.on('change:map', () => {
+			if (state.map) {
+				state.currentTile = 0
+			}
+		})
 	},
 
 	onShow() {

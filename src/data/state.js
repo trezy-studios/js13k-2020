@@ -12,7 +12,7 @@ import * as maps from '../maps'
 
 let stateObject = {
 	canPlace: 1,
-	currentTile: decodeTile(`010\n111`),
+	currentTile: 0,
 	map: null,
 	placeX: 0,
 	placeY: 0,

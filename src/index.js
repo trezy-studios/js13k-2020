@@ -34,7 +34,7 @@ let gameElement = document.querySelector('#game')
 let gameWrapperElement = document.querySelector('#game-wrapper')
 let mainMenuElement = document.querySelector('#main')
 let mapSelectMenuElement = document.querySelector('#map-select')
-let render = canvas(canvasElement)
+let render = canvas(canvasElement, 0, 7)
 
 
 
@@ -171,8 +171,8 @@ let gameScreen = new Screen({
 		let gameLoop = () => {
 			frame++
 
-			render.drawGrid()
-			render.drawMap(state.map, 0, 0)
+			render.drawGrid(0, 7)
+			render.drawMap(state.map)
 			render.drawPlacement()
 			render.update()
 

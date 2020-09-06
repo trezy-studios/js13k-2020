@@ -12,25 +12,18 @@ import { updateGameScale } from '../helpers/updateGameScale'
 
 
 
-let canvasOffset = {
-	x: 0,
-	y: 7,
-}
-
-
-
-
-
 function ctx2d(el) {
 	return el.getContext("2d")
 }
 
 class Canvas {
-	constructor(el) {
+	constructor(el, offsetX = 0, offsetY = 0) {
 		this.target = ctx2d(el)
 		this.shadow = ctx2d(el.cloneNode())
 		this.queue = [[], [], []]
 		this.layer = canvas.BG
+		this.offsetX = offsetX
+		this.offsetY = offsetY
 		window.on('resize', updateGameScale)
 	}
 
@@ -73,7 +66,7 @@ class Canvas {
 		let toRender = this.queue.flat()
 		let context = this.shadow
 		context.clearRect(0, 0, 0xffff, 0xffff)
-		context.translate(canvasOffset.x, canvasOffset.y)
+		context.translate(this.offsetX, this.offsetY)
 
 		for (let task of toRender) {
 			let [call] = task
@@ -145,6 +138,6 @@ canvas.BG = 0
 canvas.FG = 1
 canvas.SPRITES = 2
 
-export function canvas(el) {
-	return new Canvas(el)
+export function canvas(el, offsetX, offsetY) {
+	return new Canvas(el, offsetX, offsetY)
 }

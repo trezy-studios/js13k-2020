@@ -11,7 +11,6 @@ import * as maps from '../maps'
 
 
 let stateObject = {
-	canPlace: 1,
 	currentTile: 0,
 	map: null,
 	placeX: 0,
@@ -25,10 +24,34 @@ export let state = createObservable(new Proxy(stateObject, {
 			return 1
 		}
 
-		switch (key) {
-			default:
-				target[key] = value
+		if (['placeX', 'placeY'].includes(key)) {
+			let currentTile = target.map.tiles[target.currentTile]
+
+			if (currentTile) {
+				let {
+					w,
+					h,
+				} = currentTile.size
+
+				switch (key) {
+					case 'placeX':
+						if ((value >= 0) && (value <= (GRID_SIZE.w - w))) {
+							target[key] = value
+						}
+						break
+
+					case 'placeY':
+						if ((value >= 0) && (value <= (GRID_SIZE.h - h))) {
+							target[key] = value
+						}
+						break
+				}
+			}
+
+			return 1
 		}
+
+		target[key] = value
 
 		return 1
 	}

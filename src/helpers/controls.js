@@ -9,16 +9,38 @@ let enabled = 0
 
 let place = () => {
 	let {
-		canPlace,
-		currentTile,
 		map,
 		placeX,
 		placeY,
 	} = state
 
+	const currentTile = map.tiles[state.currentTile]
+
+	if (!currentTile) {
+		return
+	}
+
+	let canPlace = !currentTile.data.some((type, index) => {
+		if (type) {
+			let x = (index % currentTile.size.w) + placeX
+			let y = Math.floor(index / currentTile.size.w) + placeY
+			return map.at(x, y) !== 0
+		}
+
+		return 0
+	})
+
 	if (!canPlace) {
 		return
 	}
+
+	currentTile.data.forEach((type, index) => {
+		if (type) {
+			let x = (index % currentTile.size.w) + placeX
+			let y = Math.floor(index / currentTile.size.w) + placeY
+			map.update(type, x, y)
+		}
+	})
 
 	state.currentTile += 1
 }

@@ -195,11 +195,20 @@ let gameScreen = new Screen({
 		startController()
 
 		let gameLoop = () => {
+			const {
+				currentTile,
+				map,
+			} = state
+
 			frame++
 
 			render.drawGrid(0, 7)
-			render.drawMap(state.map)
-			render.drawPlacement()
+			render.drawMap(map)
+
+			if (currentTile < map.tiles.length ) {
+				render.drawPlacement()
+			}
+
 			render.update()
 
 			let timerElement = this.node.querySelector('#play-info time')
@@ -209,6 +218,7 @@ let gameScreen = new Screen({
 			if (timerElement.innerText.trim() !== timestamp) {
 				timerElement.innerHTML = timestamp
 			}
+
 			requestAnimationFrame(gameLoop)
 		}
 

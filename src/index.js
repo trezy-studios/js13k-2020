@@ -19,6 +19,7 @@ import { createStringCanvas } from './render/font'
 import { Screen } from './structures/Screen'
 import { settings } from './data/settings'
 import { state } from './data/state'
+import { TILE_SIZE } from './data/grid'
 import { updateGameScale } from './helpers/updateGameScale'
 import * as maps from './maps/index'
 
@@ -33,7 +34,7 @@ let gameElement = document.querySelector('#game')
 let gameWrapperElement = document.querySelector('#game-wrapper')
 let mainMenuElement = document.querySelector('#main')
 let mapSelectMenuElement = document.querySelector('#map-select')
-let render = canvas(canvasElement)
+let render = canvas(canvasElement, 0, 7)
 
 
 
@@ -146,8 +147,54 @@ let gameScreen = new Screen({
 	},
 
 	onInit() {
+		let tileQueueElement = document.querySelector('#tile-queue ol')
+		let tilesRemainingElement = document.querySelector('#tiles-remaining')
 		let menuButton = this.node.querySelector('[data-action="open:menu"]')
 		menuButton.on('click', () => settingsScreen.show())
+
+		state.on('change:map', () => {
+			if (state.map) {
+				state.currentTile = 0
+			}
+		})
+
+		state.on('change:currentTile', () => {
+			const {
+				currentTile,
+				map,
+			} = state
+
+			if (map) {
+				tileQueueElement.innerHTML = ''
+				map.tiles.slice(currentTile + 1, currentTile + 4).forEach(tile => {
+					let listItem = document.createElement('li')
+					let tileCanvasElement = document.createElement('canvas')
+					tileCanvasElement.height = (tile.size.h * TILE_SIZE.h) + 2
+					tileCanvasElement.width = tile.size.w * TILE_SIZE.w
+
+					let context = canvas(tileCanvasElement, 0, 1)
+					context.drawMap(tile)
+					context.update()
+
+					listItem.appendChild(tileCanvasElement)
+					tileQueueElement.appendChild(listItem)
+				})
+
+				let tilesUsedPercentage = (currentTile / map.tiles.length) * 100
+				let tilesRemainingStatusColor = '#64b964'
+
+				if (tilesUsedPercentage >= 50) {
+					tilesRemainingStatusColor = '#e6c86e'
+				}
+
+				if (tilesUsedPercentage >= 75) {
+					tilesRemainingStatusColor = '#d77355'
+				}
+
+				tilesRemainingElement.style.setProperty('--p', `${(currentTile / map.tiles.length) * 100}%`)
+				tilesRemainingElement.style.setProperty('--c', tilesRemainingStatusColor)
+			}
+		})
 	},
 
 	onShow() {
@@ -156,11 +203,20 @@ let gameScreen = new Screen({
 		startController()
 
 		let gameLoop = () => {
+			const {
+				currentTile,
+				map,
+			} = state
+
 			frame++
 
-			render.drawGrid()
-			render.drawMap(state.map, 0, 0)
-			render.drawPlacement()
+			render.drawGrid(0, 7)
+			render.drawMap(map)
+
+			if (currentTile < map.tiles.length ) {
+				render.drawPlacement()
+			}
+
 			render.update()
 
 			let timerElement = this.node.querySelector('#play-info time')
@@ -170,6 +226,7 @@ let gameScreen = new Screen({
 			if (timerElement.innerText.trim() !== timestamp) {
 				timerElement.innerHTML = timestamp
 			}
+
 			requestAnimationFrame(gameLoop)
 		}
 

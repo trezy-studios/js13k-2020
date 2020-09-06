@@ -3,7 +3,7 @@ import {
 	GRID_SIZE,
 	TILE_SIZE,
 } from './grid'
-import { decodeTile } from '../helpers/decodeTile'
+import { createObservable } from '../helpers/createObservable'
 import * as maps from '../maps'
 
 
@@ -11,59 +11,65 @@ import * as maps from '../maps'
 
 
 let stateObject = {
-	canPlace: 1,
-	currentTile: decodeTile(`010\n111`),
+	currentTile: 0,
 	map: null,
 	placeX: 0,
 	placeY: 0,
 }
 
-export let state = new Proxy(stateObject, {
+export let state = createObservable(new Proxy(stateObject, {
 	set (target, key, value) {
-		if (key === 'currentTile') {
-			target[key] = decodeTile(value)
-			return 1
-		}
-
 		if (key === 'map') {
 			target[key] = maps[value]
 			return 1
 		}
 
-		let {
-			w,
-			h,
-		} = target.currentTile
+		if (key === 'currentTile') {
+			let tile = target.map.tiles[value]
 
-		switch (key) {
-			case 'placeX':
-				if ((value >= 0) && (value <= (GRID_SIZE.w - w))) {
-					target[key] = value
+			if (tile) {
+				let maxX = GRID_SIZE.w - tile.size.w
+				let maxY = GRID_SIZE.h - tile.size.h
+
+				if (target.placeY > maxY) {
+					target.placeY = maxY
 				}
-				break
 
-			case 'placeY':
-				if ((value >= 0) && (value <= (GRID_SIZE.h - h))) {
-					target[key] = value
+				if (target.placeX > maxX) {
+					target.placeX = maxX
 				}
-				break
-
-			default:
-				target[key] = value
+			}
 		}
 
 		if (['placeX', 'placeY'].includes(key)) {
-			target.canPlace = !target.currentTile.grid.some((type, index) => {
-					if (type) {
-						let x = (index % w) + target.placeX
-						let y = Math.floor(index / w) + target.placeY
-						return target.map.at(x, y) !== 0
-					}
+			let currentTile = target.map.tiles[target.currentTile]
 
-					return 0
-			})
+			if (currentTile) {
+				let {
+					w,
+					h,
+				} = currentTile.size
+
+				switch (key) {
+					case 'placeX':
+						if ((value >= 0) && (value <= (GRID_SIZE.w - w))) {
+							target[key] = value
+						}
+						break
+
+					case 'placeY':
+						if ((value >= 0) && (value <= (GRID_SIZE.h - h))) {
+							target[key] = value
+						}
+						break
+				}
+			}
+
+			return 1
 		}
+
+		target[key] = value
 
 		return 1
 	}
-})
+}))

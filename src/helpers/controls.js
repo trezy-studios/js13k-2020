@@ -1,5 +1,4 @@
 // Local imports
-import { decodeTile } from './decodeTile'
 import { state } from '../data/state'
 
 
@@ -10,24 +9,40 @@ let enabled = 0
 
 let place = () => {
 	let {
-		canPlace,
-		currentTile,
 		map,
 		placeX,
 		placeY,
 	} = state
 
+	const currentTile = map.tiles[state.currentTile]
+
+	if (!currentTile) {
+		return
+	}
+
+	let canPlace = !currentTile.data.some((type, index) => {
+		if (type) {
+			let x = (index % currentTile.size.w) + placeX
+			let y = Math.floor(index / currentTile.size.w) + placeY
+			return map.at(x, y) !== 0
+		}
+
+		return 0
+	})
+
 	if (!canPlace) {
 		return
 	}
 
-	currentTile.grid.forEach((type, index) => {
+	currentTile.data.forEach((type, index) => {
 		if (type) {
-			let x = (index % currentTile.w) + placeX
-			let y = Math.floor(index / currentTile.w) + placeY
+			let x = (index % currentTile.size.w) + placeX
+			let y = Math.floor(index / currentTile.size.w) + placeY
 			map.update(type, x, y)
 		}
 	})
+
+	state.currentTile += 1
 }
 
 export let start = () => enabled = 1

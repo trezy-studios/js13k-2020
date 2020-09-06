@@ -10,11 +10,6 @@ import ThaleahImage from '../assets/images/thaleah.font.png'
 import TimerBorderImage from '../assets/images/timer-border.png'
 import WallImage from '../assets/images/wall.png'
 
-// audio
-import button from '../sounds/button'
-import placeTile from '../sounds/placeTile'
-import TestMusic from '../sounds/test.zzfx'
-
 
 
 

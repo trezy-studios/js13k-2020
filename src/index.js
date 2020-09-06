@@ -148,6 +148,7 @@ let gameScreen = new Screen({
 
 	onInit() {
 		let tileQueueElement = document.querySelector('#tile-queue ol')
+		let tilesRemainingElement = document.querySelector('#tiles-remaining')
 		let menuButton = this.node.querySelector('[data-action="open:menu"]')
 		menuButton.on('click', () => settingsScreen.show())
 
@@ -178,6 +179,20 @@ let gameScreen = new Screen({
 					listItem.appendChild(tileCanvasElement)
 					tileQueueElement.appendChild(listItem)
 				})
+
+				let tilesUsedPercentage = (currentTile / map.tiles.length) * 100
+				let tilesRemainingStatusColor = '#64b964'
+
+				if (tilesUsedPercentage >= 50) {
+					tilesRemainingStatusColor = '#e6c86e'
+				}
+
+				if (tilesUsedPercentage >= 75) {
+					tilesRemainingStatusColor = '#d77355'
+				}
+
+				tilesRemainingElement.style.setProperty('--p', `${(currentTile / map.tiles.length) * 100}%`)
+				tilesRemainingElement.style.setProperty('--c', tilesRemainingStatusColor)
 			}
 		})
 	},

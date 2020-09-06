@@ -457,6 +457,7 @@ ol {
 }
 
 #tile-queue {
+	height: 100%;
 	header {
 		padding: 4px;
 	}
@@ -475,6 +476,38 @@ ol {
 				opacity: 0.25;
 			}
 		}
+	}
+}
+
+#tiles-remaining {
+	background-color: $grey;
+	border-top: 1px solid $purple;
+	bottom: 1px;
+	clip-path: polygon(
+		0 0,
+		100% 0,
+		100% 2px,
+		45px 2px,
+		45px 100%,
+		0 100%
+	);
+	height: 3px;
+	left: 2px;
+	position: absolute;
+	width: 46px;
+
+	&::before {
+		// --c: status color
+		// --p: percent of tile queue that's been used
+
+		background-color: var(--c);
+		bottom: 0;
+		content: '';
+		display: block;
+		left: 0;
+		position: absolute;
+		top: 0;
+		width: calc(100% - var(--p));
 	}
 }
 

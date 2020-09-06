@@ -178,7 +178,7 @@ let gameScreen = new Screen({
 					tileCanvasElement.height = (tile.size.h * TILE_SIZE.h) + 2
 					tileCanvasElement.width = tile.size.w * TILE_SIZE.w
 
-					let context = canvas(tileCanvasElement)
+					let context = canvas(tileCanvasElement, 0, 1)
 					context.drawMap(tile)
 					context.update()
 

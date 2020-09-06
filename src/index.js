@@ -20,6 +20,7 @@ import { createStringCanvas } from './render/font'
 import { Screen } from './structures/Screen'
 import { settings } from './helpers/settings'
 import { state } from './data/state'
+import { TILE_SIZE } from './data/grid'
 import { updateGameScale } from './helpers/updateGameScale'
 import * as maps from './maps/index'
 
@@ -153,12 +154,37 @@ let gameScreen = new Screen({
 	},
 
 	onInit() {
+		let tileQueueElement = document.querySelector('#tile-queue')
 		let menuButton = this.node.querySelector('[data-action="open:menu"]')
 		menuButton.on('click', () => settingsScreen.show())
 
 		state.on('change:map', () => {
 			if (state.map) {
 				state.currentTile = 0
+			}
+		})
+
+		state.on('change:currentTile', () => {
+			const {
+				currentTile,
+				map,
+			} = state
+
+			if (map) {
+				tileQueueElement.innerHTML = ''
+				map.tiles.slice(currentTile + 1, currentTile + 4).forEach(tile => {
+					let listItem = document.createElement('li')
+					let tileCanvasElement = document.createElement('canvas')
+					tileCanvasElement.height = (tile.size.h * TILE_SIZE.h) + 2
+					tileCanvasElement.width = tile.size.w * TILE_SIZE.w
+
+					let context = canvas(tileCanvasElement)
+					context.drawMap(tile)
+					context.update()
+
+					listItem.appendChild(tileCanvasElement)
+					tileQueueElement.appendChild(listItem)
+				})
 			}
 		})
 	},

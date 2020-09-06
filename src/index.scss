@@ -456,6 +456,28 @@ ol {
 	}
 }
 
+#tile-queue {
+	header {
+		padding: 4px;
+	}
+
+	ol {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+		justify-content: center;
+
+		li {
+			display: flex;
+			justify-content: center;
+
+			&:nth-child(n + 2) {
+				opacity: 0.25;
+			}
+		}
+	}
+}
+
 *[hidden] {
 	display: none;
 }

@@ -147,7 +147,7 @@ let gameScreen = new Screen({
 	},
 
 	onInit() {
-		let tileQueueElement = document.querySelector('#tile-queue')
+		let tileQueueElement = document.querySelector('#tile-queue ol')
 		let menuButton = this.node.querySelector('[data-action="open:menu"]')
 		menuButton.on('click', () => settingsScreen.show())
 

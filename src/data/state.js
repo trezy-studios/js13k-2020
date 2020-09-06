@@ -24,6 +24,23 @@ export let state = createObservable(new Proxy(stateObject, {
 			return 1
 		}
 
+		if (key === 'currentTile') {
+			let tile = target.map.tiles[value]
+
+			if (tile) {
+				let maxX = GRID_SIZE.w - tile.size.w
+				let maxY = GRID_SIZE.h - tile.size.h
+
+				if (target.placeY > maxY) {
+					target.placeY = maxY
+				}
+
+				if (target.placeX > maxX) {
+					target.placeX = maxX
+				}
+			}
+		}
+
 		if (['placeX', 'placeY'].includes(key)) {
 			let currentTile = target.map.tiles[target.currentTile]
 

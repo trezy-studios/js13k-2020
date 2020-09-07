@@ -167,6 +167,13 @@ let gameScreen = new Screen({
 
 			if (map) {
 				tileQueueElement.innerHTML = ''
+
+				if (currentTile >= map.tiles.length - 1) {
+					const noTilesRemainingElement = document.createElement('li')
+					noTilesRemainingElement.innerHTML = 'Empty'
+					tileQueueElement.appendChild(noTilesRemainingElement)
+				}
+
 				map.tiles.slice(currentTile + 1, currentTile + 4).forEach(tile => {
 					let listItem = document.createElement('li')
 					let tileCanvasElement = document.createElement('canvas')

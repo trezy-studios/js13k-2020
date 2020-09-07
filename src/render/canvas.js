@@ -4,9 +4,19 @@ import {
 	TILE_SIZE,
 } from '../data/grid'
 import { settings } from '../data/settings'
+import { entities } from '../data/entities'
 import { state } from '../data/state'
 import { tiles } from '../data/tiles'
 import { updateGameScale } from '../helpers/updateGameScale'
+
+
+
+
+
+// Local constants
+let BG = 0
+let FG = 1
+let SPRITES = 2
 
 
 
@@ -21,7 +31,6 @@ class Canvas {
 		this.target = ctx2d(el)
 		this.shadow = ctx2d(el.cloneNode())
 		this.queue = [[], [], []]
-		this.layer = canvas.BG
 		this.offsetX = offsetX
 		this.offsetY = offsetY
 		window.on('resize', updateGameScale)
@@ -98,7 +107,15 @@ class Canvas {
 		this.target.drawImage(this.shadow.canvas, 0, 0)
 	}
 
+	drawEntities(entitiesToDraw) {
+		this.layer = SPRITES
+
+		entitiesToDraw.forEach(([x, y, t]) => entities[t](this, x, y))
+	}
+
 	drawGrid() {
+		this.layer = BG
+
 		let color = `hsla(278, 19%, 25%, 0.5)`
 		let column = 0
 		let row = 0
@@ -119,6 +136,7 @@ class Canvas {
 	}
 
 	drawMap(map, x, y, targetMap) {
+		this.layer = FG
 		map.render(this, x, y, targetMap)
 	}
 
@@ -133,10 +151,6 @@ class Canvas {
 		this.drawMap(map.tiles[currentTile], placeX, placeY, map)
 	}
 }
-
-canvas.BG = 0
-canvas.FG = 1
-canvas.SPRITES = 2
 
 export function canvas(el, offsetX, offsetY) {
 	return new Canvas(el, offsetX, offsetY)

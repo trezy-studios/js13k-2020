@@ -34,7 +34,7 @@ let gameElement = document.querySelector('#game')
 let gameWrapperElement = document.querySelector('#game-wrapper')
 let mainMenuElement = document.querySelector('#main')
 let mapSelectMenuElement = document.querySelector('#map-select')
-let render = canvas(canvasElement, 0, 7)
+let render = canvas(canvasElement, 0, 14)
 
 
 
@@ -155,6 +155,7 @@ let gameScreen = new Screen({
 		state.on('change:map', () => {
 			if (state.map) {
 				state.currentTile = 0
+				state.entities = state.map.objects
 			}
 		})
 
@@ -166,6 +167,13 @@ let gameScreen = new Screen({
 
 			if (map) {
 				tileQueueElement.innerHTML = ''
+
+				if (currentTile >= map.tiles.length - 1) {
+					const noTilesRemainingElement = document.createElement('li')
+					noTilesRemainingElement.innerHTML = 'Empty'
+					tileQueueElement.appendChild(noTilesRemainingElement)
+				}
+
 				map.tiles.slice(currentTile + 1, currentTile + 4).forEach(tile => {
 					let listItem = document.createElement('li')
 					let tileCanvasElement = document.createElement('canvas')
@@ -198,20 +206,20 @@ let gameScreen = new Screen({
 	},
 
 	onShow() {
-		let frame = 0
-
 		startController()
 
 		let gameLoop = () => {
 			const {
 				currentTile,
+				entities,
 				map,
 			} = state
 
-			frame++
+			state.frame += 1
 
-			render.drawGrid(0, 7)
+			render.drawGrid()
 			render.drawMap(map)
+			render.drawEntities(entities)
 
 			if (currentTile < map.tiles.length ) {
 				render.drawPlacement()

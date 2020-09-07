@@ -206,8 +206,6 @@ let gameScreen = new Screen({
 	},
 
 	onShow() {
-		let frame = 0
-
 		startController()
 
 		let gameLoop = () => {
@@ -217,7 +215,7 @@ let gameScreen = new Screen({
 				map,
 			} = state
 
-			frame++
+			state.frame += 1
 
 			render.drawGrid()
 			render.drawMap(map)

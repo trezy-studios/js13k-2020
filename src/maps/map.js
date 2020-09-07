@@ -122,6 +122,7 @@ export class Map {
 		return path(this.data, this.size, start, end);
 	}
 }
+
 globalThis.Map = Map
 
 export default Map

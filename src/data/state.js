@@ -12,6 +12,7 @@ import * as maps from '../maps'
 
 let stateObject = {
 	currentTile: 0,
+	entities: [],
 	map: null,
 	placeX: 0,
 	placeY: 0,

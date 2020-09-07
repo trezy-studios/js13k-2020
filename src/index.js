@@ -34,7 +34,7 @@ let gameElement = document.querySelector('#game')
 let gameWrapperElement = document.querySelector('#game-wrapper')
 let mainMenuElement = document.querySelector('#main')
 let mapSelectMenuElement = document.querySelector('#map-select')
-let render = canvas(canvasElement, 0, 7)
+let render = canvas(canvasElement, 0, 14)
 
 
 
@@ -155,6 +155,7 @@ let gameScreen = new Screen({
 		state.on('change:map', () => {
 			if (state.map) {
 				state.currentTile = 0
+				state.entities = state.map.objects
 			}
 		})
 
@@ -205,13 +206,15 @@ let gameScreen = new Screen({
 		let gameLoop = () => {
 			const {
 				currentTile,
+				entities,
 				map,
 			} = state
 
 			frame++
 
-			render.drawGrid(0, 7)
+			render.drawGrid()
 			render.drawMap(map)
+			render.drawEntities(entities)
 
 			if (currentTile < map.tiles.length ) {
 				render.drawPlacement()

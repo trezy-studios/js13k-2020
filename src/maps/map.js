@@ -34,7 +34,7 @@ function path(data, size, start, end) {
 				+(x == sx && y == sy)
 			))
 	};
-	for (let i = 0, next_frame = {}; i < size.w * size.h && frame.layer[ex][ey] == 0; i++) {
+	for (let i = 0, next_frame = {}; i < size.w * size.h && (ex == -1 || frame.layer[ex][ey] == 0); i++) {
 		next_frame.mask = frame.mask;
 		next_frame.layer = frame.layer.map((row, x) => row.map((cell, y) => {
 			let to_update = false;
@@ -46,6 +46,14 @@ function path(data, size, start, end) {
 			return frame.layer[x][y] + to_update * frame.mask[x][y];
 		}));
 		frame = next_frame;
+	}
+	if (ex == -1) {
+		return frame.layer.map(
+			(row, x) => row.map(
+				(v, y) => v ? { x, y } : 0)
+		)
+			.flat(3)
+			.filter(_ => _)//bool check
 	}
 	let x = ex;
 	let y = ey;
@@ -77,7 +85,7 @@ export class Map {
 		let computed_data = data[0].toString().padStart(w * h, '0').split('').map(num => +num)
 		this.original = computed_data
 		this.data = computed_data
-		this.objects = data[1]
+		this.objects = data[1].map(([x, y, type]) => ({ x, y, type, state: {} }));
 		this.size = { w, h };
 		this.tiles = data.slice(2).map(tile => {
 			let w = +tile[0]
@@ -122,7 +130,4 @@ export class Map {
 		return path(this.data, this.size, start, end);
 	}
 }
-
-globalThis.Map = Map
-
 export default Map

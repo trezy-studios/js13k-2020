@@ -8,21 +8,36 @@ import { TILE_SIZE } from '../data/grid'
 
 
 export let entities = {
-	exit(context, offsetX, offsetY) {
+	exit(context, e) {
 		let frames = 10
-		let x = TILE_SIZE.w * offsetX
-		let y = TILE_SIZE.h * offsetY
+		let x = TILE_SIZE.w * e.x
+		let y = TILE_SIZE.h * e.y
 		let sourceX = 24 + (Math.floor((state.frame % 60) / (60 / frames)) * 8)
-
 		context.image(spritesheetImage, sourceX, 0, 8, 16, x, y - 13, 8, 16)
 	},
 
-	robot(context, offsetX, offsetY) {
+	robot(context, e) {
 		let frames = 2
-		let x = TILE_SIZE.w * offsetX
-		let y = TILE_SIZE.h * offsetY
-		let sourceX = 8 + (Math.floor((state.frame % 60) / (60 / frames)) * 8)
+		let x = TILE_SIZE.w * e.x
+		let y = TILE_SIZE.h * e.y
+		let robot_state = e.state;
+		if (!robot_state.path || robot_state.path.length === 0) {
+			let potential = state.map.path({ x: e.x, y: e.y }, { x: -1, y: -1 });
+			let end = state.entities.find(ent => ent.type === "exit");
+			let spot = potential.find(({ x, y }) => x == end.x && end.y == y)
+			let max = Math.max(...potential.map(spot => spot.x));
+			let rightmost = potential.filter(spot => spot.x === max);
+			if (!spot) {
+				spot = rightmost[Math.floor(Math.random() * rightmost.length)];
+			}
+			robot_state.path = state.map.path({ x: e.x, y: e.y }, spot);
+		} else {
+			if (e.x === robot_state.next.x && e.y === robot_state.next.y) {
+				robot_state.next = robot_state.path.shift();
+			}
 
+		}
+		let sourceX = 8 + (Math.floor((state.frame % 60) / (60 / frames)) * 8)
 		context.image(spritesheetImage, sourceX, 0, 8, 16, x, y - 13, 8, 16)
 	},
 }

@@ -110,7 +110,7 @@ class Canvas {
 	drawEntities(entitiesToDraw) {
 		this.layer = SPRITES
 
-		entitiesToDraw.forEach((e) => entities[e.type](this, e))
+		entitiesToDraw.sort((a, b) => a.y - b.y).forEach((e) => entities[e.type](this, e))
 	}
 
 	drawGrid() {

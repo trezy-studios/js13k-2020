@@ -31,11 +31,11 @@ export let entities = {
 				spot = rightmost[Math.floor(Math.random() * rightmost.length)];
 			}
 			robot_state.path = state.map.path({ x: e.x, y: e.y }, spot);
+			// console.log(robot_state);
 		} else {
-			if (e.x === robot_state.next.x && e.y === robot_state.next.y) {
-				robot_state.next = robot_state.path.shift();
-			}
-
+			let next = robot_state.path.shift();
+			e.x = next.x;
+			e.y = next.y;
 		}
 		let sourceX = 8 + (Math.floor((state.frame % 60) / (60 / frames)) * 8)
 		context.image(spritesheetImage, sourceX, 0, 8, 16, x, y - 13, 8, 16)

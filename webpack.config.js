@@ -1,5 +1,4 @@
 const ClosureCompilerPlugin = require('webpack-closure-compiler')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HTMLWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin')
 const HTMLWebpackPlugin = require('html-webpack-plugin')
 const MiniCSSExtractPlugin = require('mini-css-extract-plugin')
@@ -30,15 +29,6 @@ module.exports = {
 
 	module: {
 		rules: [
-			{
-				test: /\.zzfx$/,
-				exclude: /node_modules/,
-				type: 'javascript/auto',
-				use: [
-					'babel-loader',
-					path.resolve('webpack', 'zzfx-loader.js'),
-				],
-			},
 
 			{
 				test: /\.json$/,
@@ -59,7 +49,7 @@ module.exports = {
 			},
 
 			{
-				test: /\.s?css$/,
+				test: /\.scss$/,
 				use: [
 					{
 						loader: MiniCSSExtractPlugin.loader,

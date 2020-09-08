@@ -56,7 +56,7 @@ let loadingScreen = new Screen({
 		let loadingImageElement = document.createElement('img')
 		let loadingMessageElement = document.querySelector('#loading-message')
 
-		function setMessage (text) {
+		function setMessage(text) {
 			loadingMessageElement.innerHTML = text
 		}
 
@@ -221,7 +221,7 @@ let gameScreen = new Screen({
 			render.drawMap(map)
 			render.drawEntities(entities)
 
-			if (currentTile < map.tiles.length ) {
+			if (currentTile < map.tiles.length) {
 				render.drawPlacement()
 			}
 

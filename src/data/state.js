@@ -26,7 +26,7 @@ export let state = createObservable(new Proxy(stateObject, {
 	set(target, key, value) {
 		if (key === 'map') {
 			let map = maps[value];
-			map.objects.map(o => o.state = {});
+			map.objects.map(o => o.state = { ox: 0, oy: 0 });
 			target[key] = map;
 			return 1
 		}

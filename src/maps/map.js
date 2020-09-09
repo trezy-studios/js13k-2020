@@ -87,7 +87,8 @@ export class Map {
 		this.original = computed_data
 		this.data = computed_data
 		this.delay = data[1]
-		this.objects = data[2].map(([x, y, type]) => ({ x, y, type, state: {} }))
+		this.originalObjects = data[2]
+		this.resetObjects()
 		this.size = { w, h }
 		this.tiles = data.slice(3).map(tile => {
 			console.log({tile})
@@ -104,6 +105,7 @@ export class Map {
 
 	reset() {
 		this.data = this.original
+		this.resetObjects()
 	}
 
 	update(tile, x, y) {
@@ -127,6 +129,10 @@ export class Map {
 				tiles[type](ctx, xPixel, yPixel, targetMap, !targetMap || !targetMap.at(x + offsetX, y + offsetY))
 			}
 		})
+	}
+
+	resetObjects() {
+		this.objects = this.originalObjects.map(([x, y, type]) => ({ x, y, type, state: {} }))
 	}
 
 	path(start, end) {

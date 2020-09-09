@@ -73,7 +73,7 @@ function path(data, size, start, end) {
 			let val = (temp = frame.layer[loc[0]]) && temp[loc[1]]
 			if (val == max) positions.push(loc)
 		}
-		moves.push({ x, y })
+		moves.push({ x, y });
 		[x, y] = positions[Math.random() * positions.length | 0]
 	}
 	return moves.reverse()
@@ -86,13 +86,15 @@ export class Map {
 
 		this.original = computed_data
 		this.data = computed_data
-		this.objects = data[1].map(([x, y, type]) => ({ x, y, type, state: {} }))
+		this.delay = data[1]
+		this.objects = data[2].map(([x, y, type]) => ({ x, y, type, state: {} }))
 		this.size = { w, h }
-		this.tiles = data.slice(2).map(tile => {
+		this.tiles = data.slice(3).map(tile => {
+			console.log({tile})
 			let w = +tile[0]
 			let h = +tile[1]
 			let data = BigInt(tile.slice(2))
-			return new Map([data, []], w, h)
+			return new Map([data, 0, []], w, h)
 		})
 	}
 

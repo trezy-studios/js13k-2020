@@ -1,9 +1,7 @@
+import crosses from '../../maps/Crosses.json'
 import test from '../../maps/Test.json'
 
-
-import level0 from "../../maps/Crosses.json";
-
 export {
+	crosses,
 	test,
-	level0
 }

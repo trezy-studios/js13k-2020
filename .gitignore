@@ -1,5 +1,6 @@
 .DS_Store
 .size-snapshot.json
+*.tiled-session
 build.zip
 yarn-error.log
 

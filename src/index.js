@@ -108,19 +108,76 @@ let settingsScreen = new Screen({
 
 let gameScreen = new Screen({
 	onHide() {
+		state.paused = 1
 		stopController()
 	},
 
 	onInit() {
 		let tileQueueElement = document.querySelector('#tile-queue ol')
 		let tilesRemainingElement = document.querySelector('#tiles-remaining')
+		let timerElement = this.node.querySelector('#play-info time')
 		let menuButton = this.node.querySelector('[data-action="open:menu"]')
+		let skipTimerButton = this.node.querySelector('#skip-timer')
 		menuButton.on('click', () => settingsScreen.show())
+		skipTimerButton.on('click', ({ target }) => {
+			state.timeBonus = state.timeRemaining
+			state.timeRemaining = 0
+			target.blur()
+			target.setAttribute('disabled', true)
+		})
+
+		let gameLoop = () => {
+			if (state.paused) {
+				return
+			}
+
+			let now = performance.now()
+
+			const {
+				currentTile,
+				entities,
+				lastTimerUpdate,
+				map,
+				timeRemaining,
+			} = state
+
+			state.frame += 1
+
+			render.drawGrid()
+			render.drawMap(map)
+			render.drawEntities(entities)
+
+			if (currentTile < map.tiles.length) {
+				render.drawPlacement()
+			}
+
+			render.update()
+
+			if ((now - lastTimerUpdate) >= 1000) {
+				let totalSecondsRemaining = Math.abs(Math.floor(timeRemaining / 1000))
+				let secondsRemaining = (totalSecondsRemaining % 60).toString().padStart(2, '0')
+				let minutesRemaining = Math.floor(totalSecondsRemaining / 60)
+				let timerPrefix = ''
+
+				if (timeRemaining < 0) {
+					timerElement.classList.add('danger')
+					timerPrefix = '-'
+				}
+
+				timerElement.innerHTML = `${timerPrefix}${minutesRemaining}:${secondsRemaining}`
+
+				state.timeRemaining -= 1000
+				state.lastTimerUpdate = now
+			}
+
+			requestAnimationFrame(gameLoop)
+		}
 
 		state.on('change:map', () => {
 			if (state.map) {
 				state.currentTile = 0
 				state.entities = state.map.objects
+				state.timeRemaining = state.map.delay
 			}
 		})
 
@@ -168,42 +225,17 @@ let gameScreen = new Screen({
 				tilesRemainingElement.style.setProperty('--c', tilesRemainingStatusColor)
 			}
 		})
+
+		state.on('change:paused', () => {
+			if (!state.paused) {
+				gameLoop()
+			}
+		})
 	},
 
 	onShow() {
 		startController()
-
-		let gameLoop = () => {
-			const {
-				currentTile,
-				entities,
-				map,
-			} = state
-
-			state.frame += 1
-
-			render.drawGrid()
-			render.drawMap(map)
-			render.drawEntities(entities)
-
-			if (currentTile < map.tiles.length) {
-				render.drawPlacement()
-			}
-
-			render.update()
-
-			let timerElement = this.node.querySelector('#play-info time')
-			let now = new Date
-			let timestamp = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`
-
-			if (timerElement.innerText.trim() !== timestamp) {
-				timerElement.innerHTML = timestamp
-			}
-
-			requestAnimationFrame(gameLoop)
-		}
-
-		gameLoop()
+		state.paused = 0
 	},
 
 	selector: '#game',
@@ -221,13 +253,11 @@ let mapSelectScreen = new Screen({
 
 		let createMapButton = mapName => {
 			let mapButton = document.createElement('button')
+			mapButton.innerHTML = mapName
 			mapButton.setAttribute('type', 'button')
 			mapButton.setAttribute('value', mapName)
 			mapButton.on('click', handleMapButtonClick)
 
-			let mapNameCanvas = createStringCanvas(mapName)
-
-			mapButton.appendChild(mapNameCanvas)
 			mapsList.appendChild(mapButton)
 		}
 
@@ -296,7 +326,7 @@ let initialize = () => {
 				container.removeChild(oldCanvas)
 			}
 
-			let textCanvas = createStringCanvas(container.innerText, fontFamily)
+			let textCanvas = createStringCanvas(container.innerText, fontFamily, container.classList.contains('danger'))
 
 			container.style.fontSize = 0
 			container.appendChild(textCanvas)

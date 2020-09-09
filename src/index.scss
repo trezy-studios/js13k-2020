@@ -378,10 +378,6 @@ ol {
 	grid-column: span 2;
 }
 
-.stretch-full {
-	grid-column: span 3;
-}
-
 .screen {
 	display: grid;
 	gap: 4px;
@@ -428,10 +424,6 @@ ol {
 	transform-origin: 0 0;
 	transition: transform 0.5s;
 	width: 240px;
-}
-
-#loading {
-	margin-bottom: 2px;
 }
 
 #play-info time {

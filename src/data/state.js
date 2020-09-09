@@ -31,6 +31,11 @@ export let state = createObservable(new Proxy(stateObject, {
 			return 1
 		}
 
+		if (key === 'timeRemaining') {
+			target[key] = Math.max(value, -599000)
+			return 1
+		}
+
 		if (key === 'currentTile') {
 			let tile = target.map.tiles[value]
 

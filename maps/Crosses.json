@@ -143,6 +143,12 @@
  "nextlayerid":20,
  "nextobjectid":3,
  "orientation":"orthogonal",
+ "properties":[
+        {
+         "name":"Start Delay",
+         "type":"int",
+         "value":10000
+        }],
  "renderorder":"left-down",
  "tiledversion":"1.3.4",
  "tileheight":8,

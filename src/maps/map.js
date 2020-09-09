@@ -8,7 +8,7 @@ import {
 } from '../data/grid'
 
 //floodfill check offsets
-let PATH_OFFSETS = [[-1, 0], [1, 0], [0, 1], [0, -1], [0, 0]];
+let PATH_OFFSETS = [[-1, 0], [1, 0], [0, 1], [0, -1], [0, 0]]
 //data = grid,
 //size = grid size,
 //start = x,y start post
@@ -19,33 +19,33 @@ function path(data, size, start, end) {
 		{ x: ex, y: ey } = end,
 		map = [],
 		frame,
-		temp;
+		temp
 	data.forEach((item, index) => {
 		let
 			x = index % size.w,
 			y = (index - x) / size.w
 		map[x] = map[x] || []
-		map[x][y] = item;
-	});
+		map[x][y] = item
+	})
 	frame = {
 		mask: map.map((row) => row.map((cell) => cell == 1)),
 		layer: map.map((row, x) =>
 			row.map((cell, y) =>
 				+(x == sx && y == sy)
 			))
-	};
+	}
 	for (let i = 0, next_frame = {}; i < size.w * size.h && (ex == -1 || frame.layer[ex][ey] == 0); i++) {
-		next_frame.mask = frame.mask;
+		next_frame.mask = frame.mask
 		next_frame.layer = frame.layer.map((row, x) => row.map((cell, y) => {
-			let to_update = false;
+			let to_update = false
 			for (let offset of PATH_OFFSETS) {
 				if ((temp = frame.layer[x + offset[0]]) && temp[y + offset[1]]) {
-					to_update = true;
+					to_update = true
 				}
 			}
-			return frame.layer[x][y] + to_update * frame.mask[x][y];
-		}));
-		frame = next_frame;
+			return frame.layer[x][y] + to_update * frame.mask[x][y]
+		}))
+		frame = next_frame
 	}
 	if (ex == -1) {
 		return frame.layer.map(
@@ -55,38 +55,39 @@ function path(data, size, start, end) {
 			.flat(3)
 			.filter(_ => _)//bool check
 	}
-	let x = ex;
-	let y = ey;
-	let moves = [];
+	let x = ex
+	let y = ey
+	let moves = []
 	while (sx != x || sy != y) {
-		let positions = [];
-		let max = 0;
+		let positions = []
+		let max = 0
 		for (let offset of PATH_OFFSETS) {
-			let loc = [x + offset[0], y + offset[1]];
-			max = Math.max(max, (temp = frame.layer[loc[0]]) && temp[loc[1]] || 0);
+			let loc = [x + offset[0], y + offset[1]]
+			max = Math.max(max, (temp = frame.layer[loc[0]]) && temp[loc[1]] || 0)
 		}
 		if (max == 0) {
-			return { x: -1, y: -1 };
+			return { x: -1, y: -1 }
 		}
 		for (let offset of PATH_OFFSETS) {
-			let loc = [x + offset[0], y + offset[1]];
-			let val = (temp = frame.layer[loc[0]]) && temp[loc[1]];
-			if (val == max) positions.push(loc);
+			let loc = [x + offset[0], y + offset[1]]
+			let val = (temp = frame.layer[loc[0]]) && temp[loc[1]]
+			if (val == max) positions.push(loc)
 		}
-		moves.push({ x, y });
-		[x, y] = positions[Math.random() * positions.length | 0];
+		moves.push({ x, y })
+		[x, y] = positions[Math.random() * positions.length | 0]
 	}
-	return moves.reverse();
+	return moves.reverse()
 }
 
 
 export class Map {
 	constructor(data, w = GRID_SIZE.w, h = GRID_SIZE.h) {
 		let computed_data = data[0].toString().padStart(w * h, '0').split('').map(num => +num)
+
 		this.original = computed_data
 		this.data = computed_data
-		this.objects = data[1].map(([x, y, type]) => ({ x, y, type, state: {} }));
-		this.size = { w, h };
+		this.objects = data[1].map(([x, y, type]) => ({ x, y, type, state: {} }))
+		this.size = { w, h }
 		this.tiles = data.slice(2).map(tile => {
 			let w = +tile[0]
 			let h = +tile[1]
@@ -127,7 +128,7 @@ export class Map {
 	}
 
 	path(start, end) {
-		return path(this.data, this.size, start, end);
+		return path(this.data, this.size, start, end)
 	}
 }
 export default Map

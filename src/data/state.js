@@ -23,6 +23,7 @@ let stateObject = {
 		timeBonus: 0,
 	},
 	timeRemaining: 0,
+	victory: 0,
 }
 
 export let state = createObservable(new Proxy(stateObject, {

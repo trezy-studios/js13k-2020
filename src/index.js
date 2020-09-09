@@ -170,6 +170,24 @@ let gameScreen = new Screen({
 				state.lastTimerUpdate = now
 			}
 
+			let [exits, robots] = state.entities.reduce((accumulator, entity) => {
+				switch (entity.type) {
+					case 'exit':
+						accumulator[1].push(entity)
+						break
+					case 'robot':
+						accumulator[0].push(entity)
+						break
+				}
+				return accumulator
+			}, [[], []])
+
+			let allRobotsHaveFinished = robots.every(robot => exits.some(({x, y}) => (x === robot.x) && (y === robot.y)))
+
+			if (allRobotsHaveFinished) {
+				state.isVictory = 1
+			}
+
 			requestAnimationFrame(gameLoop)
 		}
 
@@ -177,6 +195,7 @@ let gameScreen = new Screen({
 			if (state.map) {
 				state.currentTile = 0
 				state.entities = state.map.objects
+				state.isVictory = 0
 				state.timeRemaining = state.map.delay
 			}
 		})

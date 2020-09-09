@@ -258,13 +258,11 @@ let mapSelectScreen = new Screen({
 
 		let createMapButton = mapName => {
 			let mapButton = document.createElement('button')
+			mapButton.innerHTML = mapName
 			mapButton.setAttribute('type', 'button')
 			mapButton.setAttribute('value', mapName)
 			mapButton.on('click', handleMapButtonClick)
 
-			let mapNameCanvas = createStringCanvas(mapName)
-
-			mapButton.appendChild(mapNameCanvas)
 			mapsList.appendChild(mapButton)
 		}
 
@@ -333,7 +331,7 @@ let initialize = () => {
 				container.removeChild(oldCanvas)
 			}
 
-			let textCanvas = createStringCanvas(container.innerText, fontFamily)
+			let textCanvas = createStringCanvas(container.innerText, fontFamily, container.classList.contains('danger'))
 
 			container.style.fontSize = 0
 			container.appendChild(textCanvas)

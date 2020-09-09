@@ -168,9 +168,6 @@ let gameScreen = new Screen({
 
 			let now = performance.now()
 
-			state.delta = now - state.lastUpdate
-			state.lastUpdate = now
-
 			const {
 				currentTile,
 				entities,

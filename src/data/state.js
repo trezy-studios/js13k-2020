@@ -12,6 +12,7 @@ import * as maps from '../maps'
 
 let stateObject = {
 	currentTile: 0,
+	lastTimerUpdate: 0,
 	frame: 0,
 	entities: [],
 	map: null,

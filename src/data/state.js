@@ -15,6 +15,7 @@ let stateObject = {
 	frame: 0,
 	entities: [],
 	map: null,
+	paused: 1,
 	placeX: 0,
 	placeY: 0,
 }

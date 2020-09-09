@@ -143,6 +143,7 @@ let settingsScreen = new Screen({
 
 let gameScreen = new Screen({
 	onHide() {
+		state.paused = 1
 		stopController()
 	},
 
@@ -151,6 +152,32 @@ let gameScreen = new Screen({
 		let tilesRemainingElement = document.querySelector('#tiles-remaining')
 		let menuButton = this.node.querySelector('[data-action="open:menu"]')
 		menuButton.on('click', () => settingsScreen.show())
+
+		let gameLoop = () => {
+			if (state.paused) {
+				return
+			}
+
+			const {
+				currentTile,
+				entities,
+				map,
+			} = state
+
+			state.frame += 1
+
+			render.drawGrid()
+			render.drawMap(map)
+			render.drawEntities(entities)
+
+			if (currentTile < map.tiles.length) {
+				render.drawPlacement()
+			}
+
+			render.update()
+
+			requestAnimationFrame(gameLoop)
+		}
 
 		state.on('change:map', () => {
 			if (state.map) {
@@ -203,42 +230,17 @@ let gameScreen = new Screen({
 				tilesRemainingElement.style.setProperty('--c', tilesRemainingStatusColor)
 			}
 		})
+
+		state.on('change:paused', () => {
+			if (!state.paused) {
+				gameLoop()
+			}
+		})
 	},
 
 	onShow() {
 		startController()
-
-		let gameLoop = () => {
-			const {
-				currentTile,
-				entities,
-				map,
-			} = state
-
-			state.frame += 1
-
-			render.drawGrid()
-			render.drawMap(map)
-			render.drawEntities(entities)
-
-			if (currentTile < map.tiles.length) {
-				render.drawPlacement()
-			}
-
-			render.update()
-
-			let timerElement = this.node.querySelector('#play-info time')
-			let now = new Date
-			let timestamp = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`
-
-			if (timerElement.innerText.trim() !== timestamp) {
-				timerElement.innerHTML = timestamp
-			}
-
-			requestAnimationFrame(gameLoop)
-		}
-
-		gameLoop()
+		state.paused = 0
 	},
 
 	selector: '#game',

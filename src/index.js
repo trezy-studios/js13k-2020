@@ -152,7 +152,14 @@ let gameScreen = new Screen({
 		let tilesRemainingElement = document.querySelector('#tiles-remaining')
 		let timerElement = this.node.querySelector('#play-info time')
 		let menuButton = this.node.querySelector('[data-action="open:menu"]')
+		let skipTimerButton = this.node.querySelector('#skip-timer')
 		menuButton.on('click', () => settingsScreen.show())
+		skipTimerButton.on('click', ({ target }) => {
+			state.timeBonus = state.timeRemaining
+			state.timeRemaining = 0
+			target.blur()
+			target.setAttribute('disabled', true)
+		})
 
 		let gameLoop = () => {
 			if (state.paused) {

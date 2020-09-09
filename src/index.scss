@@ -434,14 +434,20 @@ ol {
 	margin-bottom: 2px;
 }
 
-#play-info time {
-	align-items: center;
-	background-image: url('./assets/images/timer-border.png');
-	background-repeat: no-repeat;
-	margin: 2px;
-	min-width: 42px;
-	padding: 4px;
-	text-align: center;
+#play-info {
+	time {
+		align-items: center;
+		background-image: url('./assets/images/timer-border.png');
+		background-repeat: no-repeat;
+		margin: 2px;
+		min-width: 42px;
+		padding: 4px;
+		text-align: center;
+	}
+
+	#skip-timer {
+		margin-bottom: 2px;
+	}
 }
 
 #settings-menu {

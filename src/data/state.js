@@ -19,6 +19,9 @@ let stateObject = {
 	paused: 1,
 	placeX: 0,
 	placeY: 0,
+	score: {
+		timeBonus: 0,
+	},
 	timeRemaining: 0,
 }
 

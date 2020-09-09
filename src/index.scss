@@ -30,11 +30,11 @@ button {
 	display: flex;
 	font-family: inherit;
 	font-size: inherit;
-	min-width: 46px;
 	outline: none;
 	padding: 2px 3px;
 	position: relative;
 	text-align: left;
+	width: 46px;
 
 	&::after {
 		background-color: $purple;
@@ -49,19 +49,19 @@ button {
 			3px 0,
 
 			/* Top right */
-			100% 0,
+			46px 0,
 
 			/* Bottom right */
-			100% calc(100% - 3px),
-			calc(100% - 1px) calc(100% - 3px),
-			calc(100% - 1px) calc(100% - 2px),
-			calc(100% - 2px) calc(100% - 2px),
-			calc(100% - 2px) calc(100% - 1px),
-			calc(100% - 3px) calc(100% - 1px),
-			calc(100% - 3px) 100%,
+			46px 6px,
+			45px 6px,
+			45px 7px,
+			44px 7px,
+			44px 8px,
+			43px 8px,
+			43px 9px,
 
 			/* Bottom left */
-			0 100%
+			0 9px
 		);
 		content: '';
 		display: block;
@@ -242,19 +242,19 @@ ol {
 			100% 0,
 
 			/* Bottom right */
-			100% calc(100% - 6px),
-			calc(100% - 1px) calc(100% - 6px),
-			calc(100% - 1px) calc(100% - 5px),
-			calc(100% - 2px) calc(100% - 5px),
-			calc(100% - 2px) calc(100% - 4px),
-			calc(100% - 3px) calc(100% - 4px),
-			calc(100% - 3px) calc(100% - 3px),
-			calc(100% - 4px) calc(100% - 3px),
-			calc(100% - 4px) calc(100% - 2px),
-			calc(100% - 5px) calc(100% - 2px),
-			calc(100% - 5px) calc(100% - 1px),
-			calc(100% - 6px) calc(100% - 1px),
-			calc(100% - 6px) 100%,
+			100% 113px,
+			calc(100% - 1px) 113px,
+			calc(100% - 1px) 114px,
+			calc(100% - 2px) 114px,
+			calc(100% - 2px) 115px,
+			calc(100% - 3px) 115px,
+			calc(100% - 3px) 116px,
+			calc(100% - 4px) 116px,
+			calc(100% - 4px) 117px,
+			calc(100% - 5px) 117px,
+			calc(100% - 5px) 118px,
+			calc(100% - 6px) 118px,
+			calc(100% - 6px) 119px,
 
 			/* Bottom left */
 			0 100%,
@@ -264,20 +264,20 @@ ol {
 			2px 6px,
 
 			/* Bottom left (inner) */
-			2px calc(100% - 2px),
+			2px 117px,
 
 			/* Bottom right (inner) */
-			calc(100% - 7px) calc(100% - 2px),
-			calc(100% - 7px) calc(100% - 3px),
-			calc(100% - 6px) calc(100% - 3px),
-			calc(100% - 6px) calc(100% - 4px),
-			calc(100% - 5px) calc(100% - 4px),
-			calc(100% - 5px) calc(100% - 5px),
-			calc(100% - 4px) calc(100% - 5px),
-			calc(100% - 4px) calc(100% - 6px),
-			calc(100% - 3px) calc(100% - 6px),
-			calc(100% - 3px) calc(100% - 7px),
-			calc(100% - 2px) calc(100% - 7px),
+			calc(100% - 7px) 117px,
+			calc(100% - 7px) 116px,
+			calc(100% - 6px) 116px,
+			calc(100% - 6px) 115px,
+			calc(100% - 5px) 115px,
+			calc(100% - 5px) 114px,
+			calc(100% - 4px) 114px,
+			calc(100% - 4px) 113px,
+			calc(100% - 3px) 113px,
+			calc(100% - 3px) 112px,
+			calc(100% - 2px) 112px,
 
 			/* Top right (inner) */
 			calc(100% - 2px) 2px,

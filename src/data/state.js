@@ -19,6 +19,7 @@ let stateObject = {
 	paused: 1,
 	placeX: 0,
 	placeY: 0,
+	timeRemaining: 0,
 }
 
 export let state = createObservable(new Proxy(stateObject, {

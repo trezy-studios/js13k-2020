@@ -148,7 +148,6 @@ let gameScreen = new Screen({
 	},
 
 	onInit() {
-		let timeRemaining = 0
 		let tileQueueElement = document.querySelector('#tile-queue ol')
 		let tilesRemainingElement = document.querySelector('#tiles-remaining')
 		let timerElement = this.node.querySelector('#play-info time')
@@ -170,6 +169,7 @@ let gameScreen = new Screen({
 				entities,
 				lastTimerUpdate,
 				map,
+				timeRemaining,
 			} = state
 
 			state.frame += 1
@@ -197,7 +197,7 @@ let gameScreen = new Screen({
 
 				timerElement.innerHTML = `${timerPrefix}${minutesRemaining}:${secondsRemaining}`
 
-				timeRemaining -= 1000
+				state.timeRemaining -= 1000
 				state.lastTimerUpdate = now
 			}
 
@@ -208,7 +208,7 @@ let gameScreen = new Screen({
 			if (state.map) {
 				state.currentTile = 0
 				state.entities = state.map.objects
-				timeRemaining = state.map.delay
+				state.timeRemaining = state.map.delay
 			}
 		})
 

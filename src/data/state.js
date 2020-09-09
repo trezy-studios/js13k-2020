@@ -12,19 +12,30 @@ import * as maps from '../maps'
 
 let stateObject = {
 	currentTile: 0,
+	lastTimerUpdate: 0,
 	frame: 0,
 	entities: [],
 	map: null,
+	paused: 1,
 	placeX: 0,
 	placeY: 0,
+	score: {
+		timeBonus: 0,
+	},
+	timeRemaining: 0,
 }
 
 export let state = createObservable(new Proxy(stateObject, {
 	set(target, key, value) {
 		if (key === 'map') {
 			let map = maps[value];
-			map.objects.map(o => o.state = {});
+			map.resetObjects()
 			target[key] = map;
+			return 1
+		}
+
+		if (key === 'timeRemaining') {
+			target[key] = Math.max(value, -599000)
 			return 1
 		}
 

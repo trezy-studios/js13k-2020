@@ -4,15 +4,6 @@
 <div id="game-wrapper">
 	<div
 		class="screen"
-		id="loading-screen">
-		<div class="frame dark center stretch-full">
-			<div id="loading"></div>
-			<div id="loading-message"></div>
-		</div>
-	</div>
-
-	<div
-		class="screen"
 		hidden
 		id="main-menu">
 		<div class="frame dark">
@@ -31,7 +22,7 @@
 			<button
 				class="center go"
 				id="start">
-				New Game
+				Start
 			</button>
 		</div>
 	</div>
@@ -105,6 +96,10 @@
 				<ol></ol>
 			</div>
 
+			<button id="skip-timer">
+				Start
+			</button>
+
 			<div id="tiles-remaining"></div>
 		</div>
 	</div>
@@ -144,24 +139,6 @@
 				<div class="setting">
 					<label
 						class="name"
-						for="enableMusic">
-						Enable Music
-					</label>
-
-					<input
-						id="enableMusic"
-						name="enableMusic"
-						type="checkbox">
-					<label
-						class="value"
-						data-bind="enableMusic"
-						for="enableMusic">
-					</label>
-				</div>
-
-				<div class="setting">
-					<label
-						class="name"
 						for="musicVolume">
 						Music Volume
 					</label>
@@ -173,24 +150,6 @@
 							name="musicVolume"
 							type="range">
 					</div>
-				</div>
-
-				<div class="setting">
-					<label
-						class="name"
-						for="enableSFX">
-						Enable Sound FX
-					</label>
-
-					<input
-						id="enableSFX"
-						name="enableSFX"
-						type="checkbox">
-					<label
-						class="value"
-						data-bind="enableSFX"
-						for="enableSFX">
-					</label>
 				</div>
 
 				<div class="setting">

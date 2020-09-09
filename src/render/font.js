@@ -15,15 +15,19 @@ let fonts = {
 
 
 
-function drawStringToCanvas (stringCoords, sourceImage, context) {
+function drawStringToCanvas (stringCoords, sourceImage, context, isDanger) {
 	let currentX = 0
 	stringCoords.forEach(coord => {
 		context.drawImage(sourceImage, coord.x, 0, coord.w, coord.h, currentX, 0, coord.w, coord.h)
 		currentX += coord.w + 1
 	})
+
+	context.globalCompositeOperation = 'source-atop'
+	context.fillStyle = isDanger ? '#d77355' : '#dcf5ff'
+	context.fillRect(0, 0, context.canvas.width, context.canvas.height)
 }
 
-export let createStringCanvas = (string, fontFamily = 'awkward') => {
+export let createStringCanvas = (string, fontFamily = 'awkward', isDanger) => {
 	let {
 		characterDefaults,
 		coords,
@@ -71,7 +75,7 @@ export let createStringCanvas = (string, fontFamily = 'awkward') => {
 	if (!state.loaded) {
 		fontImage.on('load', () => drawStringToCanvas(stringCoords, fontImage, context))
 	} else {
-		drawStringToCanvas(stringCoords, fontImage, context)
+		drawStringToCanvas(stringCoords, fontImage, context, isDanger)
 	}
 
 	return canvas

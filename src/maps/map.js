@@ -132,7 +132,7 @@ export class Map {
 	}
 
 	resetObjects() {
-		this.objects = this.originalObjects.map(([x, y, type]) => ({ x, y, type, state: {} }))
+		this.objects = this.originalObjects.map(([x, y, type]) => ({ x, y, type, state: { ox: 0, oy: 0 } }))
 	}
 
 	path(start, end) {

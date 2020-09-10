@@ -34,7 +34,7 @@ export let entities = {
 				robot_state.next = robot_state.path.shift() || e;
 			}
 
-			if (state.frame % 8 == 0) {
+			if (state.frame % 5 == 0) {
 				if (
 					e.x + robot_state.ox / TILE_SIZE.w == robot_state.next.x &&
 					e.y + robot_state.oy / TILE_SIZE.h == robot_state.next.y

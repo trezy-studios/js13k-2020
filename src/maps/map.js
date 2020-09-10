@@ -85,13 +85,11 @@ export class Map {
 		let computed_data = data[0].toString().padStart(w * h, '0').split('').map(num => +num)
 
 		this.original = computed_data
-		this.data = computed_data
 		this.delay = data[1]
 		this.originalObjects = data[2]
-		this.resetObjects()
 		this.size = { w, h }
+		this.reset()
 		this.tiles = data.slice(3).map(tile => {
-			console.log({tile})
 			let w = +tile[0]
 			let h = +tile[1]
 			let data = BigInt(tile.slice(2))
@@ -104,8 +102,8 @@ export class Map {
 	}
 
 	reset() {
-		this.data = this.original
-		this.resetObjects()
+		this.data = [...this.original]
+		this.objects = this.originalObjects.map(([x, y, type]) => ({ x, y, type, state: { ox: 0, oy: 0 } }))
 	}
 
 	update(tile, x, y) {
@@ -129,10 +127,6 @@ export class Map {
 				tiles[type](ctx, xPixel, yPixel, targetMap, !targetMap || !targetMap.at(x + offsetX, y + offsetY))
 			}
 		})
-	}
-
-	resetObjects() {
-		this.objects = this.originalObjects.map(([x, y, type]) => ({ x, y, type, state: { ox: 0, oy: 0 } }))
 	}
 
 	path(start, end) {

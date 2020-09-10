@@ -30,7 +30,7 @@ export let state = createObservable(new Proxy(stateObject, {
 	set(target, key, value) {
 		if (key === 'map') {
 			let map = maps[value];
-			map.resetObjects()
+			map.reset()
 			target[key] = map;
 			return 1
 		}

@@ -5,17 +5,18 @@ import {
 	playAudio,
 	setMusicVolume,
 } from './helpers/audio'
-import { canvas } from './render/canvas'
 import {
 	start as startController,
 	stop as stopController,
 } from './helpers/controls'
+import { canvas } from './render/canvas'
 import { createStringCanvas } from './render/font'
 import { Screen } from './structures/Screen'
 import { settings } from './data/settings'
 import { state } from './data/state'
 import { TILE_SIZE } from './data/grid'
 import { updateGameScale } from './helpers/updateGameScale'
+import { updateTimer } from './helpers/timer'
 import * as maps from './maps/index'
 
 
@@ -115,7 +116,6 @@ let gameScreen = new Screen({
 	onInit() {
 		let tileQueueElement = document.querySelector('#tile-queue ol')
 		let tilesRemainingElement = document.querySelector('#tiles-remaining')
-		let timerElement = this.node.querySelector('#play-info time')
 		let menuButton = this.node.querySelector('[data-action="open:menu"]')
 		let skipTimerButton = this.node.querySelector('#skip-timer')
 		menuButton.on('click', () => settingsScreen.show())
@@ -127,59 +127,54 @@ let gameScreen = new Screen({
 		})
 
 		let gameLoop = () => {
-			if (state.paused) {
-				return
-			}
+			if (!state.paused) {
+				let now = performance.now()
 
-			let now = performance.now()
+				const {
+					currentTile,
+					entities,
+					isVictory,
+					lastTimerUpdate,
+					map,
+					timeRemaining,
+				} = state
 
-			const {
-				currentTile,
-				entities,
-				lastTimerUpdate,
-				map,
-				timeRemaining,
-			} = state
+				state.frame += 1
 
-			state.frame += 1
+				render.drawGrid()
+				render.drawMap(map)
+				render.drawEntities(entities)
 
-			render.drawGrid()
-			render.drawMap(map)
-			render.drawEntities(entities)
-
-			if (currentTile < map.tiles.length) {
-				render.drawPlacement()
-			}
-
-			render.update()
-
-			if ((now - lastTimerUpdate) >= 1000) {
-				let totalSecondsRemaining = Math.abs(Math.floor(timeRemaining / 1000))
-				let secondsRemaining = (totalSecondsRemaining % 60).toString().padStart(2, '0')
-				let minutesRemaining = Math.floor(totalSecondsRemaining / 60)
-				let timerPrefix = ''
-
-				if (timeRemaining < 0) {
-					timerElement.classList.add('danger')
-					timerPrefix = '-'
+				if (currentTile < map.tiles.length) {
+					render.drawPlacement()
 				}
 
-				timerElement.innerHTML = `${timerPrefix}${minutesRemaining}:${secondsRemaining}`
+				render.update()
+				updateTimer(now)
 
-				state.timeRemaining -= 1000
-				state.lastTimerUpdate = now
+				let [exits, robots] = state.entities.reduce((accumulator, entity) => {
+					switch (entity.type) {
+						case 'exit':
+							accumulator[1].push(entity)
+							break
+						case 'robot':
+							accumulator[0].push(entity)
+							break
+					}
+					return accumulator
+				}, [[], []])
+
+				let allRobotsHaveFinished = robots.every(robot => exits.some(({x, y}) => (x === robot.x) && (y === robot.y)))
+
+				if (allRobotsHaveFinished) {
+					state.isVictory = 1
+				}
 			}
 
 			requestAnimationFrame(gameLoop)
 		}
 
-		state.on('change:map', () => {
-			if (state.map) {
-				state.currentTile = 0
-				state.entities = state.map.objects
-				state.timeRemaining = state.map.delay
-			}
-		})
+		gameLoop()
 
 		state.on('change:currentTile', () => {
 			const {
@@ -226,9 +221,9 @@ let gameScreen = new Screen({
 			}
 		})
 
-		state.on('change:paused', () => {
-			if (!state.paused) {
-				gameLoop()
+		state.on('change:isVictory', () => {
+			if (state.isVictory) {
+				mapSelectScreen.show()
 			}
 		})
 	},

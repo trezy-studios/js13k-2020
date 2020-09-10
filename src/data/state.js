@@ -4,6 +4,7 @@ import {
 	TILE_SIZE,
 } from './grid'
 import { createObservable } from '../helpers/createObservable'
+import { resetScore } from './score'
 import { resetTimer } from '../helpers/timer'
 import * as maps from '../maps'
 
@@ -21,9 +22,6 @@ let stateObject = {
 	paused: 1,
 	placeX: 0,
 	placeY: 0,
-	score: {
-		timeBonus: 0,
-	},
 	timeRemaining: 0,
 }
 
@@ -31,6 +29,7 @@ export let state = createObservable(new Proxy(stateObject, {
 	set(target, key, value) {
 		if (key === 'map') {
 			let map = maps[value]
+			resetScore()
 			resetTimer()
 			map.reset()
 			target.currentTile = 0

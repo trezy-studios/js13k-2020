@@ -15,6 +15,10 @@ import { Screen } from './structures/Screen'
 import { settings } from './data/settings'
 import { state } from './data/state'
 import { TILE_SIZE } from './data/grid'
+import {
+	addTimeBonus,
+	score,
+} from './data/score'
 import { updateGameScale } from './helpers/updateGameScale'
 import { updateTimer } from './helpers/timer'
 import * as maps from './maps/index'
@@ -120,7 +124,7 @@ let gameScreen = new Screen({
 		let skipTimerButton = this.node.querySelector('#skip-timer')
 		menuButton.on('click', () => settingsScreen.show())
 		skipTimerButton.on('click', ({ target }) => {
-			state.timeBonus = state.timeRemaining
+			addTimeBonus()
 			state.timeRemaining = 0
 			target.blur()
 			target.setAttribute('disabled', true)
@@ -133,10 +137,7 @@ let gameScreen = new Screen({
 				const {
 					currentTile,
 					entities,
-					isVictory,
-					lastTimerUpdate,
 					map,
-					timeRemaining,
 				} = state
 
 				state.frame += 1
@@ -223,6 +224,7 @@ let gameScreen = new Screen({
 
 		state.on('change:isVictory', () => {
 			if (state.isVictory) {
+				console.log({score})
 				mapSelectScreen.show()
 			}
 		})

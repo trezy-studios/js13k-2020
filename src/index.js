@@ -136,6 +136,7 @@ let gameScreen = new Screen({
 			const {
 				currentTile,
 				entities,
+				isVictory,
 				lastTimerUpdate,
 				map,
 				timeRemaining,
@@ -153,7 +154,7 @@ let gameScreen = new Screen({
 
 			render.update()
 
-			if ((now - lastTimerUpdate) >= 1000) {
+			if (!isVictory && ((now - lastTimerUpdate) >= 1000)) {
 				let totalSecondsRemaining = Math.abs(Math.floor(timeRemaining / 1000))
 				let secondsRemaining = (totalSecondsRemaining % 60).toString().padStart(2, '0')
 				let minutesRemaining = Math.floor(totalSecondsRemaining / 60)

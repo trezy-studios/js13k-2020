@@ -53,6 +53,10 @@ let settingsScreen = new Screen({
 	onInit() {
 		let resumeButton = this.node.querySelector('[data-action="open:game"]')
 		resumeButton.on('click', () => gameScreen.show())
+
+		let quitButton = this.node.querySelector('[data-action="quit"]')
+		quitButton.on('click', () => mapSelectScreen.show())
+
 		settings.on('change:musicVolume', () => setMusicVolume())
 
 		let options = this.node.querySelectorAll('.option')

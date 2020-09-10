@@ -251,6 +251,12 @@ let gameScreen = new Screen({
 				gameLoop()
 			}
 		})
+
+		state.on('change:isVictory', () => {
+			if (state.isVictory) {
+				mapSelectScreen.show()
+			}
+		})
 	},
 
 	onShow() {

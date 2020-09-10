@@ -50,9 +50,15 @@ let music = null
 
 // screens
 let settingsScreen = new Screen({
+	onHide() {
+		this.screenSource = null
+	},
+
 	onInit() {
 		let resumeButton = this.node.querySelector('[data-action="open:game"]')
-		resumeButton.on('click', () => gameScreen.show())
+		resumeButton.on('click', () => {
+			this.screenSource.show()
+		})
 
 		let quitButton = this.node.querySelector('[data-action="quit"]')
 		quitButton.on('click', () => mapSelectScreen.show())
@@ -113,6 +119,18 @@ let settingsScreen = new Screen({
 		})
 	},
 
+	onShow(screenSource) {
+		let quitButtonElement = this.node.querySelector('[data-action="quit"]')
+
+		if (screenSource !== gameScreen) {
+			quitButtonElement.setAttribute('hidden', 1)
+		} else {
+			quitButtonElement.removeAttribute('hidden')
+		}
+
+		this.screenSource = screenSource
+	},
+
 	selector: '#settings-menu',
 })
 
@@ -127,13 +145,13 @@ let gameScreen = new Screen({
 		let tilesRemainingElement = document.querySelector('#tiles-remaining')
 		let menuButton = this.node.querySelector('[data-action="open:menu"]')
 		let skipTimerButton = this.node.querySelector('#skip-timer')
-		menuButton.on('click', () => settingsScreen.show())
+		menuButton.on('click', () => settingsScreen.show(this))
 		skipTimerButton.on('click', ({ target }) => {
 			addTimeBonus()
 			state.timeRemaining = 0
 			target.blur()
-			target.setAttribute('hidden', true)
-			target.setAttribute('disabled', true)
+			target.setAttribute('hidden', 1)
+			target.setAttribute('disabled', 1)
 		})
 
 		let gameLoop = () => {
@@ -279,6 +297,9 @@ let mainMenuScreen = new Screen({
 	onInit() {
 		let startButtonElement = this.node.querySelector('#start')
 		startButtonElement.on('click', () => mapSelectScreen.show())
+
+		let settingsButtonElement = this.node.querySelector('#settings')
+		settingsButtonElement.on('click', () => settingsScreen.show(this))
 	},
 
 	onShow() {

@@ -32,7 +32,7 @@ export class Screen {
 		}
 	}
 
-	show () {
+	show (options) {
 		screens.forEach(screen => {
 			screen.hide()
 		})
@@ -40,7 +40,7 @@ export class Screen {
 		this.node.removeAttribute('hidden')
 
 		if (this.onShow) {
-			this.onShow()
+			this.onShow(options)
 		}
 	}
 }

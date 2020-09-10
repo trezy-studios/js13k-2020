@@ -456,10 +456,16 @@ ol {
 }
 
 #tile-queue {
+	display: flex;
+	flex-direction: column;
+	flex-shrink: 1;
 	height: 100%;
+	overflow: auto;
 
 	header {
 		padding: 4px;
+		position: sticky;
+		top: 0;
 	}
 
 	ol {

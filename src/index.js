@@ -182,7 +182,7 @@ let gameScreen = new Screen({
 
 		gameLoop()
 
-		state.on('change:currentTile', () => {
+		state.on('change:map', () => {
 			const {
 				currentTile,
 				map,

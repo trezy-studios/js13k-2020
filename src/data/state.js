@@ -23,6 +23,7 @@ let stateObject = {
 	placeX: 0,
 	placeY: 0,
 	timeRemaining: 0,
+	totalMoves: 0,
 }
 
 export let state = createObservable(new Proxy(stateObject, {
@@ -38,6 +39,7 @@ export let state = createObservable(new Proxy(stateObject, {
 			target.placeX = 0
 			target.placeY = 0
 			target.timeRemaining = map.delay
+			target.totalMoves = 0
 			target.map = map
 			return 1
 		}

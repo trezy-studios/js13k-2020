@@ -39,6 +39,7 @@ export let entities = {
 					e.x + robot_state.ox / TILE_SIZE.w == robot_state.next.x &&
 					e.y + robot_state.oy / TILE_SIZE.h == robot_state.next.y
 				) {
+					state.totalMoves += 1
 					e.x = robot_state.next.x;
 					e.y = robot_state.next.y;
 					robot_state.next = robot_state.path.shift() || e;

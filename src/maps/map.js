@@ -90,7 +90,6 @@ export class Map {
 		this.size = { w, h }
 		this.reset()
 		this.tiles = data.slice(3).map(tile => {
-			console.log({tile})
 			let w = +tile[0]
 			let h = +tile[1]
 			let data = BigInt(tile.slice(2))

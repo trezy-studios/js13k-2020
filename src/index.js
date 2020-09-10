@@ -132,6 +132,7 @@ let gameScreen = new Screen({
 			addTimeBonus()
 			state.timeRemaining = 0
 			target.blur()
+			target.setAttribute('hidden', true)
 			target.setAttribute('disabled', true)
 		})
 
@@ -190,6 +191,9 @@ let gameScreen = new Screen({
 
 			if (map) {
 				tileQueueElement.innerHTML = ''
+
+				skipTimerButton.removeAttribute('hidden')
+				skipTimerButton.removeAttribute('disabled')
 
 				if (currentTile >= map.tiles.length - 1) {
 					const noTilesRemainingElement = document.createElement('li')

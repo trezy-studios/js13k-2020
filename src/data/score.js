@@ -10,7 +10,6 @@ import { state } from './state'
 let scoreObject = {
 	corruptedTileBonus: 0,
 	earlyStartBonus: 0,
-	total: 0,
 
 	get moveBonus() {
 		if (state.totalMoves) {

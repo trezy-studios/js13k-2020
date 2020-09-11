@@ -65,10 +65,6 @@ class Canvas {
 		this.queue[this.layer].push([mode + "Rect", x, y, w, h, ...opts])
 	}
 
-	text(x, y, fontSize, text, opts = [], mode = "fill") {
-		this.queue[this.layer].push([mode + "Text", x, y, fontSize, text, ...opts])
-	}
-
 	//no params, push all updates to screen.
 	update() {
 		//clear the canvas

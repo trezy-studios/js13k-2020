@@ -1,4 +1,5 @@
 // Local imports
+import { score } from '../data/score'
 import { state } from '../data/state'
 
 
@@ -14,7 +15,7 @@ let place = () => {
 		placeY,
 	} = state
 
-	const currentTile = map.tiles[state.currentTile]
+	let currentTile = map.tiles[state.currentTile]
 
 	if (!currentTile) {
 		return
@@ -34,13 +35,23 @@ let place = () => {
 		return
 	}
 
+	let corruptedTileCount = 0
+
 	currentTile.data.forEach((type, index) => {
 		if (type) {
 			let x = (index % currentTile.size.w) + placeX
 			let y = Math.floor(index / currentTile.size.w) + placeY
 			map.update(type, x, y)
+
+			if (type == 2) {
+				corruptedTileCount += 1
+			}
 		}
 	})
+
+	if (corruptedTileCount) {
+		score.corruptedTileBonus += corruptedTileCount * 250
+	}
 
 	state.currentTile += 1
 }

@@ -4,7 +4,8 @@ import {
 	TILE_SIZE,
 } from './grid'
 import { createObservable } from '../helpers/createObservable'
-import { resetScore } from './score'
+import { localStoragePrefix } from '../data/prefix'
+import { score } from '../data/score'
 import { resetTimer } from '../helpers/timer'
 import * as maps from '../maps'
 
@@ -16,9 +17,11 @@ let stateObject = {
 	currentTile: 0,
 	entities: [],
 	frame: 0,
+	highScore: 0,
 	isVictory: 0,
 	lastTimerUpdate: 0,
 	map: null,
+	mapName: '',
 	paused: 1,
 	placeX: 0,
 	placeY: 0,
@@ -30,17 +33,20 @@ export let state = createObservable(new Proxy(stateObject, {
 	set(target, key, value) {
 		if (key === 'map') {
 			let map = maps[value]
-			resetScore()
-			resetTimer()
 			map.reset()
 			target.currentTile = 0
-			target.isVictory = 0
 			target.entities = map.objects
+			target.highScore = localStorage.getItem(`${localStoragePrefix}${value}::high-score`)
+			target.isVictory = 0
+			target.mapName = value
 			target.placeX = 0
 			target.placeY = 0
 			target.timeRemaining = map.delay
 			target.totalMoves = 0
 			target.map = map
+
+			resetTimer()
+			score.reset()
 			return 1
 		}
 

@@ -1,14 +1,13 @@
 // Local imports
 import { createObservable } from '../helpers/createObservable'
+import { localStoragePrefix } from '../data/prefix'
 
 
 
 
-
-let localstoragePrefix = 'Trezy Studios::Not Found::'
 
 function getFromLocalStorage(key, defaultValue) {
-	let value = localStorage.getItem(`${localstoragePrefix}${key}`)
+	let value = localStorage.getItem(`${localStoragePrefix}${key}`)
 
 	if (value) {
 		try {
@@ -33,10 +32,10 @@ let eventTarget = new EventTarget
 export let settings = createObservable(settingsStore)
 
 settings.on('change', ({ detail })=> {
-	const {
+	let {
 		key,
 		value,
 	} = detail
 
-	localStorage.setItem(`${localstoragePrefix}${key}`, value)
+	localStorage.setItem(`${localStoragePrefix}${key}`, value)
 })

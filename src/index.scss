@@ -136,18 +136,6 @@ canvas.text {
 	pointer-events: none;
 }
 
-dl {
-	margin: 0 2px 0;
-}
-
-dd {
-	margin: 2px 0 0;
-}
-
-dt {
-	margin-top: 4px;
-}
-
 h1, h2 {
 	margin: 2px;
 	padding: 4px 1px;
@@ -331,6 +319,21 @@ ol {
 	text-align: right;
 }
 
+.score {
+	margin: 4px 2px 0;
+
+	.value {
+		margin-top: 2px;
+	}
+}
+
+.screen {
+	display: grid;
+	gap: 4px;
+	grid-template-columns: 54px 116px 54px;
+	height: 119px;
+}
+
 .setting {
 	border-bottom: 1px solid $purple;
 	display: flex;
@@ -377,13 +380,6 @@ ol {
 
 .stretch {
 	grid-column: span 2;
-}
-
-.screen {
-	display: grid;
-	gap: 4px;
-	grid-template-columns: 54px 116px 54px;
-	height: 119px;
 }
 
 #brand {

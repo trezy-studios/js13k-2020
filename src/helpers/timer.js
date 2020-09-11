@@ -13,7 +13,7 @@ export function resetTimer() {
 }
 
 export function updateTimer(now) {
-	const {
+	let {
 		isVictory,
 		lastTimerUpdate,
 		timeRemaining,

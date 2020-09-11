@@ -2,11 +2,6 @@
 import './index.scss'
 import './patches/addEventListener'
 import {
-	addTimeBonus,
-	getTotalScore,
-	score,
-} from './data/score'
-import {
 	playAudio,
 	setMusicVolume,
 } from './helpers/audio'
@@ -16,11 +11,13 @@ import {
 } from './helpers/controls'
 import { canvas } from './render/canvas'
 import { createStringCanvas } from './render/font'
+import { score } from './data/score'
 import { Screen } from './structures/Screen'
 import { settings } from './data/settings'
 import { state } from './data/state'
 import { TILE_SIZE } from './data/grid'
 import { updateGameScale } from './helpers/updateGameScale'
+import { updateHighScore } from './helpers/score'
 import { updateTimer } from './helpers/timer'
 import * as maps from './maps/index'
 
@@ -141,13 +138,17 @@ let gameScreen = new Screen({
 	},
 
 	onInit() {
+		let currentScoreValueElement = document.querySelector('#current-score .value')
+		let topScoreElement = document.querySelector('#high-score')
 		let tileQueueElement = document.querySelector('#tile-queue ol')
 		let tilesRemainingElement = document.querySelector('#tiles-remaining')
+
 		let menuButton = this.node.querySelector('[data-action="open:menu"]')
-		let skipTimerButton = this.node.querySelector('#skip-timer')
 		menuButton.on('click', () => settingsScreen.show(this))
+
+		let skipTimerButton = this.node.querySelector('#skip-timer')
 		skipTimerButton.on('click', ({ target }) => {
-			addTimeBonus()
+			score.earlyStartBonus += state.timeRemaining
 			state.timeRemaining = 0
 			target.blur()
 			target.setAttribute('hidden', 1)
@@ -158,7 +159,7 @@ let gameScreen = new Screen({
 			if (!state.paused) {
 				let now = performance.now()
 
-				const {
+				let {
 					currentTile,
 					entities,
 					map,
@@ -201,8 +202,14 @@ let gameScreen = new Screen({
 
 		gameLoop()
 
+		score.on('change', () => {
+			if (currentScoreValueElement.innerText != score.preTotal) {
+				currentScoreValueElement.innerText = score.preTotal
+			}
+		})
+
 		state.on('change:map', () => {
-			const {
+			let {
 				currentTile,
 				map,
 			} = state
@@ -214,7 +221,7 @@ let gameScreen = new Screen({
 				skipTimerButton.removeAttribute('disabled')
 
 				if (currentTile >= map.tiles.length - 1) {
-					const noTilesRemainingElement = document.createElement('li')
+					let noTilesRemainingElement = document.createElement('li')
 					noTilesRemainingElement.innerHTML = 'Empty'
 					tileQueueElement.appendChild(noTilesRemainingElement)
 				}
@@ -251,13 +258,25 @@ let gameScreen = new Screen({
 
 		state.on('change:isVictory', () => {
 			if (state.isVictory) {
-				console.log({score: getTotalScore()})
+				updateHighScore()
 				mapSelectScreen.show()
 			}
 		})
 	},
 
 	onShow() {
+		let currentScoreElement = document.querySelector('#current-score')
+		let topScoreElement = document.querySelector('#high-score')
+
+		currentScoreElement.querySelector('.value').innerHTML = 0
+
+		if (state.highScore) {
+			topScoreElement.querySelector('.value').innerHTML = state.highScore
+			topScoreElement.removeAttribute('hidden')
+		} else {
+			topScoreElement.setAttribute('hidden', 1)
+		}
+
 		startController()
 		state.paused = 0
 	},

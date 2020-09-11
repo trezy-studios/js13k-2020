@@ -34,15 +34,15 @@ sfxGainNode.gain.value = settings.soundFXVolume
 
 
 function getFrequency (noteString) {
-	const semitoneFrequencyRatio = 2 ** (1 / 12)
-	const semitonesPerOctave = 12
-	const frequencyAtA4 = 440
+	let semitoneFrequencyRatio = 2 ** (1 / 12)
+	let semitonesPerOctave = 12
+	let frequencyAtA4 = 440
 
-	const [, note, accidental, octave] = /([A-G])(#|b)?([0-8]*)/i.exec(noteString)
-	const noteIndex = 'A|A#|B|C|C#|D|D#|E|F|F#|G|G#'.split`|`.indexOf(note)
+	let [, note, accidental, octave] = /([A-G])(#|b)?([0-8]*)/i.exec(noteString)
+	let noteIndex = 'A|A#|B|C|C#|D|D#|E|F|F#|G|G#'.split`|`.indexOf(note)
 
-	const baseOctave = 4 - (noteIndex > 2)
-	const semitones = noteIndex + (semitonesPerOctave * (octave - baseOctave))
+	let baseOctave = 4 - (noteIndex > 2)
+	let semitones = noteIndex + (semitonesPerOctave * (octave - baseOctave))
 
 	return frequencyAtA4 * (semitoneFrequencyRatio ** semitones)
 }

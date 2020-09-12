@@ -8,10 +8,6 @@
 		id="main-menu">
 		<div class="frame dark">
 			<h2>Menu</h2>
-
-			<div class="bottom">
-				<button id="settings">Settings</button>
-			</div>
 		</div>
 
 		<div class="center frame dark stretch">
@@ -73,10 +69,8 @@
 			</div>
 
 			<div class="bottom">
-				<button
-					data-action="open:menu"
-					type="button">
-					Menu
+				<button data-action="quit">
+					Quit
 				</button>
 			</div>
 		</div>
@@ -110,106 +104,6 @@
 			</button>
 
 			<div id="tiles-remaining"></div>
-		</div>
-	</div>
-
-	<div
-		class="screen"
-		hidden
-		id="settings-menu">
-		<div class="frame dark">
-			<h2>Menu</h2>
-
-			<button
-				class="option"
-				data-action="open:audio-settings">
-				Audio
-			</button>
-
-			<button
-				class="option"
-				data-action="open:credits">
-				Credits
-			</button>
-
-			<div class="bottom">
-				<button
-					data-action="open:game"
-					class="resume">
-					Resume
-				</button>
-
-				<button data-action="quit">
-					Quit
-				</button>
-			</div>
-		</div>
-
-		<div class="frame dark stretch">
-			<div id="audio-settings">
-				<h2>Audio Settings</h2>
-
-				<div class="setting">
-					<label
-						class="name"
-						for="musicVolume">
-						Music Volume
-					</label>
-
-					<div
-						class="value">
-						<input
-							id="musicVolume"
-							name="musicVolume"
-							type="range">
-					</div>
-				</div>
-
-				<div class="setting">
-					<label
-						class="name"
-						for="soundFXVolume">
-						Sound FX Volume
-					</label>
-
-					<div class="value">
-						<input
-							id="soundFXVolume"
-							name="soundFXVolume"
-							type="range">
-					</div>
-				</div>
-			</div>
-
-			<div
-				hidden
-				id="credits">
-				<h2>Credits</h2>
-
-				<dl>
-					<dt>Map and Character Art</dt>
-					<dd>Polyducks</dd>
-
-					<dt>User Interface Design</dt>
-					<dd>Trezy</dd>
-
-					<dt>User Experience Design</dt>
-					<dd>Trezy</dd>
-					<dd>Nitro</dd>
-
-					<dt>Software Engineering</dt>
-					<dd>Trezy</dd>
-					<dd>Nitro</dd>
-
-					<dt>Gameplay Testing</dt>
-
-					<dt>Audio Mathification</dt>
-					<dd>Trezys Wife</dd>
-
-					<dt>Music and Sound Effects</dt>
-					<dd>Basile</dd>
-				</dl>
-			</div>
 		</div>
 	</div>
 </div>

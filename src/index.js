@@ -2,10 +2,6 @@
 import './index.scss'
 import './patches/addEventListener'
 import {
-	playAudio,
-	setMusicVolume,
-} from './helpers/audio'
-import {
 	start as startController,
 	stop as stopController,
 } from './helpers/controls'
@@ -13,7 +9,6 @@ import { canvas } from './render/canvas'
 import { createStringCanvas } from './render/font'
 import { score } from './data/score'
 import { Screen } from './structures/Screen'
-import { settings } from './data/settings'
 import { state } from './data/state'
 import { TILE_SIZE } from './data/grid'
 import { updateGameScale } from './helpers/updateGameScale'
@@ -28,10 +23,6 @@ import * as maps from './maps/index'
 let canvasElement = document.querySelector('canvas')
 let canvasHeight = canvasElement.height
 let canvasWidth = canvasElement.width
-let gameElement = document.querySelector('#game')
-let gameWrapperElement = document.querySelector('#game-wrapper')
-let mainMenuElement = document.querySelector('#main')
-let mapSelectMenuElement = document.querySelector('#map-select')
 let render = canvas(canvasElement, 0, 14)
 
 
@@ -46,91 +37,6 @@ let music = null
 
 
 // screens
-let settingsScreen = new Screen({
-	onHide() {
-		this.screenSource = null
-	},
-
-	onInit() {
-		let resumeButton = this.node.querySelector('[data-action="open:game"]')
-		resumeButton.on('click', () => {
-			this.screenSource.show()
-		})
-
-		let quitButton = this.node.querySelector('[data-action="quit"]')
-		quitButton.on('click', () => mapSelectScreen.show())
-
-		settings.on('change:musicVolume', () => setMusicVolume())
-
-		let options = this.node.querySelectorAll('.option')
-		options.forEach(option => {
-			let [, target] = option.getAttribute('data-action').split(':')
-			let targetElement = this.node.querySelector(`#${target}`)
-			let menuElements = [...targetElement.parentNode.children]
-
-			option.on('click', () => {
-				options.forEach(otherOption => otherOption.classList.remove('active'))
-				option.classList.add('active')
-
-				menuElements.forEach(menuElement => menuElement.setAttribute('hidden', 1))
-				targetElement.removeAttribute('hidden')
-			})
-		})
-
-		let inputs = this.node.querySelectorAll('input')
-		inputs.forEach(inputElement => {
-			let {
-				name,
-				type,
-			} = inputElement
-
-			inputElement.on('change', ({ target }) => {
-				let {
-					checked,
-				} = target
-
-				switch (type) {
-					case 'checkbox':
-						settings[name] = +checked
-						break
-
-					case 'number':
-						settings[name] = target.value.replace(/[^/d]/gu, '')
-						break
-
-					default:
-						settings[name] = target.value
-				}
-			})
-
-			let settingsValue = settings[name]
-
-			if (typeof settingsValue === 'boolean') {
-				inputElement.checked = settingsValue
-			} else if (inputElement.type === 'radio') {
-				let targetElement = this.node.querySelector(`[name="${inputElement.name}"][value="${settingsValue}"]`)
-				targetElement.checked = 1
-			} else {
-				inputElement.value = settingsValue
-			}
-		})
-	},
-
-	onShow(screenSource) {
-		let quitButtonElement = this.node.querySelector('[data-action="quit"]')
-
-		if (screenSource !== gameScreen) {
-			quitButtonElement.setAttribute('hidden', 1)
-		} else {
-			quitButtonElement.removeAttribute('hidden')
-		}
-
-		this.screenSource = screenSource
-	},
-
-	selector: '#settings-menu',
-})
-
 let gameScreen = new Screen({
 	onHide() {
 		state.paused = 1
@@ -143,8 +49,8 @@ let gameScreen = new Screen({
 		let tileQueueElement = document.querySelector('#tile-queue ol')
 		let tilesRemainingElement = document.querySelector('#tiles-remaining')
 
-		let menuButton = this.node.querySelector('[data-action="open:menu"]')
-		menuButton.on('click', () => settingsScreen.show(this))
+		let quitButton = this.node.querySelector('[data-action="quit"]')
+		quitButton.on('click', () => mapSelectScreen.show())
 
 		let skipTimerButton = this.node.querySelector('#skip-timer')
 		skipTimerButton.on('click', ({ target }) => {
@@ -316,13 +222,6 @@ let mainMenuScreen = new Screen({
 	onInit() {
 		let startButtonElement = this.node.querySelector('#start')
 		startButtonElement.on('click', () => mapSelectScreen.show())
-
-		let settingsButtonElement = this.node.querySelector('#settings')
-		settingsButtonElement.on('click', () => settingsScreen.show(this))
-	},
-
-	onShow() {
-		music = playAudio('test', 1)
 	},
 
 	selector: '#main-menu',
@@ -399,31 +298,9 @@ let initialize = () => {
 		subtree: 1,
 	})
 
-	document.querySelectorAll('[data-bind]').forEach(boundElement => {
-		function update(targetElement, value) {
-			if ([0, 1].includes(value)) {
-				targetElement.innerHTML = value ? 'On' : 'Off'
-			} else {
-				targetElement.innerHTML = value
-			}
-		}
-
-		let boundSetting = boundElement.getAttribute('data-bind')
-
-		settings.on(`change:${boundSetting}`, ({ detail }) => {
-			update(boundElement, detail.value)
-		})
-
-		update(boundElement, settings[boundSetting])
-	})
-
 	updateGameScale()
 	renderStrings()
 	mainMenuScreen.show()
-
-	document.querySelectorAll('button').forEach(buttonElement => {
-		buttonElement.on('mousedown', () => playAudio('button'))
-	})
 }
 
 initialize()

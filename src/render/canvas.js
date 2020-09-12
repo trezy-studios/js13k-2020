@@ -3,7 +3,6 @@ import {
 	GRID_SIZE,
 	TILE_SIZE,
 } from '../data/grid'
-import { settings } from '../data/settings'
 import { entities } from '../data/entities'
 import { state } from '../data/state'
 import { tiles } from '../data/tiles'

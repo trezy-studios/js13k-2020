@@ -20,7 +20,7 @@ export let entities = {
 		let frames = 2
 		let robot_state = e.state
 
-		if (state.timeRemaining < 0) {
+		if (!state.isVictory && state.timeRemaining < 0) {
 			if (!robot_state.path || robot_state.path.length === 0 && e.x === robot_state.next.x && robot_state.next.y === e.y) {
 				let potential = state.map.path({ x: e.x, y: e.y }, { x: -1, y: -1 });
 				let end = state.entities.find(ent => ent.type === "exit");

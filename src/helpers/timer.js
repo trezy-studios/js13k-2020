@@ -9,7 +9,12 @@ let getTimer = () => document.querySelector('#play-info time')
 
 export function resetTimer() {
 	let timerElement = getTimer()
+	let skipTimerButton = document.querySelector('#skip-timer')
+
 	timerElement.classList.remove('danger')
+
+	skipTimerButton.removeAttribute('hidden')
+	skipTimerButton.removeAttribute('disabled')
 }
 
 export function updateTimer(now) {

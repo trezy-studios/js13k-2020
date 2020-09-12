@@ -12,8 +12,14 @@ import { Screen } from './structures/Screen'
 import { state } from './data/state'
 import { TILE_SIZE } from './data/grid'
 import { updateGameScale } from './helpers/updateGameScale'
-import { updateHighScore } from './helpers/score'
-import { updateTimer } from './helpers/timer'
+import {
+	updateHighScore,
+	updateScores,
+} from './helpers/score'
+import {
+	resetTimer,
+	updateTimer,
+} from './helpers/timer'
 import * as maps from './maps/index'
 
 
@@ -44,10 +50,11 @@ let gameScreen = new Screen({
 	},
 
 	onInit() {
-		let currentScoreValueElement = document.querySelector('#current-score .value')
-		let topScoreElement = document.querySelector('#high-score')
-		let tileQueueElement = document.querySelector('#tile-queue ol')
-		let tilesRemainingElement = document.querySelector('#tiles-remaining')
+		let currentScoreValueElement = this.node.querySelector('#current-score .value')
+		let levelRecapElement = this.node.querySelector('#level-recap')
+		let topScoreElement = this.node.querySelector('#high-score')
+		let tileQueueElement = this.node.querySelector('#tile-queue ol')
+		let tilesRemainingElement = this.node.querySelector('#tiles-remaining')
 
 		let quitButton = this.node.querySelector('[data-action="quit"]')
 		quitButton.on('click', () => mapSelectScreen.show())
@@ -61,8 +68,60 @@ let gameScreen = new Screen({
 			target.setAttribute('disabled', 1)
 		})
 
+		let nextLevelButton = this.node.querySelector('#next-level')
+
+		let resetLevelButton = this.node.querySelector('#reset')
+		let resetLevel = () => {
+			let {
+				currentTile,
+				map,
+			} = state
+
+			state.map = map
+
+			tileQueueElement.innerHTML = ''
+
+			levelRecapElement.setAttribute('hidden', 1)
+
+			if (currentTile >= map.tiles.length - 1) {
+				let noTilesRemainingElement = document.createElement('li')
+				noTilesRemainingElement.innerHTML = 'Empty'
+				tileQueueElement.appendChild(noTilesRemainingElement)
+			}
+
+			map.tiles.slice(currentTile + 1, currentTile + 4).forEach(tile => {
+				let listItem = document.createElement('li')
+				let tileCanvasElement = document.createElement('canvas')
+				tileCanvasElement.height = (tile.size.h * TILE_SIZE.h) + 2
+				tileCanvasElement.width = tile.size.w * TILE_SIZE.w
+
+				let context = canvas(tileCanvasElement, 0, 1)
+				context.drawMap(tile)
+				context.update()
+
+				listItem.appendChild(tileCanvasElement)
+				tileQueueElement.appendChild(listItem)
+			})
+
+			let tilesUsedPercentage = (currentTile / map.tiles.length) * 100
+			let tilesRemainingStatusColor = '#64b964'
+
+			if (tilesUsedPercentage >= 50) {
+				tilesRemainingStatusColor = '#e6c86e'
+			}
+
+			if (tilesUsedPercentage >= 75) {
+				tilesRemainingStatusColor = '#d77355'
+			}
+
+			tilesRemainingElement.style.setProperty('--p', `${(currentTile / map.tiles.length) * 100}%`)
+			tilesRemainingElement.style.setProperty('--c', tilesRemainingStatusColor)
+		}
+
+		resetLevelButton.on('click', resetLevel)
+
 		let gameLoop = () => {
-			if (!state.paused) {
+			if (!state.isVictory && !state.paused) {
 				let now = performance.now()
 
 				let {
@@ -114,58 +173,15 @@ let gameScreen = new Screen({
 			}
 		})
 
-		state.on('change:map', () => {
-			let {
-				currentTile,
-				map,
-			} = state
-
-			if (map) {
-				tileQueueElement.innerHTML = ''
-
-				skipTimerButton.removeAttribute('hidden')
-				skipTimerButton.removeAttribute('disabled')
-
-				if (currentTile >= map.tiles.length - 1) {
-					let noTilesRemainingElement = document.createElement('li')
-					noTilesRemainingElement.innerHTML = 'Empty'
-					tileQueueElement.appendChild(noTilesRemainingElement)
-				}
-
-				map.tiles.slice(currentTile + 1, currentTile + 4).forEach(tile => {
-					let listItem = document.createElement('li')
-					let tileCanvasElement = document.createElement('canvas')
-					tileCanvasElement.height = (tile.size.h * TILE_SIZE.h) + 2
-					tileCanvasElement.width = tile.size.w * TILE_SIZE.w
-
-					let context = canvas(tileCanvasElement, 0, 1)
-					context.drawMap(tile)
-					context.update()
-
-					listItem.appendChild(tileCanvasElement)
-					tileQueueElement.appendChild(listItem)
-				})
-
-				let tilesUsedPercentage = (currentTile / map.tiles.length) * 100
-				let tilesRemainingStatusColor = '#64b964'
-
-				if (tilesUsedPercentage >= 50) {
-					tilesRemainingStatusColor = '#e6c86e'
-				}
-
-				if (tilesUsedPercentage >= 75) {
-					tilesRemainingStatusColor = '#d77355'
-				}
-
-				tilesRemainingElement.style.setProperty('--p', `${(currentTile / map.tiles.length) * 100}%`)
-				tilesRemainingElement.style.setProperty('--c', tilesRemainingStatusColor)
-			}
-		})
+		state.on('change:map', resetLevel)
 
 		state.on('change:isVictory', () => {
 			if (state.isVictory) {
+				updateScores(levelRecapElement)
 				updateHighScore()
-				mapSelectScreen.show()
+				levelRecapElement.removeAttribute('hidden')
+
+				// mapSelectScreen.show()
 			}
 		})
 	},

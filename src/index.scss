@@ -240,6 +240,7 @@ ol {
 		position: absolute;
 		right: 0;
 		top: 0;
+		z-index: 1;
 	}
 
 	&.dark::before {
@@ -264,6 +265,10 @@ ol {
 }
 
 .pull-right {
+	float: right;
+}
+
+.text-right {
 	text-align: right;
 }
 
@@ -314,7 +319,7 @@ ol {
 		0 100%
 	);
 
-	canvas {
+	> canvas {
 		margin: -2px 6px 2px;
 	}
 }
@@ -325,6 +330,38 @@ ol {
 	transform-origin: 0 0;
 	transition: transform 0.5s;
 	width: 240px;
+}
+
+#level-recap {
+	&:not([hidden]) {
+		background-color: rgba($black, 0.8);
+		bottom: 0;
+		display: grid;
+		left: 0;
+		place-items: center;
+		position: absolute;
+		right: 0;
+		top: 0;
+		z-index: 0;
+	}
+
+	> div {
+		display: grid;
+		gap: 4px;
+		grid-template-columns: 1fr auto auto;
+
+		header {
+			padding-bottom: 4px;
+		}
+
+		#final-score {
+			padding-top: 4px;
+		}
+
+		header, #final-score {
+			grid-column: span 3;
+		}
+	}
 }
 
 #play-info {
@@ -379,11 +416,11 @@ ol {
 	bottom: 1px;
 	clip-path: polygon(
 		0 0,
-		100% 0,
-		100% 2px,
+		46px 0,
+		46px 2px,
 		45px 2px,
-		45px 100%,
-		0 100%
+		45px 3px,
+		0 3px
 	);
 	height: 3px;
 	left: 2px;

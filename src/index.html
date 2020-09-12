@@ -48,7 +48,7 @@
 			<h1>
 				<div data-font="Thaleah">Level</div>
 				<div
-					class="pull-right"
+					class="text-right"
 					data-font="Thaleah">
 					00
 				</div>
@@ -58,14 +58,14 @@
 				class="score"
 				id="high-score">
 				<div>High</div>
-				<div class="pull-right value"></div>
+				<div class="text-right value"></div>
 			</div>
 
 			<div
 				class="score"
 				id="current-score">
 				<div>Current</div>
-				<div class="pull-right value"></div>
+				<div class="text-right value"></div>
 			</div>
 
 			<div class="bottom">
@@ -82,6 +82,65 @@
 				height="113"
 				width="97">
 			</canvas>
+
+			<div
+				hidden
+				id="level-recap">
+				<div>
+					<header data-font="Thaleah">
+						Victory!
+					</header>
+
+					<div>Early Start</div>
+					<div>+</div>
+					<div
+						class="text-right"
+						data-score="earlyStartBonus">
+					</div>
+
+					<div>Move Bonus</div>
+					<div>+</div>
+					<div
+						class="text-right"
+						data-score="moveBonus">
+					</div>
+
+					<div>Time Bonus</div>
+					<div>+</div>
+					<div
+						class="text-right"
+						data-score="timeBonus">
+					</div>
+
+					<div>Remaining Tiles</div>
+					<div>+</div>
+					<div
+						class="text-right"
+						data-score="remainingTileBonus">
+					</div>
+
+					<div>Corrupted Tiles</div>
+					<div>+</div>
+					<div
+						class="text-right"
+						data-score="corruptedTileBonus">
+					</div>
+
+					<div id="final-score">
+						<span data-font="Thaleah">Total</span>
+						<span class="pull-right value" data-font="Thaleah"></span>
+					</div>
+
+					<div>
+						<button id="reset">Retry</button>
+						<button
+							class="go"
+							id="next-level">
+							Next
+						</button>
+					</div>
+				</div>
+			</div>
 		</div>
 
 		<div

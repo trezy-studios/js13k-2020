@@ -133,4 +133,5 @@ export class Map {
 		return path(this.data, this.size, start, end)
 	}
 }
+
 export default Map

@@ -38,7 +38,6 @@ const get_tile = (map) => {
     }
     size.w = Math.max(...tiles.map(_ => _[0])) + 1;
     size.h = Math.max(...tiles.map(_ => _[1])) + 1;
-    console.log(size);
     for (let y = 0; y < size.h; y++) {
         for (let x = 0; x < size.w; x++) {
             res.push(getPos(x, y))

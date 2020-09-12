@@ -1,4 +1,4 @@
-const ClosureCompilerPlugin = require('webpack-closure-compiler')
+const ClosurePlugin = require('closure-webpack-plugin')
 const HTMLWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin')
 const HTMLWebpackPlugin = require('html-webpack-plugin')
 const MiniCSSExtractPlugin = require('mini-css-extract-plugin')
@@ -29,7 +29,6 @@ module.exports = {
 
 	module: {
 		rules: [
-
 			{
 				test: /\.json$/,
 				exclude: /node_modules/,
@@ -80,7 +79,6 @@ module.exports = {
 	optimization: {
 		minimize: isProduction,
 		minimizer: [
-			// new ClosureCompilerPlugin,
 			new TerserPlugin({
 				terserOptions: {
 					compress: {
@@ -97,6 +95,11 @@ module.exports = {
 						// },
 					},
 				},
+			}),
+			new ClosurePlugin({
+				mode: 'STANDARD',
+			}, {
+				languageOut: 'ECMASCRIPT_2020',
 			}),
 		],
 	},

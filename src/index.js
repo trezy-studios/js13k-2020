@@ -50,7 +50,7 @@ let gameScreen = new Screen({
 	},
 
 	onInit() {
-		let currentScoreValueElement = this.node.querySelector('#current-score .value')
+		let currentScoreElement = this.node.querySelector('#current-score .value')
 		let levelRecapElement = this.node.querySelector('#level-recap')
 		let highScoreElement = this.node.querySelector('#high-score')
 		let tileQueueElement = this.node.querySelector('#tile-queue ol')
@@ -121,35 +121,20 @@ let gameScreen = new Screen({
 		gameLoop()
 
 		score.on('change', () => {
-			if (currentScoreValueElement.innerText != score.preTotal) {
-				currentScoreValueElement.innerText = score.preTotal
+			if (currentScoreElement.innerText != score.preTotal) {
+				currentScoreElement.innerText = score.preTotal
 			}
 		})
 
-		state.on('change:map', () => {
+		state.on('change:currentTile', () => {
 			let {
 				currentTile,
 				map,
 			} = state
 
 			if (map) {
-				// Reset the high score
-				let currentScoreElement = document.querySelector('#current-score')
-				let highScoreElement = document.querySelector('#high-score')
-
-				currentScoreElement.querySelector('.value').innerHTML = 0
-
-				if (state.highScore) {
-					highScoreElement.querySelector('.value').innerHTML = state.highScore
-					highScoreElement.removeAttribute('hidden')
-				} else {
-					highScoreElement.setAttribute('hidden', 1)
-				}
-
 				// Update the tile queue
 				tileQueueElement.innerHTML = ''
-
-				levelRecapElement.setAttribute('hidden', 1)
 
 				if (currentTile >= map.tiles.length - 1) {
 					let noTilesRemainingElement = document.createElement('li')
@@ -187,10 +172,33 @@ let gameScreen = new Screen({
 			}
 		})
 
+		state.on('change:map', () => {
+			let {
+				currentTile,
+				map,
+			} = state
+
+			if (map) {
+				let highScoreElement = document.querySelector('#high-score')
+
+				currentScoreElement.innerHTML = 0
+
+				if (state.highScore) {
+					highScoreElement.querySelector('.value').innerHTML = state.highScore
+					highScoreElement.removeAttribute('hidden')
+				} else {
+					highScoreElement.setAttribute('hidden', 1)
+				}
+
+				levelRecapElement.setAttribute('hidden', 1)
+			}
+		})
+
 		state.on('change:isVictory', () => {
 			if (state.isVictory) {
 				updateScores(levelRecapElement)
 				updateHighScore()
+				currentScoreElement.innerHTML = score.total
 				levelRecapElement.removeAttribute('hidden')
 
 				// mapSelectScreen.show()

@@ -52,7 +52,7 @@ let gameScreen = new Screen({
 	onInit() {
 		let currentScoreValueElement = this.node.querySelector('#current-score .value')
 		let levelRecapElement = this.node.querySelector('#level-recap')
-		let topScoreElement = this.node.querySelector('#high-score')
+		let highScoreElement = this.node.querySelector('#high-score')
 		let tileQueueElement = this.node.querySelector('#tile-queue ol')
 		let tilesRemainingElement = this.node.querySelector('#tiles-remaining')
 
@@ -133,6 +133,20 @@ let gameScreen = new Screen({
 			} = state
 
 			if (map) {
+				// Reset the high score
+				let currentScoreElement = document.querySelector('#current-score')
+				let highScoreElement = document.querySelector('#high-score')
+
+				currentScoreElement.querySelector('.value').innerHTML = 0
+
+				if (state.highScore) {
+					highScoreElement.querySelector('.value').innerHTML = state.highScore
+					highScoreElement.removeAttribute('hidden')
+				} else {
+					highScoreElement.setAttribute('hidden', 1)
+				}
+
+				// Update the tile queue
 				tileQueueElement.innerHTML = ''
 
 				levelRecapElement.setAttribute('hidden', 1)
@@ -185,18 +199,6 @@ let gameScreen = new Screen({
 	},
 
 	onShow() {
-		let currentScoreElement = document.querySelector('#current-score')
-		let topScoreElement = document.querySelector('#high-score')
-
-		currentScoreElement.querySelector('.value').innerHTML = 0
-
-		if (state.highScore) {
-			topScoreElement.querySelector('.value').innerHTML = state.highScore
-			topScoreElement.removeAttribute('hidden')
-		} else {
-			topScoreElement.setAttribute('hidden', 1)
-		}
-
 		startController()
 		state.paused = 0
 	},

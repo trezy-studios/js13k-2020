@@ -61,5 +61,5 @@ module.exports = function (content) {
     do {
         args.push(get_tile(layers[tile].data))
     } while (layers[++tile])
-    return `export default new (require(${JSON.stringify(path.resolve(process.cwd(), 'src', 'maps', 'map.js'))}).Map)([${args}])`
+    return `export default new (require(${JSON.stringify(path.resolve(process.cwd(), 'src', 'maps', 'map.js'))}).Map)('${json.properties.find(({ name }) => name === 'Name').value}', [${args}])`
 }

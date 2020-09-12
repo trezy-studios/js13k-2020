@@ -205,6 +205,11 @@
  "orientation":"orthogonal",
  "properties":[
         {
+         "name":"Name",
+         "type":"string",
+         "value":"Boop"
+        }, 
+        {
          "name":"Start Delay",
          "type":"int",
          "value":90000

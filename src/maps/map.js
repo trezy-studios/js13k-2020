@@ -81,19 +81,20 @@ function path(data, size, start, end) {
 
 
 export class Map {
-	constructor(data, w = GRID_SIZE.w, h = GRID_SIZE.h) {
+	constructor(name, data, w = GRID_SIZE.w, h = GRID_SIZE.h) {
 		let computed_data = data[0].toString().padStart(w * h, '0').split('').map(num => +num)
 
 		this.original = computed_data
 		this.delay = data[1]
 		this.originalObjects = data[2]
 		this.size = { w, h }
+		this.name = name
 		this.reset()
 		this.tiles = data.slice(3).map(tile => {
 			let w = +tile[0]
 			let h = +tile[1]
 			let data = BigInt(tile.slice(2))
-			return new Map([data, 0, []], w, h)
+			return new Map('', [data, 0, []], w, h)
 		})
 	}
 

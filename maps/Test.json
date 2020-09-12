@@ -145,6 +145,11 @@
  "orientation":"orthogonal",
  "properties":[
         {
+         "name":"Name",
+         "type":"string",
+         "value":"Test"
+        }, 
+        {
          "name":"Start Delay",
          "type":"int",
          "value":10000

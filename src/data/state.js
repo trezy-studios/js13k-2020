@@ -7,7 +7,6 @@ import { createObservable } from '../helpers/createObservable'
 import { localStoragePrefix } from '../data/prefix'
 import { score } from '../data/score'
 import { resetTimer } from '../helpers/timer'
-import Map from '../maps/map'
 import * as maps from '../maps'
 
 
@@ -33,7 +32,7 @@ let stateObject = {
 export let state = createObservable(new Proxy(stateObject, {
 	set(target, key, value) {
 		if (key === 'map') {
-			let map = value instanceof Map ? value : maps[value]
+			let map = maps[value]
 			map.reset()
 			target.currentTile = 0
 			target.entities = map.objects

@@ -5,13 +5,6 @@ import {
 	start as startController,
 	stop as stopController,
 } from './helpers/controls'
-import { canvas } from './render/canvas'
-import { createStringCanvas } from './render/font'
-import { score } from './data/score'
-import { Screen } from './structures/Screen'
-import { state } from './data/state'
-import { TILE_SIZE } from './data/grid'
-import { updateGameScale } from './helpers/updateGameScale'
 import {
 	updateHighScore,
 	updateScores,
@@ -20,6 +13,14 @@ import {
 	resetTimer,
 	updateTimer,
 } from './helpers/timer'
+import { canvas } from './render/canvas'
+import { createStringCanvas } from './render/font'
+import { getNextMap } from './helpers/getNextMap'
+import { score } from './data/score'
+import { Screen } from './structures/Screen'
+import { state } from './data/state'
+import { TILE_SIZE } from './data/grid'
+import { updateGameScale } from './helpers/updateGameScale'
 import * as maps from './maps/index'
 
 
@@ -69,6 +70,7 @@ let gameScreen = new Screen({
 		})
 
 		let nextLevelButton = this.node.querySelector('#next-level')
+		nextLevelButton.on('click', () => state.map = getNextMap())
 
 		let resetLevelButton = this.node.querySelector('#reset')
 		resetLevelButton.on('click', () => state.map = state.mapName)
@@ -226,7 +228,7 @@ let mapSelectScreen = new Screen({
 
 		let createMapButton = mapName => {
 			let mapButton = document.createElement('button')
-			mapButton.innerHTML = mapName
+			mapButton.innerHTML = maps[mapName].name
 			mapButton.setAttribute('type', 'button')
 			mapButton.setAttribute('value', mapName)
 			mapButton.on('click', handleMapButtonClick)

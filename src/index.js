@@ -71,54 +71,7 @@ let gameScreen = new Screen({
 		let nextLevelButton = this.node.querySelector('#next-level')
 
 		let resetLevelButton = this.node.querySelector('#reset')
-		let resetLevel = () => {
-			let {
-				currentTile,
-				map,
-			} = state
-
-			state.map = map
-
-			tileQueueElement.innerHTML = ''
-
-			levelRecapElement.setAttribute('hidden', 1)
-
-			if (currentTile >= map.tiles.length - 1) {
-				let noTilesRemainingElement = document.createElement('li')
-				noTilesRemainingElement.innerHTML = 'Empty'
-				tileQueueElement.appendChild(noTilesRemainingElement)
-			}
-
-			map.tiles.slice(currentTile + 1, currentTile + 4).forEach(tile => {
-				let listItem = document.createElement('li')
-				let tileCanvasElement = document.createElement('canvas')
-				tileCanvasElement.height = (tile.size.h * TILE_SIZE.h) + 2
-				tileCanvasElement.width = tile.size.w * TILE_SIZE.w
-
-				let context = canvas(tileCanvasElement, 0, 1)
-				context.drawMap(tile)
-				context.update()
-
-				listItem.appendChild(tileCanvasElement)
-				tileQueueElement.appendChild(listItem)
-			})
-
-			let tilesUsedPercentage = (currentTile / map.tiles.length) * 100
-			let tilesRemainingStatusColor = '#64b964'
-
-			if (tilesUsedPercentage >= 50) {
-				tilesRemainingStatusColor = '#e6c86e'
-			}
-
-			if (tilesUsedPercentage >= 75) {
-				tilesRemainingStatusColor = '#d77355'
-			}
-
-			tilesRemainingElement.style.setProperty('--p', `${(currentTile / map.tiles.length) * 100}%`)
-			tilesRemainingElement.style.setProperty('--c', tilesRemainingStatusColor)
-		}
-
-		resetLevelButton.on('click', resetLevel)
+		resetLevelButton.on('click', () => state.map = state.mapName)
 
 		let gameLoop = () => {
 			if (!state.isVictory && !state.paused) {
@@ -173,7 +126,52 @@ let gameScreen = new Screen({
 			}
 		})
 
-		state.on('change:map', resetLevel)
+		state.on('change:map', () => {
+			let {
+				currentTile,
+				map,
+			} = state
+
+			if (map) {
+				tileQueueElement.innerHTML = ''
+
+				levelRecapElement.setAttribute('hidden', 1)
+
+				if (currentTile >= map.tiles.length - 1) {
+					let noTilesRemainingElement = document.createElement('li')
+					noTilesRemainingElement.innerHTML = 'Empty'
+					tileQueueElement.appendChild(noTilesRemainingElement)
+				}
+
+				map.tiles.slice(currentTile + 1, currentTile + 4).forEach(tile => {
+					let listItem = document.createElement('li')
+					let tileCanvasElement = document.createElement('canvas')
+					tileCanvasElement.height = (tile.size.h * TILE_SIZE.h) + 2
+					tileCanvasElement.width = tile.size.w * TILE_SIZE.w
+
+					let context = canvas(tileCanvasElement, 0, 1)
+					context.drawMap(tile)
+					context.update()
+
+					listItem.appendChild(tileCanvasElement)
+					tileQueueElement.appendChild(listItem)
+				})
+
+				let tilesUsedPercentage = (currentTile / map.tiles.length) * 100
+				let tilesRemainingStatusColor = '#64b964'
+
+				if (tilesUsedPercentage >= 50) {
+					tilesRemainingStatusColor = '#e6c86e'
+				}
+
+				if (tilesUsedPercentage >= 75) {
+					tilesRemainingStatusColor = '#d77355'
+				}
+
+				tilesRemainingElement.style.setProperty('--p', `${(currentTile / map.tiles.length) * 100}%`)
+				tilesRemainingElement.style.setProperty('--c', tilesRemainingStatusColor)
+			}
+		})
 
 		state.on('change:isVictory', () => {
 			if (state.isVictory) {

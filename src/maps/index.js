@@ -6,11 +6,11 @@ import labyrinth from '../../maps/Labyrinth.json'
 import test from '../../maps/Test.json'
 import zuri from '../../maps/Zuri.json'
 
-export {
+export let maps = [
 	m100,
 	boop,
-	crosses,
-	labyrinth,
 	test,
 	zuri,
-}
+	crosses,
+	labyrinth,
+]

@@ -5,9 +5,9 @@ import {
 } from './grid'
 import { createObservable } from '../helpers/createObservable'
 import { localStoragePrefix } from '../data/prefix'
+import { maps } from '../maps'
 import { score } from '../data/score'
 import { resetTimer } from '../helpers/timer'
-import * as maps from '../maps'
 
 
 
@@ -21,7 +21,7 @@ let stateObject = {
 	isVictory: 0,
 	lastTimerUpdate: 0,
 	map: null,
-	mapName: '',
+	mapIndex: null,
 	paused: 1,
 	placeX: 0,
 	placeY: 0,
@@ -32,13 +32,13 @@ let stateObject = {
 export let state = createObservable(new Proxy(stateObject, {
 	set(target, key, value) {
 		if (key === 'map') {
-			let map = maps[value]
+			let map = maps[+value]
 			map.reset()
 			target.currentTile = 0
 			target.entities = map.objects
 			target.highScore = localStorage.getItem(`${localStoragePrefix}${value}::high-score`)
 			target.isVictory = 0
-			target.mapName = value
+			target.mapIndex = value
 			target.placeX = 0
 			target.placeY = 0
 			target.timeRemaining = map.delay

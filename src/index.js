@@ -16,12 +16,12 @@ import {
 import { canvas } from './render/canvas'
 import { createStringCanvas } from './render/font'
 import { getNextMap } from './helpers/getNextMap'
+import { maps } from './maps/index'
 import { score } from './data/score'
 import { Screen } from './structures/Screen'
 import { state } from './data/state'
 import { TILE_SIZE } from './data/grid'
 import { updateGameScale } from './helpers/updateGameScale'
-import * as maps from './maps/index'
 
 
 
@@ -73,7 +73,7 @@ let gameScreen = new Screen({
 		nextLevelButton.on('click', () => state.map = getNextMap())
 
 		let resetLevelButton = this.node.querySelector('#reset')
-		resetLevelButton.on('click', () => state.map = state.mapName)
+		resetLevelButton.on('click', () => state.map = state.mapIndex)
 
 		let gameLoop = () => {
 			if (!state.isVictory && !state.paused) {
@@ -226,11 +226,11 @@ let mapSelectScreen = new Screen({
 			gameScreen.show()
 		}
 
-		let createMapButton = mapName => {
+		let createMapButton = (map, index) => {
 			let mapButton = document.createElement('button')
-			mapButton.innerHTML = maps[mapName].name
+			mapButton.innerHTML = map.name
 			mapButton.setAttribute('type', 'button')
-			mapButton.setAttribute('value', mapName)
+			mapButton.setAttribute('value', index)
 			mapButton.on('click', handleMapButtonClick)
 
 			mapsList.appendChild(mapButton)
@@ -238,7 +238,7 @@ let mapSelectScreen = new Screen({
 
 		this.node.querySelector('.back').addEventListener('click', () => mainMenuScreen.show())
 
-		Object.keys(maps).forEach(createMapButton)
+		maps.forEach(createMapButton)
 	},
 
 	selector: '#map-select',

@@ -45,6 +45,11 @@ export let createStringCanvas = (string, fontFamily = 'awkward', isDanger) => {
 			...characterDefaults,
 		}
 
+		if (!coords[character]) {
+			console.log(`No glyph exists for the '${character}' character in the '${fontFamily}' font`)
+			character = '?'
+		}
+
 		coords[character].map((coord, index) => (typeof coord !== 'undefined') ? (characterCoords['xwh'[index]] = coord) : 0)
 
 		accumulator.stringCoords.push(characterCoords)

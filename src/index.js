@@ -248,6 +248,22 @@ let gameScreen = new Screen({
 									'around them instead',
 								],
 							],
+
+							[
+								[
+									'Watch your timer!',
+								],
+								[
+									'The bot will start',
+									'moving when the',
+									'timer hits 0',
+								],
+								[
+									'You will earn bonus',
+									'points for starting',
+									'before the timer ends',
+								],
+							],
 						]
 
 						let updateTutorialMessage = index => {

@@ -1,1 +1,1 @@
-export let localStoragePrefix = 'Trezy Studios::Not Found::'
+export let localStoragePrefix = 'TS:NF:'

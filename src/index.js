@@ -122,57 +122,56 @@ let gameScreen = new Screen({
 
 		gameLoop()
 
+		let updateTileQueue = () => {
+			let {
+				currentTile,
+				map,
+			} = state
+
+			tileQueueElement.innerHTML = ''
+
+			if (currentTile >= map.tiles.length - 1) {
+				let noTilesRemainingElement = document.createElement('li')
+				noTilesRemainingElement.innerHTML = 'Empty'
+				tileQueueElement.appendChild(noTilesRemainingElement)
+			}
+
+			map.tiles.slice(currentTile + 1, currentTile + 4).forEach(tile => {
+				let listItem = document.createElement('li')
+				let tileCanvasElement = document.createElement('canvas')
+				tileCanvasElement.height = (tile.size.h * TILE_SIZE.h) + 2
+				tileCanvasElement.width = tile.size.w * TILE_SIZE.w
+
+				let context = canvas(tileCanvasElement, 0, 1)
+				context.drawMap(tile)
+				context.update()
+
+				listItem.appendChild(tileCanvasElement)
+				tileQueueElement.appendChild(listItem)
+			})
+
+			let tilesUsedPercentage = (currentTile / map.tiles.length) * 100
+			let tilesRemainingStatusColor = '#64b964'
+
+			if (tilesUsedPercentage >= 50) {
+				tilesRemainingStatusColor = '#e6c86e'
+			}
+
+			if (tilesUsedPercentage >= 75) {
+				tilesRemainingStatusColor = '#d77355'
+			}
+
+			tilesRemainingElement.style.setProperty('--p', `${(currentTile / map.tiles.length) * 100}%`)
+			tilesRemainingElement.style.setProperty('--c', tilesRemainingStatusColor)
+		}
+
 		score.on('change', () => {
 			if (currentScoreElement.innerText != score.preTotal) {
 				currentScoreElement.innerText = score.preTotal
 			}
 		})
 
-		state.on('change:currentTile', () => {
-			let {
-				currentTile,
-				map,
-			} = state
-
-			if (map) {
-				// Update the tile queue
-				tileQueueElement.innerHTML = ''
-
-				if (currentTile >= map.tiles.length - 1) {
-					let noTilesRemainingElement = document.createElement('li')
-					noTilesRemainingElement.innerHTML = 'Empty'
-					tileQueueElement.appendChild(noTilesRemainingElement)
-				}
-
-				map.tiles.slice(currentTile + 1, currentTile + 4).forEach(tile => {
-					let listItem = document.createElement('li')
-					let tileCanvasElement = document.createElement('canvas')
-					tileCanvasElement.height = (tile.size.h * TILE_SIZE.h) + 2
-					tileCanvasElement.width = tile.size.w * TILE_SIZE.w
-
-					let context = canvas(tileCanvasElement, 0, 1)
-					context.drawMap(tile)
-					context.update()
-
-					listItem.appendChild(tileCanvasElement)
-					tileQueueElement.appendChild(listItem)
-				})
-
-				let tilesUsedPercentage = (currentTile / map.tiles.length) * 100
-				let tilesRemainingStatusColor = '#64b964'
-
-				if (tilesUsedPercentage >= 50) {
-					tilesRemainingStatusColor = '#e6c86e'
-				}
-
-				if (tilesUsedPercentage >= 75) {
-					tilesRemainingStatusColor = '#d77355'
-				}
-
-				tilesRemainingElement.style.setProperty('--p', `${(currentTile / map.tiles.length) * 100}%`)
-				tilesRemainingElement.style.setProperty('--c', tilesRemainingStatusColor)
-			}
-		})
+		state.on('change:currentTile', updateTileQueue)
 
 		state.on('change:map', () => {
 			let {
@@ -193,6 +192,8 @@ let gameScreen = new Screen({
 				}
 
 				levelRecapElement.setAttribute('hidden', 1)
+
+				updateTileQueue()
 			}
 		})
 
@@ -202,8 +203,6 @@ let gameScreen = new Screen({
 				updateHighScore()
 				currentScoreElement.innerHTML = score.total
 				levelRecapElement.removeAttribute('hidden')
-
-				// mapSelectScreen.show()
 			}
 		})
 	},

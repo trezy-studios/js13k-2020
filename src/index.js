@@ -194,6 +194,8 @@ let gameScreen = new Screen({
 
 			if (map) {
 				let highScoreElement = this.node.querySelector('#high-score')
+				let tutorialMessageElement = this.node.querySelector('#tutorial-message')
+				this.timers.map(clearTimeout)
 
 				currentScoreElement.innerHTML = 0
 
@@ -207,6 +209,60 @@ let gameScreen = new Screen({
 				levelRecapElement.setAttribute('hidden', 1)
 
 				updateTileQueue()
+
+				if (tutorial) {
+					tutorialMessageElement.innerHTML = ''
+
+					if (state.tutorial) {
+						let tutorialMessages = [
+							[
+								[
+									'Use the arrow keys',
+									'or W, A, S, and D',
+									'to move the placer',
+								],
+								[
+									'Press the Space Bar',
+									'to place a tile',
+								],
+								[
+									'Press the Enter key',
+									'to start the bot',
+								],
+								[
+									'Build a bridge so it',
+									'can reach the portal',
+								],
+							],
+						]
+
+						let updateTutorialMessage = index => {
+							let messageQueue = tutorialMessages[state.mapIndex]
+
+							if (messageQueue) {
+								let message = messageQueue[index]
+
+								tutorialMessageElement.innerHTML = ''
+
+								if (message) {
+									message.map(line => {
+										let tutorialMessageFirstLine = document.createElement('div')
+										tutorialMessageFirstLine.innerHTML = line
+										tutorialMessageElement.appendChild(tutorialMessageFirstLine)
+									})
+
+									tutorialMessageElement.removeAttribute('hidden')
+
+									this.timers.push(setTimeout(updateTutorialMessage, 3000, index + 1))
+								} else {
+									tutorialMessageElement.setAttribute('hidden', 1)
+								}
+							}
+						}
+
+						updateTutorialMessage(0)
+					}
+				}
 			}
 		})
 
@@ -232,47 +288,6 @@ let gameScreen = new Screen({
 	},
 
 	onShow() {
-		let tutorialMessageElement = this.node.querySelector('#tutorial-message')
-		let tutorialMessages = [
-			[
-				'Use the arrow keys',
-				'or W, A, S, and D',
-				'to move the placer',
-			],
-			[
-				'Press the Space Bar',
-				'to place a tile',
-			],
-			[
-				'Press the Enter key',
-				'to start the bot',
-			],
-			[
-				'Build a bridge so it',
-				'can reach the portal',
-			],
-		]
-
-		tutorialMessageElement.innerHTML = ''
-
-		let updateTutorialMessage = index => {
-			let message = tutorialMessages[index]
-
-			tutorialMessageElement.innerHTML = ''
-
-			if (message) {
-				message.map(line => {
-					let tutorialMessageFirstLine = document.createElement('div')
-					tutorialMessageFirstLine.innerHTML = line
-					tutorialMessageElement.appendChild(tutorialMessageFirstLine)
-				})
-
-				this.timers.push(setTimeout(updateTutorialMessage, 3000, index + 1))
-			}
-		}
-
-		updateTutorialMessage(0)
-
 		startController()
 		state.paused = 0
 	},
@@ -295,6 +310,7 @@ let mapSelectScreen = new Screen({
 
 		let handleMapButtonClick = event => {
 			let { target: { value } } = event
+			state.tutorial = 0
 			state.map = value
 			gameScreen.show()
 		}

@@ -447,6 +447,10 @@ ol {
 	right: 0;
 	text-align: center;
 
+	&:empty {
+		display: none;
+	}
+
 	> * + * {
 		margin-top: 2px;
 	}

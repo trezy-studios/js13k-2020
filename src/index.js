@@ -66,6 +66,7 @@ let gameScreen = new Screen({
 		let retryLevelButton = this.node.querySelector('#retry')
 		let skipTimerButton = this.node.querySelector('#skip-timer')
 		let tilesRemainingElement = this.node.querySelector('#tiles-remaining')
+		let tutorialMessageElement = this.node.querySelector('#tutorial-message')
 
 		this.timers = []
 
@@ -193,8 +194,6 @@ let gameScreen = new Screen({
 			} = state
 
 			if (map) {
-				let highScoreElement = this.node.querySelector('#high-score')
-				let tutorialMessageElement = this.node.querySelector('#tutorial-message')
 				this.timers.map(clearTimeout)
 
 				currentScoreElement.innerHTML = 0
@@ -234,6 +233,21 @@ let gameScreen = new Screen({
 									'can reach the portal',
 								],
 							],
+
+							[
+								[
+									'Dark blocks are',
+									'corrupted',
+								],
+								[
+									'The bot cannot',
+									'move on them',
+								],
+								[
+									'Build your bridge',
+									'around them instead',
+								],
+							],
 						]
 
 						let updateTutorialMessage = index => {
@@ -271,6 +285,8 @@ let gameScreen = new Screen({
 				updateScores(levelRecapElement)
 				updateHighScore()
 				currentScoreElement.innerHTML = score.total
+				tutorialMessageElement.innerHTML = ''
+				this.timers.map(clearTimeout)
 
 				let nextMap = getNextMap()
 

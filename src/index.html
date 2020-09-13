@@ -98,11 +98,11 @@
 						data-score="earlyStartBonus">
 					</div>
 
-					<div>Move Bonus</div>
+					<div>Path Bonus</div>
 					<div>+</div>
 					<div
 						class="text-right"
-						data-score="moveBonus">
+						data-score="pathBonus">
 					</div>
 
 					<div>Time Bonus</div>
@@ -151,9 +151,20 @@
 			</time>
 
 			<div id="tile-queue">
-				<header>Next</header>
+				<div id="current-tile">
+					<header>Current</header>
+					<div class="target"></div>
+				</div>
 
-				<ol></ol>
+				<div id="next-tile">
+					<header>Next</header>
+					<div class="target"></div>
+				</div>
+
+				<div id="empty-queue-message">
+					<span>No Tiles</span>
+					<span>Remaining</span>
+				</div>
 			</div>
 
 			<button

@@ -11,7 +11,7 @@ let scoreObject = {
 	corruptedTileBonus: 0,
 	earlyStartBonus: 0,
 
-	get moveBonus() {
+	get pathBonus() {
 		if (state.totalMoves) {
 			return Math.floor((192 / state.totalMoves) * 1000)
 		}
@@ -36,7 +36,7 @@ let scoreObject = {
 	},
 
 	get total() {
-		return this.earlyStartBonus + this.moveBonus + this.timeBonus + this.remainingTileBonus + this.corruptedTileBonus
+		return this.earlyStartBonus + this.pathBonus + this.timeBonus + this.remainingTileBonus + this.corruptedTileBonus
 	},
 
 	reset: () => {

@@ -147,7 +147,7 @@
         {
          "name":"Name",
          "type":"string",
-         "value":"Labyrinth"
+         "value":"Misdirected Request"
         }, 
         {
          "name":"Start Delay",

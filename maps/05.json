@@ -207,7 +207,7 @@
         {
          "name":"Name",
          "type":"string",
-         "value":"Boop"
+         "value":"Continue"
         }, 
         {
          "name":"Start Delay",

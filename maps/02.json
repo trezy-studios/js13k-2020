@@ -128,7 +128,7 @@
         {
          "name":"Name",
          "type":"string",
-         "value":"Forbidden"
+         "value":"Conflict"
         }, 
         {
          "name":"Start Delay",

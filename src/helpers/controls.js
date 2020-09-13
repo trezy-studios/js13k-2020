@@ -83,7 +83,6 @@ document.on('keydown', ({ code }) => {
 				state.placeY -= 1
 				break
 
-			case 'Enter':
 			case 'Space':
 				place()
 				break

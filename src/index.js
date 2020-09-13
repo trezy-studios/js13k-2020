@@ -169,8 +169,10 @@ let gameScreen = new Screen({
 
 		nextLevelButton.on('click', () => state.map = getNextMap())
 
-		resetLevelButton.on('click', () => {
+		resetLevelButton.on('click', ({ target }) => {
+			target.blur()
 			state.map.reset()
+			state.entities = state.map.objects
 			state.currentTile = 0
 		})
 

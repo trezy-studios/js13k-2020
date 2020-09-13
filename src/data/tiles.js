@@ -8,8 +8,9 @@ import { spritesheetImage } from '../helpers/spritesheet'
 function renderStandardSizeTile(context, x, y, isPlacing = 0, canPlace = 1, sourceX, sourceY) {
 	if (isPlacing) {
 		let sourceY = canPlace ? 16 : 21
-		context.alpha(0.7)
-		context.image(spritesheetImage, 0, sourceY, 7, 5, x + 1, y + 2, 7, 5)
+		// context.alpha(0.1)
+		// context.image(spritesheetImage, 0, sourceY, 7, 5, x + 1, y + 2, 7, 5)
+		context.alpha(0.5)
 	}
 
 	if (!canPlace) {

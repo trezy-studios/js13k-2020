@@ -16,7 +16,7 @@
          "name":"level",
          "opacity":1,
          "type":"tilelayer",
-         "visible":false,
+         "visible":true,
          "width":12,
          "x":0,
          "y":0
@@ -81,7 +81,7 @@
          "name":"1",
          "opacity":1,
          "type":"tilelayer",
-         "visible":true,
+         "visible":false,
          "width":12,
          "x":0,
          "y":0
@@ -200,7 +200,7 @@
         {
          "name":"Start Delay",
          "type":"int",
-         "value":10000
+         "value":15000
         }],
  "renderorder":"left-down",
  "tiledversion":"1.4.2",

@@ -64,18 +64,22 @@ document.on('keydown', ({ code }) => {
 	if (enabled) {
 		switch (code) {
 			case 'ArrowDown':
+			case 'KeyS':
 				state.placeY += 1
 				break
 
 			case 'ArrowLeft':
+			case 'KeyA':
 				state.placeX -= 1
 				break
 
 			case 'ArrowRight':
+			case 'KeyD':
 				state.placeX += 1
 				break
 
 			case 'ArrowUp':
+			case 'KeyW':
 				state.placeY -= 1
 				break
 

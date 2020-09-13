@@ -159,7 +159,6 @@ let gameScreen = new Screen({
 			state.timeRemaining = 0
 			target.blur()
 			target.setAttribute('hidden', 1)
-			target.setAttribute('disabled', 1)
 		})
 
 		nextLevelButton.on('click', () => state.map = getNextMap())

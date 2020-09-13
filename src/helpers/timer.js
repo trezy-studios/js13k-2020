@@ -22,14 +22,14 @@ export function updateTimer(now) {
 	let {
 		isVictory,
 		lastTimerUpdate,
+		mapIndex,
 		timeRemaining,
 		tutorial,
 	} = state
 
 	let skipTimerButton = getSkipButton()
 	let timerElement = getTimer()
-
-	if (tutorial) {
+	if (tutorial && (mapIndex < 2)) {
 		timerElement.innerHTML = '0:00'
 	} else if (!isVictory && ((now - lastTimerUpdate) >= 1000)) {
 		let totalSecondsRemaining = Math.abs(Math.floor(timeRemaining / 1000))

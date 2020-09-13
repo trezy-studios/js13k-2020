@@ -35,11 +35,11 @@ export function updateTimer(now) {
 		let totalSecondsRemaining = Math.abs(Math.floor(timeRemaining / 1000))
 		let secondsRemaining = (totalSecondsRemaining % 60).toString().padStart(2, '0')
 		let minutesRemaining = Math.floor(totalSecondsRemaining / 60)
-		let timerPrefix = ''
+		let timerPrefix = '-'
 
 		if (timeRemaining <= 0) {
-			timerElement.classList.add('danger')
-			timerPrefix = '-'
+			// timerElement.classList.add('danger')
+			timerPrefix = ''
 			skipTimerButton.setAttribute('hidden', 1)
 		}
 

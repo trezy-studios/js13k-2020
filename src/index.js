@@ -54,7 +54,8 @@ let gameScreen = new Screen({
 		let currentScoreElement = this.node.querySelector('#current-score .value')
 		let levelRecapElement = this.node.querySelector('#level-recap')
 		let highScoreElement = this.node.querySelector('#high-score')
-		let tileQueueElement = this.node.querySelector('#tile-queue ol')
+		let currentTileElement = this.node.querySelector('#current-tile')
+		let nextTileElement = this.node.querySelector('#next-tile')
 		let tilesRemainingElement = this.node.querySelector('#tiles-remaining')
 
 		let quitButton = this.node.querySelector('[data-action="quit"]')
@@ -128,26 +129,27 @@ let gameScreen = new Screen({
 				map,
 			} = state
 
-			tileQueueElement.innerHTML = ''
+			;[currentTileElement, nextTileElement].forEach((tileElement, index) => {
+				let tile = map.tiles[currentTile + index]
+				let targetElement = tileElement.querySelector('.target')
 
-			if (currentTile >= map.tiles.length - 1) {
-				let noTilesRemainingElement = document.createElement('li')
-				noTilesRemainingElement.innerHTML = 'Empty'
-				tileQueueElement.appendChild(noTilesRemainingElement)
-			}
+				targetElement.innerHTML = ''
 
-			map.tiles.slice(currentTile + 1, currentTile + 4).forEach(tile => {
-				let listItem = document.createElement('li')
-				let tileCanvasElement = document.createElement('canvas')
-				tileCanvasElement.height = (tile.size.h * TILE_SIZE.h) + 2
-				tileCanvasElement.width = tile.size.w * TILE_SIZE.w
+				if (tile) {
+					let tileCanvasElement = document.createElement('canvas')
+					tileCanvasElement.height = (tile.size.h * TILE_SIZE.h) + 2
+					tileCanvasElement.width = tile.size.w * TILE_SIZE.w
 
-				let context = canvas(tileCanvasElement, 0, 1)
-				context.drawMap(tile)
-				context.update()
+					let context = canvas(tileCanvasElement, 0, 1)
+					context.drawMap(tile)
+					context.update()
 
-				listItem.appendChild(tileCanvasElement)
-				tileQueueElement.appendChild(listItem)
+					targetElement.appendChild(tileCanvasElement)
+
+					tileElement.removeAttribute('hidden')
+				} else {
+					tileElement.setAttribute('hidden', 1)
+				}
 			})
 
 			let tilesUsedPercentage = (currentTile / map.tiles.length) * 100

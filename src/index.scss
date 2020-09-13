@@ -385,28 +385,24 @@ ol {
 	flex-direction: column;
 	flex-shrink: 1;
 	height: 100%;
-	overflow: auto;
+	overflow: hidden;
 
 	header {
 		padding: 4px;
-		position: sticky;
-		top: 0;
 	}
 
-	ol {
+	#empty-queue-message {
+		display: none;
+	}
+
+	[hidden] + [hidden] + #empty-queue-message {
+		align-items: center;
 		display: flex;
 		flex-direction: column;
 		gap: 2px;
+		height: 100%;
 		justify-content: center;
-
-		li {
-			display: flex;
-			justify-content: center;
-
-			&:nth-child(n + 2) {
-				opacity: 0.25;
-			}
-		}
+		place-items: center;
 	}
 }
 

@@ -13,6 +13,10 @@ import {
 	resetTimer,
 	updateTimer,
 } from './helpers/timer'
+import {
+	getUnlockedLevels,
+	unlockLevel,
+} from './data/unlocks'
 import { canvas } from './render/canvas'
 import { createStringCanvas } from './render/font'
 import { getNextMap } from './helpers/getNextMap'
@@ -208,8 +212,12 @@ let gameScreen = new Screen({
 				updateHighScore()
 				currentScoreElement.innerHTML = score.total
 
-				if (!getNextMap()) {
+				let nextMap = getNextMap()
+
+				if (!nextMap) {
 					nextLevelButton.setAttribute('hidden', 1)
+				} else {
+					unlockLevel(nextMap)
 				}
 
 				levelRecapElement.removeAttribute('hidden')
@@ -228,8 +236,9 @@ let gameScreen = new Screen({
 })
 
 let mapSelectScreen = new Screen({
-	onInit() {
+	onShow() {
 		let mapsList = this.node.querySelector('#maps')
+		mapsList.innerHTML = ''
 
 		let handleMapButtonClick = event => {
 			let { target: { value } } = event
@@ -237,11 +246,12 @@ let mapSelectScreen = new Screen({
 			gameScreen.show()
 		}
 
-		let createMapButton = (map, index) => {
+		let createMapButton = mapIndex => {
+			let map = maps[mapIndex]
 			let mapButton = document.createElement('button')
 			mapButton.innerHTML = map.name
 			mapButton.setAttribute('type', 'button')
-			mapButton.setAttribute('value', index)
+			mapButton.setAttribute('value', mapIndex)
 			mapButton.on('click', handleMapButtonClick)
 
 			mapsList.appendChild(mapButton)
@@ -249,7 +259,7 @@ let mapSelectScreen = new Screen({
 
 		this.node.querySelector('.back').addEventListener('click', () => mainMenuScreen.show())
 
-		maps.forEach(createMapButton)
+		getUnlockedLevels().forEach(createMapButton)
 	},
 
 	selector: '#map-select',

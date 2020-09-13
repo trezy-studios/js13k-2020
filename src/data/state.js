@@ -27,6 +27,7 @@ let stateObject = {
 	placeY: 0,
 	timeRemaining: 0,
 	totalMoves: 0,
+	tutorial: 0,
 }
 
 export let state = createObservable(new Proxy(stateObject, {

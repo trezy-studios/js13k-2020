@@ -23,11 +23,15 @@ export function updateTimer(now) {
 		isVictory,
 		lastTimerUpdate,
 		timeRemaining,
+		tutorial,
 	} = state
 
-	if (!isVictory && ((now - lastTimerUpdate) >= 1000)) {
-		let timerElement = getTimer()
-		let skipTimerButton = getSkipButton()
+	let skipTimerButton = getSkipButton()
+	let timerElement = getTimer()
+
+	if (tutorial) {
+		timerElement.innerHTML = '0:00'
+	} else if (!isVictory && ((now - lastTimerUpdate) >= 1000)) {
 		let totalSecondsRemaining = Math.abs(Math.floor(timeRemaining / 1000))
 		let secondsRemaining = (totalSecondsRemaining % 60).toString().padStart(2, '0')
 		let minutesRemaining = Math.floor(totalSecondsRemaining / 60)

@@ -67,6 +67,8 @@ let gameScreen = new Screen({
 		let skipTimerButton = this.node.querySelector('#skip-timer')
 		let tilesRemainingElement = this.node.querySelector('#tiles-remaining')
 
+		this.timers = []
+
 		let gameLoop = () => {
 			if (!state.isVictory && !state.paused) {
 				let now = performance.now()
@@ -189,7 +191,7 @@ let gameScreen = new Screen({
 			} = state
 
 			if (map) {
-				let highScoreElement = document.querySelector('#high-score')
+				let highScoreElement = this.node.querySelector('#high-score')
 
 				currentScoreElement.innerHTML = 0
 
@@ -228,6 +230,47 @@ let gameScreen = new Screen({
 	},
 
 	onShow() {
+		let tutorialMessageElement = this.node.querySelector('#tutorial-message')
+		let tutorialMessages = [
+			[
+				'Use the arrow keys',
+				'or W, A, S, and D',
+				'to move the placer',
+			],
+			[
+				'Press the Space Bar',
+				'to place a tile',
+			],
+			[
+				'Press the Enter key',
+				'to start the bot',
+			],
+			[
+				'Build a bridge so it',
+				'can reach the portal',
+			],
+		]
+
+		tutorialMessageElement.innerHTML = ''
+
+		let updateTutorialMessage = index => {
+			let message = tutorialMessages[index]
+
+			tutorialMessageElement.innerHTML = ''
+
+			if (message) {
+				message.map(line => {
+					let tutorialMessageFirstLine = document.createElement('div')
+					tutorialMessageFirstLine.innerHTML = line
+					tutorialMessageElement.appendChild(tutorialMessageFirstLine)
+				})
+
+				this.timers.push(setTimeout(updateTutorialMessage, 3000, index + 1))
+			}
+		}
+
+		updateTutorialMessage(0)
+
 		startController()
 		state.paused = 0
 	},
@@ -236,6 +279,14 @@ let gameScreen = new Screen({
 })
 
 let mapSelectScreen = new Screen({
+	onInit() {
+		this.node.querySelector('#tutorial').on('click', () => {
+			state.tutorial = 1
+			state.map = 0
+			gameScreen.show()
+		})
+	},
+
 	onShow() {
 		let mapsList = this.node.querySelector('#maps')
 		mapsList.innerHTML = ''

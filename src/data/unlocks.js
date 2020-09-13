@@ -17,7 +17,8 @@ export let getUnlockedLevels = () => {
 
 export let unlockLevel = levelIndex => {
 	const unlockedLevels = getUnlockedLevels()
-	const newUnlockedLevels = JSON.stringify([...unlockedLevels, levelIndex])
-	console.log({unlockedLevels,newUnlockedLevels})
-	localStorage.setItem(`${localStoragePrefix}unlockedLevels`, newUnlockedLevels)
+
+	if (unlockedLevels.indexOf(levelIndex) == -1) {
+		localStorage.setItem(`${localStoragePrefix}unlockedLevels`, JSON.stringify([...unlockedLevels, levelIndex]))
+	}
 }

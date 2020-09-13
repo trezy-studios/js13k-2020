@@ -56,6 +56,12 @@ let place = () => {
 	state.currentTile += 1
 }
 
+let startBot = () => {
+	score.earlyStartBonus += state.timeRemaining
+	state.timeRemaining = 0
+	document.querySelector('#skip-timer').setAttribute('hidden', 1)
+}
+
 export let start = () => enabled = 1
 
 export let stop = () => enabled = 0
@@ -81,6 +87,12 @@ document.on('keydown', ({ code }) => {
 			case 'ArrowUp':
 			case 'KeyW':
 				state.placeY -= 1
+				break
+
+			case 'Enter':
+				if (state.timeRemaining >= 0) {
+					startBot()
+				}
 				break
 
 			case 'Space':

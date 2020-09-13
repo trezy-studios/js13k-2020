@@ -196,7 +196,7 @@ let gameScreen = new Screen({
 			if (map) {
 				this.timers.map(clearTimeout)
 
-				this.node.querySelector('#level-index').innerHTML = (state.mapIndex + 1 + '').padStart(2, '0')
+				this.node.querySelector('#level-index').innerHTML = generateMapIndexString(state.mapIndex)
 				currentScoreElement.innerHTML = 0
 
 				if (state.highScore) {

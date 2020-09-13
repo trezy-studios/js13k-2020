@@ -19,6 +19,7 @@ import {
 } from './data/unlocks'
 import { canvas } from './render/canvas'
 import { createStringCanvas } from './render/font'
+import { generateMapIndexString } from './helpers/generateMapIndexString'
 import { getNextMap } from './helpers/getNextMap'
 import { maps } from './maps/index'
 import { score } from './data/score'
@@ -341,21 +342,29 @@ let mapSelectScreen = new Screen({
 		let mapsList = this.node.querySelector('#maps')
 		mapsList.innerHTML = ''
 
-		let handleMapButtonClick = event => {
-			let { target: { value } } = event
+		let handleMapButtonClick = ({ target }) => {
 			state.tutorial = 0
-			state.map = value
+			state.map = +target.getAttribute('data-value')
 			gameScreen.show()
 		}
 
 		let createMapButton = mapIndex => {
 			let map = maps[mapIndex]
-			let mapButton = document.createElement('button')
-			mapButton.innerHTML = map.name
-			mapButton.setAttribute('type', 'button')
-			mapButton.setAttribute('value', mapIndex)
+			let mapButton = document.createElement('li')
+			let mapIndexElement = document.createElement('div')
+			let mapNameElement = document.createElement('div')
+
+			mapIndexElement.innerHTML = generateMapIndexString(mapIndex)
+			mapNameElement.innerHTML = ` - ${map.name}`
+
+			mapButton.classList.add('map')
+			mapButton.setAttribute('data-value', mapIndex)
+			mapIndexElement.setAttribute('data-value', mapIndex)
+			mapNameElement.setAttribute('data-value', mapIndex)
 			mapButton.on('click', handleMapButtonClick)
 
+			mapButton.appendChild(mapIndexElement)
+			mapButton.appendChild(mapNameElement)
 			mapsList.appendChild(mapButton)
 		}
 

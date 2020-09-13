@@ -113,6 +113,10 @@ canvas.text {
 	pointer-events: none;
 }
 
+dl {
+	margin: 0;
+}
+
 h1, h2 {
 	margin: 2px;
 	padding: 4px 1px;
@@ -261,6 +265,24 @@ ol {
 		flex-direction: column;
 		justify-content: center;
 		text-align: center;
+	}
+}
+
+.map {
+	border: 0 solid $purple;
+	border-bottom-width: 1px;
+	cursor: pointer;
+	display: flex;
+	padding: 1px 2px;
+
+	> :first-child {
+		margin-right: 6px;
+		min-width: 9px;
+		text-align: right;
+	}
+
+	&:hover {
+		background: $grey;
 	}
 }
 

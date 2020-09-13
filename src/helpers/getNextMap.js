@@ -7,5 +7,11 @@ import { state } from '../data/state'
 
 
 export function getNextMap() {
-	return maps.indexOf(state.map) + 1
+	let nextMapIndex = maps.indexOf(state.map) + 1
+
+	if (maps[nextMapIndex]) {
+		return nextMapIndex
+	}
+
+	return null
 }

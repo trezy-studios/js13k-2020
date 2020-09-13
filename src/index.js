@@ -52,29 +52,16 @@ let gameScreen = new Screen({
 
 	onInit() {
 		let currentScoreElement = this.node.querySelector('#current-score .value')
-		let levelRecapElement = this.node.querySelector('#level-recap')
-		let highScoreElement = this.node.querySelector('#high-score')
 		let currentTileElement = this.node.querySelector('#current-tile')
+		let highScoreElement = this.node.querySelector('#high-score')
+		let levelRecapElement = this.node.querySelector('#level-recap')
 		let nextTileElement = this.node.querySelector('#next-tile')
-		let tilesRemainingElement = this.node.querySelector('#tiles-remaining')
-
-		let quitButton = this.node.querySelector('[data-action="quit"]')
-		quitButton.on('click', () => mapSelectScreen.show())
-
-		let skipTimerButton = this.node.querySelector('#skip-timer')
-		skipTimerButton.on('click', ({ target }) => {
-			score.earlyStartBonus += state.timeRemaining
-			state.timeRemaining = 0
-			target.blur()
-			target.setAttribute('hidden', 1)
-			target.setAttribute('disabled', 1)
-		})
-
 		let nextLevelButton = this.node.querySelector('#next-level')
-		nextLevelButton.on('click', () => state.map = getNextMap())
-
+		let quitButton = this.node.querySelector('[data-action="quit"]')
 		let resetLevelButton = this.node.querySelector('#reset')
-		resetLevelButton.on('click', () => state.map = state.mapIndex)
+		let retryLevelButton = this.node.querySelector('#retry')
+		let skipTimerButton = this.node.querySelector('#skip-timer')
+		let tilesRemainingElement = this.node.querySelector('#tiles-remaining')
 
 		let gameLoop = () => {
 			if (!state.isVictory && !state.paused) {
@@ -121,8 +108,6 @@ let gameScreen = new Screen({
 			requestAnimationFrame(gameLoop)
 		}
 
-		gameLoop()
-
 		let updateTileQueue = () => {
 			let {
 				currentTile,
@@ -167,6 +152,25 @@ let gameScreen = new Screen({
 			tilesRemainingElement.style.setProperty('--c', tilesRemainingStatusColor)
 		}
 
+		quitButton.on('click', () => mapSelectScreen.show())
+
+		skipTimerButton.on('click', ({ target }) => {
+			score.earlyStartBonus += state.timeRemaining
+			state.timeRemaining = 0
+			target.blur()
+			target.setAttribute('hidden', 1)
+			target.setAttribute('disabled', 1)
+		})
+
+		nextLevelButton.on('click', () => state.map = getNextMap())
+
+		resetLevelButton.on('click', () => {
+			state.map.reset()
+			state.currentTile = 0
+		})
+
+		retryLevelButton.on('click', () => state.map = state.mapIndex)
+
 		score.on('change', () => {
 			if (currentScoreElement.innerText != score.preTotal) {
 				currentScoreElement.innerText = score.preTotal
@@ -204,9 +208,16 @@ let gameScreen = new Screen({
 				updateScores(levelRecapElement)
 				updateHighScore()
 				currentScoreElement.innerHTML = score.total
+
+				if (!getNextMap()) {
+					nextLevelButton.setAttribute('hidden', 1)
+				}
+
 				levelRecapElement.removeAttribute('hidden')
 			}
 		})
+
+		gameLoop()
 	},
 
 	onShow() {
